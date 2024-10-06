@@ -34,7 +34,7 @@ const Sidebar = (props: Props) => {
         </div>
         <div>
           {props.title && (
-            <div className="p-2 bg-interface-accent/40 text-interface-text/80 font-semibold text-md rounded-md">
+            <div className="p-2 bg-interface-accent/40 text-interface-text/80 font-semibold text-md rounded">
               {props.title}
             </div>
           )}
