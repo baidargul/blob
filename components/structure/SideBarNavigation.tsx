@@ -70,7 +70,7 @@ const SideBarNavigation = (props: Props) => {
       <div>
         {menu.map((item) => {
           return (
-            <Sidebar key={item.name} content={item.content}>
+            <Sidebar key={item.name} content={item.content} title={item.title}>
               <div
                 key={item.name}
                 onClick={() => handleClick(item)}

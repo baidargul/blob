@@ -13,6 +13,7 @@ type Props = {
   children: React.ReactNode;
   content: React.ReactNode;
   side?: "left" | "right" | "top" | "bottom";
+  title?: string;
 };
 
 const Sidebar = (props: Props) => {
@@ -31,7 +32,14 @@ const Sidebar = (props: Props) => {
             </SheetDescription>
           </SheetHeader>
         </div>
-        <div>{props.content}</div>
+        <div>
+          {props.title && (
+            <div className="p-2 bg-interface-accent/40 text-interface-text/80 font-semibold text-md rounded-md">
+              {props.title}
+            </div>
+          )}
+          <div>{props.content}</div>
+        </div>
       </SheetContent>
     </Sheet>
   );
