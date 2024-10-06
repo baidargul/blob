@@ -32,7 +32,7 @@ const Sidebar = (props: Props) => {
             </SheetDescription>
           </SheetHeader>
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           {props.title && (
             <div className="p-2 bg-interface-accent/40 text-interface-text/80 font-semibold text-md rounded">
               {props.title}
