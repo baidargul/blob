@@ -5,6 +5,7 @@ import Label from "./Label";
 
 type Props = {
   label?: string;
+  subLabel?: string;
   setValue?: any;
   value?: string;
   readonly?: boolean;
@@ -37,7 +38,16 @@ const InputBox = (props: Props) => {
   return (
     <div>
       {props.label && props.label.length > 0 && (
-        <Label label={props.label} size="text-sm" />
+        <div className="flex justify-between items-center">
+          <Label label={props.label} size="text-sm" />
+          {props.subLabel && (
+            <Label
+              label={props.subLabel}
+              size="text-xs"
+              className="font-normal"
+            />
+          )}
+        </div>
       )}
       <div className="relative">
         {props.icon && (

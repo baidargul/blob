@@ -15,6 +15,7 @@ type Props = {};
 
 const ProductList = (props: Props) => {
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [filterFound, setFilterFound] = useState(0);
   const [filterText, setFilterText] = useState("");
   const productList = [
     "Product 1",
@@ -31,7 +32,20 @@ const ProductList = (props: Props) => {
   };
 
   const handleFilterTextChange = (value: string) => {
-    setFilterText(value);
+    setFilterText((prev: any) => {
+      countFound(`${value}`);
+      return value;
+    });
+  };
+
+  const countFound = (value: string) => {
+    let count = 0;
+    productList.map((item: string) => {
+      if (item.toLowerCase().includes(value.toLowerCase())) {
+        count++;
+      }
+    });
+    setFilterFound(count);
   };
 
   return (
@@ -44,6 +58,13 @@ const ProductList = (props: Props) => {
               label="Search"
               setValue={handleFilterTextChange}
               value={filterText}
+              subLabel={
+                filterText.length > 0
+                  ? filterFound > 0
+                    ? `Found (${filterFound}) results.`
+                    : "0 results found"
+                  : ""
+              }
             />
           </div>
           <div className="">
