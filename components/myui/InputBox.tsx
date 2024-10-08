@@ -19,6 +19,12 @@ const InputBox = (props: Props) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      handleClearValue();
+    }
+  };
+
   const handleClearValue = () => {
     if (props.setValue) {
       props.setValue("");
@@ -42,6 +48,7 @@ const InputBox = (props: Props) => {
         <input
           ref={textRef}
           onChange={handleValueChange}
+          onKeyDown={handleKeyDown}
           value={props.value}
           readOnly={props.readonly}
           className={`appearance-none p-1 rounded w-full border border-interface-hover focus:outline-none focus:border-interface-secondry transition-all duration-500 selection:bg-interface-secondry/30 px-2 ${
