@@ -9,6 +9,7 @@ import React, { useState } from "react";
 type Props = {};
 
 const ProductForm = (props: Props) => {
+  const [coverImage, setCoverImage] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
@@ -26,16 +27,33 @@ const ProductForm = (props: Props) => {
     setPrice(Number(value));
   };
 
+  const handleImageUpload = (value: string[]) => {
+    setImages(value);
+    if (value.length > 0) {
+      const lastImage = value[value.length - 1];
+      setCoverImage(lastImage);
+    }
+  };
+
   const handleRemoveImage = (index: number) => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
+    if (updatedImages.length > 0) {
+      setCoverImage(updatedImages[updatedImages.length - 1]);
+    } else {
+      setCoverImage("");
+    }
     setImages(updatedImages);
   };
 
   return (
     <div>
       <div className="flex gap-2 items-start w-full">
-        <ImageUpload multiple onImageUpload={setImages} />
+        <ImageUpload
+          multiple
+          onImageUpload={handleImageUpload}
+          coverImage={coverImage}
+        />
         <div className="w-full">
           <InputBox label="Name:" setValue={handleNameChange} value={name} />
           <InputBox
