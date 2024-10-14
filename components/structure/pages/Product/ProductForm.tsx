@@ -1,4 +1,5 @@
 "use client";
+import ImageUpload from "@/components/myui/ImageUpload";
 import InputBox from "@/components/myui/InputBox";
 import React, { useState } from "react";
 
@@ -22,20 +23,23 @@ const ProductForm = (props: Props) => {
   };
 
   return (
-    <div>
-      <InputBox label="Name:" setValue={handleNameChange} value={name} />
-      <InputBox
-        label="Cost:"
-        setValue={handleCostChange}
-        value={cost}
-        type="number"
-      />
-      <InputBox
-        label="Price:"
-        setValue={handlePriceChange}
-        value={price}
-        type="number"
-      />
+    <div className="flex gap-2 items-start w-full">
+      <ImageUpload multiple />
+      <div className="w-full">
+        <InputBox label="Name:" setValue={handleNameChange} value={name} />
+        <InputBox
+          label="Cost:"
+          setValue={handleCostChange}
+          value={cost}
+          type="number"
+        />
+        <InputBox
+          label="Price:"
+          setValue={handlePriceChange}
+          value={price}
+          type="number"
+        />
+      </div>
     </div>
   );
 };
