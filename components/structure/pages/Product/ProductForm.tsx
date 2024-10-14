@@ -73,7 +73,7 @@ const ProductForm = (props: Props) => {
       {images.length > 0 && (
         <div className="mt-2">
           <Label label="Images:" />
-          <ScrollArea className="w-full max-h-[400px] p-2 bg-zinc-200 rounded">
+          <div className="w-full max-h-[400px] p-2 bg-zinc-200 rounded overflow-y-auto">
             <div className="flex flex-wrap gap-2">
               {images.map((image: string, index: number) => (
                 <div key={index} className="relative group">
@@ -92,7 +92,7 @@ const ProductForm = (props: Props) => {
                 </div>
               ))}
             </div>
-          </ScrollArea>
+          </div>
         </div>
       )}
     </div>
