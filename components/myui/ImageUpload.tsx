@@ -3,7 +3,7 @@ import { CupSoda, Delete, LucideDelete } from "lucide-react";
 
 type ImageUploadProps = {
   multiple?: boolean; // Prop to toggle between single or multiple file selection
-  onImageUpload?: (images: string | string[]) => void; // Callback to pass image data to parent component
+  onImageUpload?: (images: string[]) => void; // Callback to pass image data to parent component
   showSelectedImages?: boolean;
 };
 
@@ -46,9 +46,13 @@ const ImageUpload = ({
           onImageUpload(base64Images); // Send to parent component
         }
       } else {
-        setSelectedImages([base64Images[0]]); // Only store the first image for single mode
+        // setSelectedImages([base64Images[0]]); // Only store the first image for single mode
+        // if (onImageUpload) {
+        //   onImageUpload(base64Images[0]); // Send single image to parent
+        // }
+        setSelectedImages(base64Images); // Store multiple images
         if (onImageUpload) {
-          onImageUpload(base64Images[0]); // Send single image to parent
+          onImageUpload(base64Images); // Send to parent component
         }
       }
     });
