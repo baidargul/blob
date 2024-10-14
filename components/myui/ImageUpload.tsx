@@ -4,9 +4,14 @@ import { CupSoda, Delete, LucideDelete } from "lucide-react";
 type ImageUploadProps = {
   multiple?: boolean; // Prop to toggle between single or multiple file selection
   onImageUpload?: (images: string | string[]) => void; // Callback to pass image data to parent component
+  showSelectedImages?: boolean;
 };
 
-const ImageUpload = ({ multiple = false, onImageUpload }: ImageUploadProps) => {
+const ImageUpload = ({
+  multiple = false,
+  onImageUpload,
+  showSelectedImages,
+}: ImageUploadProps) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   // Function to handle file selection and convert to base64
@@ -75,26 +80,28 @@ const ImageUpload = ({ multiple = false, onImageUpload }: ImageUploadProps) => {
       </label>
 
       {/* Preview Selected Images */}
-      <div className="flex flex-wrap mt-4 gap-2">
-        {selectedImages.length > 0 &&
-          selectedImages.map((image, index) => (
-            <div
-              key={index}
-              className="relative"
-              onClick={() => handleRemoveImage(index)}
-            >
-              <img
+      {showSelectedImages && showSelectedImages === true && (
+        <div className="flex flex-wrap mt-4 gap-2">
+          {selectedImages.length > 0 &&
+            selectedImages.map((image, index) => (
+              <div
                 key={index}
-                src={image}
-                alt="Preview"
-                className="w-20 h-20 object-cover rounded"
-              />
-              <div className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-0 right-1 cursor-pointer">
-                <LucideDelete className="fill-interface-accent text-white" />
+                className="relative"
+                onClick={() => handleRemoveImage(index)}
+              >
+                <img
+                  key={index}
+                  src={image}
+                  alt="Preview"
+                  className="w-20 h-20 object-cover rounded"
+                />
+                <div className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-0 right-1 cursor-pointer">
+                  <LucideDelete className="fill-interface-accent text-white" />
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

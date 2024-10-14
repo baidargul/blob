@@ -6,6 +6,7 @@ import React, { useState } from "react";
 type Props = {};
 
 const ProductForm = (props: Props) => {
+  const [images, setImages] = useState<string | string[]>([]);
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
@@ -24,7 +25,7 @@ const ProductForm = (props: Props) => {
 
   return (
     <div className="flex gap-2 items-start w-full">
-      <ImageUpload multiple />
+      <ImageUpload multiple onImageUpload={setImages} />
       <div className="w-full">
         <InputBox label="Name:" setValue={handleNameChange} value={name} />
         <InputBox
