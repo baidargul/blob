@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CupSoda, Delete, LucideDelete } from "lucide-react";
+import { CupSoda, Trash } from "lucide-react";
 
 type ImageUploadProps = {
   multiple?: boolean; // Prop to toggle between single or multiple file selection
@@ -100,7 +100,7 @@ const ImageUpload = ({
                   className="w-20 h-20 object-cover rounded"
                 />
                 <div className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-0 right-1 cursor-pointer">
-                  <LucideDelete className="fill-interface-accent text-white" />
+                  <Trash className="fill-interface-secondry text-interface-secondry bg-white rounded-full p-1 border border-interface-secondry" />
                 </div>
               </div>
             ))}
