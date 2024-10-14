@@ -53,6 +53,9 @@ const ImageUpload = ({ multiple = false, onImageUpload }: ImageUploadProps) => {
     const updatedImages = [...selectedImages];
     updatedImages.splice(index, 1);
     setSelectedImages(updatedImages);
+    if (onImageUpload) {
+      onImageUpload(updatedImages);
+    }
   };
 
   return (
