@@ -10,6 +10,7 @@ import InputBox from "@/components/myui/InputBox";
 import { Search } from "lucide-react";
 import Label from "@/components/myui/Label";
 import ListRow from "./ListRow";
+import ProductForm from "./ProductForm";
 
 type Props = {};
 
@@ -92,7 +93,9 @@ const ProductList = (props: Props) => {
       <ResizableHandle />
       <ResizablePanel className="pl-2">
         <div className="p-2">
-          <div>Properties</div>
+          <div>
+            <ProductForm />
+          </div>
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>

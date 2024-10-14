@@ -7,9 +7,11 @@ type Props = {
   label?: string;
   subLabel?: string;
   setValue?: any;
-  value?: string;
+  value?: string | number;
   readonly?: boolean;
   icon?: any;
+  type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
+  placeholder?: string;
 };
 
 const InputBox = (props: Props) => {
@@ -35,12 +37,18 @@ const InputBox = (props: Props) => {
     }
   };
 
+  const handleFocus = () => {
+    if (textRef.current) {
+      textRef.current.select();
+    }
+  };
+
   return (
     <div>
       {props.label && props.label.length > 0 && (
         <div className="flex justify-between items-center">
           <Label label={props.label} size="text-sm" />
-          {props.subLabel && (
+          {props.subLabel && props.subLabel.length > 0 && (
             <Label
               label={props.subLabel}
               size="text-xs"
@@ -59,13 +67,16 @@ const InputBox = (props: Props) => {
           ref={textRef}
           onChange={handleValueChange}
           onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
           value={props.value}
           readOnly={props.readonly}
+          placeholder={props.placeholder ? props.placeholder : ""}
+          type={props.type ? props.type : "text"}
           className={`appearance-none p-1 rounded w-full border border-interface-hover focus:outline-none focus:border-interface-secondry transition-all duration-500 selection:bg-interface-secondry/30 px-2 ${
             props.icon && "pl-7"
           }  pr-7 focus:drop-shadow-sm read-only:bg-interface-hover`}
         />
-        {props.value && props.value.length > 0 && !props.readonly && (
+        {String(props.value).length > 0 && !props.readonly && (
           <div
             onClick={handleClearValue}
             className="absolute top-1 right-1 p-1 w-6 h-6 flex justify-center items-center text-center text-sm bg-interface-accent/80 rounded text-white cursor-pointer scale-[60%]"
