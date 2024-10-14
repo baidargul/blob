@@ -62,7 +62,7 @@ const ProductForm = (props: Props) => {
               </div>
               <img
                 src={image}
-                className="w-44 h-44 object-cover border rounded-xl"
+                className="w-44 h-44 object-cover border rounded-xl opacity-70 group-hover:opacity-100 transition-all duration-300"
                 alt={`Image ${index + 1}`}
                 key={index}
               />
