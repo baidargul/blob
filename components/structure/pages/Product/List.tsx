@@ -91,7 +91,7 @@ const ProductList = (props: Props) => {
         </div>
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel className="pl-2">
+      <ResizablePanel className="">
         <div className="p-2">
           <div>
             <ProductForm />

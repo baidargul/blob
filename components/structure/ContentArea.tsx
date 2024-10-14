@@ -6,7 +6,7 @@ type Props = {};
 const ContentArea = (props: Props) => {
   return (
     <div>
-      <div>
+      <div className="">
         <ProductList />
       </div>
     </div>
