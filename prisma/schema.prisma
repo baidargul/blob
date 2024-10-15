@@ -13,3 +13,13 @@ model product {
   cost  Decimal? @db.Decimal
   price Decimal? @db.Decimal
 }
+
+model images {
+  id          String   @id @default(uuid())
+  name        String?
+  extension   String?
+  sizeInBytes String?
+  width       Decimal? @db.Decimal
+  height      Decimal? @db.Decimal
+  url         String?
+}

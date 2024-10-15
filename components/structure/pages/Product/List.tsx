@@ -11,6 +11,7 @@ import { Search } from "lucide-react";
 import Label from "@/components/myui/Label";
 import ListRow from "./ListRow";
 import ProductForm from "./ProductForm";
+import ProductWindowHeader from "./ProductWindowHeader";
 
 type Props = {};
 
@@ -94,6 +95,7 @@ const ProductList = (props: Props) => {
       <ResizablePanel className="">
         <div className="p-2">
           <div>
+            <ProductWindowHeader />
             <ProductForm />
           </div>
         </div>
