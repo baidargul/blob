@@ -73,7 +73,7 @@ const ProductForm = (props: Props) => {
       </div>
       {images.length > 0 && (
         <AccordionProvider content={AcordionContent(images, handleRemoveImage)}>
-          <div>Media ({images.length})</div>
+          <Label label={`Media (${images.length})`} size="text-sm" />
         </AccordionProvider>
       )}
     </div>

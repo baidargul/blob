@@ -16,7 +16,9 @@ const AccordionProvider = (props: Props) => {
   return (
     <Accordion type={props.type ? props.type : "single"} collapsible>
       <AccordionItem value="item-1">
-        <AccordionTrigger>{props.children}</AccordionTrigger>
+        <AccordionTrigger className="hover:no-underline">
+          {props.children}
+        </AccordionTrigger>
         <AccordionContent>
           {props.content ? props.content : null}
         </AccordionContent>
