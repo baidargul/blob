@@ -1,4 +1,5 @@
 "use client";
+import AccordionProvider from "@/components/myui/AccordionProvider";
 import ImageUpload from "@/components/myui/ImageUpload";
 import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
@@ -71,32 +72,42 @@ const ProductForm = (props: Props) => {
         </div>
       </div>
       {images.length > 0 && (
-        <div className="mt-2">
-          <Label label="Images:" />
-          <div className="w-full max-h-[400px] p-2 bg-zinc-200 rounded overflow-y-auto">
-            <div className="flex flex-wrap gap-2">
-              {images.map((image: string, index: number) => (
-                <div key={index} className="relative group">
-                  <div
-                    onClick={() => handleRemoveImage(index)}
-                    className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-2 right-2 cursor-pointer"
-                  >
-                    <Trash className="fill-interface-secondry text-interface-secondry bg-white rounded-full p-1 border border-interface-secondry group-hover:block hidden" />
-                  </div>
-                  <img
-                    src={image}
-                    className="w-44 h-44 object-cover rounded-xl opacity-70 border-2 border-white group-hover:opacity-100 transition-all duration-300"
-                    alt={`Image ${index + 1}`}
-                    key={index}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <AccordionProvider content={AcordionContent(images, handleRemoveImage)}>
+          <div>Media ({images.length})</div>
+        </AccordionProvider>
       )}
     </div>
   );
 };
 
 export default ProductForm;
+
+const AcordionContent = (
+  images: string[],
+  handleRemoveImage: (index: number) => any
+) => {
+  return (
+    <div className="mt-2">
+      <div className="w-full max-h-[400px] p-2 bg-zinc-200 rounded overflow-y-auto">
+        <div className="flex flex-wrap gap-2">
+          {images.map((image: string, index: number) => (
+            <div key={index} className="relative group">
+              <div
+                onClick={() => handleRemoveImage(index)}
+                className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-2 right-2 cursor-pointer"
+              >
+                <Trash className="fill-interface-secondry text-interface-secondry bg-white rounded-full p-1 border border-interface-secondry group-hover:block hidden" />
+              </div>
+              <img
+                src={image}
+                className="w-44 h-44 object-cover rounded-xl opacity-70 border-2 border-white group-hover:opacity-100 transition-all duration-300"
+                alt={`Image ${index + 1}`}
+                key={index}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

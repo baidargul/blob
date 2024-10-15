@@ -9,7 +9,7 @@ import {
 type Props = {
   type?: "single" | "multiple";
   children: React.ReactNode;
-  content?: React.ReactNode;
+  content?: React.ReactNode | void;
 };
 
 const AccordionProvider = (props: Props) => {
@@ -18,7 +18,7 @@ const AccordionProvider = (props: Props) => {
       <AccordionItem value="item-1">
         <AccordionTrigger>{props.children}</AccordionTrigger>
         <AccordionContent>
-          {props.content ? props.content : <p>Content</p>}
+          {props.content ? props.content : null}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
