@@ -3,6 +3,7 @@ import { CupSoda, Trash } from "lucide-react";
 
 type ImageUploadProps = {
   multiple?: boolean;
+  images: string[];
   onImageUpload?: (images: string[]) => void;
   showSelectedImages?: boolean;
   coverImage: string;
@@ -13,10 +14,13 @@ const ImageUpload = ({
   onImageUpload,
   showSelectedImages,
   coverImage,
+  images,
 }: ImageUploadProps) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  useEffect(() => {}, [coverImage]);
+  useEffect(() => {
+    setSelectedImages(images);
+  }, [images]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -43,8 +47,9 @@ const ImageUpload = ({
 
     Promise.all(imagePromises).then((base64Images) => {
       const newImages = multiple
-        ? [...selectedImages, ...base64Images]
-        : base64Images;
+        ? base64Images
+        : // ? [...selectedImages, ...base64Images]
+          base64Images;
 
       setSelectedImages(newImages);
       if (onImageUpload) {

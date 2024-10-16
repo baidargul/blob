@@ -54,6 +54,7 @@ const ProductForm = (props: Props) => {
           multiple
           onImageUpload={handleImageUpload}
           coverImage={coverImage}
+          images={images}
         />
         <div className="w-full">
           <InputBox label="Name:" setValue={handleNameChange} value={name} />
