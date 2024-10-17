@@ -1,6 +1,6 @@
 "use client";
 import { Search } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, forwardRef } from "react";
 import Label from "./Label";
 
 type Props = {
@@ -12,17 +12,10 @@ type Props = {
   icon?: any;
   type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
   placeholder?: string;
-  ref?: any;
 };
 
-const InputBox = (props: Props) => {
-  let textRef: any = useRef(null);
-
-  useEffect(() => {
-    if (props.ref) {
-      textRef = props.ref;
-    }
-  }, [props.ref]);
+const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
+  const textRef = ref || useRef(null);
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.setValue) {
@@ -39,15 +32,15 @@ const InputBox = (props: Props) => {
   const handleClearValue = () => {
     if (props.setValue) {
       props.setValue("");
-      if (textRef.current) {
-        textRef.current.select();
+      if (textRef && typeof textRef !== "function") {
+        textRef.current?.select();
       }
     }
   };
 
   const handleFocus = () => {
-    if (textRef.current) {
-      textRef.current.select();
+    if (textRef && typeof textRef !== "function") {
+      textRef.current?.select();
     }
   };
 
@@ -82,7 +75,7 @@ const InputBox = (props: Props) => {
           type={props.type ? props.type : "text"}
           className={`appearance-none p-1 rounded w-full border border-interface-hover focus:outline-none focus:border-interface-secondry transition-all duration-500 selection:bg-interface-secondry/30 px-2 ${
             props.icon && "pl-7"
-          }  pr-7 focus:drop-shadow-sm read-only:bg-interface-hover`}
+          } pr-7 focus:drop-shadow-sm read-only:bg-interface-hover`}
         />
         {String(props.value).length > 0 && !props.readonly && (
           <div
@@ -95,6 +88,6 @@ const InputBox = (props: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default InputBox;

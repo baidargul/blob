@@ -19,7 +19,7 @@ const ProductForm = (props: Props) => {
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
-  const txtNameRef: any = useRef(null);
+  let txtNameRef: any = useRef(null);
 
   useEffect(() => {
     if (props.product) {
