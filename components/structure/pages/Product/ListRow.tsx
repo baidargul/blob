@@ -10,7 +10,7 @@ type Props = {
 const ListRow = (props: Props) => {
   const handleClick = () => {
     if (props.setValue) {
-      props.setValue(props.value);
+      props.setValue(props.product);
     }
   };
 

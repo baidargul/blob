@@ -28,7 +28,12 @@ const ProductForm = (props: Props) => {
       setPrice(props.product.price);
       setImages(props.product.images);
       if (props.product?.images?.length > 0) {
-        setCoverImage(props.product.images[0]);
+        const img = props.product.images[0];
+        if (typeof img === "string") {
+          setCoverImage(img);
+        } else {
+          setCoverImage(props.product.images[0].url);
+        }
       } else {
         setCoverImage("");
       }
@@ -163,22 +168,24 @@ const AcordionContent = (
     <div className="mt-2">
       <div className="w-full max-h-[400px] p-2 bg-zinc-200 rounded overflow-y-auto">
         <div className="flex flex-wrap gap-2">
-          {images.map((image: string, index: number) => (
-            <div key={index} className="relative group">
-              <div
-                onClick={() => handleRemoveImage(index)}
-                className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-2 right-2 cursor-pointer"
-              >
-                <Trash className="fill-interface-secondry text-interface-secondry bg-white rounded-full p-1 border border-interface-secondry group-hover:block hidden" />
+          {images.map((image: any, index: number) => {
+            return (
+              <div key={index} className="relative group">
+                <div
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute w-6 h-6 text-center flex justify-center items-center text-sm top-2 right-2 cursor-pointer"
+                >
+                  <Trash className="fill-interface-secondry text-interface-secondry bg-white rounded-full p-1 border border-interface-secondry group-hover:block hidden" />
+                </div>
+                <img
+                  src={typeof image === "string" ? image : image.url}
+                  className="w-44 h-44 object-cover rounded-xl opacity-70 border-2 border-white group-hover:opacity-100 transition-all duration-300"
+                  alt={`Image ${index + 1}`}
+                  key={index}
+                />
               </div>
-              <img
-                src={image}
-                className="w-44 h-44 object-cover rounded-xl opacity-70 border-2 border-white group-hover:opacity-100 transition-all duration-300"
-                alt={`Image ${index + 1}`}
-                key={index}
-              />
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

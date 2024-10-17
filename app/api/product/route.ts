@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
   };
 
   try {
-    const products = await prisma.product.findMany({
+    const products: any = await prisma.product.findMany({
       include: {
         productImages: {
           include: {
@@ -107,6 +107,10 @@ export async function GET(req: NextRequest) {
       orderBy: {
         name: "asc",
       },
+    });
+
+    products.forEach((product: any) => {
+      product.images = product.productImages.map((image: any) => image.images);
     });
 
     response.status = 200;
