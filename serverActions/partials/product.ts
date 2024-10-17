@@ -14,6 +14,11 @@ async function findByName(name: string) {}
 
 async function findByBarcode(barcode: string) {}
 
+async function removeAll() {
+  const response = await axios.delete("/api/product");
+  return response.data;
+}
+
 async function create(
   name: string,
   cost: number,

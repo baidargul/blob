@@ -31,11 +31,18 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    const images = product?.productImages.map((image) => image.images);
+
+    const productWithImages = {
+      ...product,
+      images,
+    };
+
     response.status = 200;
     response.message = product
       ? `'${product.name}' found`
       : "Product not found";
-    response.data = product;
+    response.data = productWithImages;
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);
