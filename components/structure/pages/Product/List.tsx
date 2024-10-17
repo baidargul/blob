@@ -59,14 +59,12 @@ const ProductList = (props: Props) => {
     images: string[]
   ) => {
     if (name.length < 1) return;
-    console.log(images);
     const response = await serverActions.product.create(
       name,
       cost,
       price,
       images
     );
-    console.log(response);
     fetchProducts();
   };
 
