@@ -19,6 +19,11 @@ async function removeAll() {
   return response.data;
 }
 
+async function remove(id: string) {
+  const response = await axios.delete(`/api/product/${id}`);
+  return response.data;
+}
+
 async function create(
   name: string,
   cost: number,
@@ -38,6 +43,8 @@ async function create(
 
 export const product = {
   create,
+  remove,
+  removeAll,
   list,
   listAll,
   findByName,
