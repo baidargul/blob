@@ -18,7 +18,6 @@ type Props = {
     price: number,
     images: string[]
   ) => void;
-  fetchProducts: () => void;
 };
 
 const ProductWindowHeader = (props: Props) => {
@@ -31,7 +30,6 @@ const ProductWindowHeader = (props: Props) => {
           Number(props.product.price),
           props.product.images || []
         );
-        props.fetchProducts();
       }
     }
   };

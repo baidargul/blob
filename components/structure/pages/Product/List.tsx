@@ -24,7 +24,7 @@ const ProductList = (props: Props) => {
 
   const fetchProducts = async () => {
     const response = await serverActions.product.listAll();
-    setProductList(response.data);
+    setProductList((prev: any) => response.data);
   };
 
   useEffect(() => {
@@ -67,6 +67,7 @@ const ProductList = (props: Props) => {
       images
     );
     console.log(response);
+    fetchProducts();
   };
 
   return (
@@ -117,7 +118,6 @@ const ProductList = (props: Props) => {
             <ProductWindowHeader
               saveProduct={saveProduct}
               product={selectedProduct}
-              fetchProducts={fetchProducts}
             />
             <ProductForm
               product={selectedProduct}
