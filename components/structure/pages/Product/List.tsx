@@ -114,7 +114,7 @@ const ProductList = (props: Props) => {
                     key={index}
                     value={product.name}
                     product={product}
-                    isSelected={selectedProduct === product}
+                    isSelected={selectedProduct === product.name}
                     setValue={handleSelectProduct}
                   />
                 );
