@@ -38,9 +38,9 @@ const ProductForm = (props: Props) => {
         setCoverImage("");
       }
 
-      if (txtNameRef.current) {
-        txtNameRef.current.select();
-      }
+      // if (txtNameRef.current) {
+      //   txtNameRef.current.select();
+      // }
     }
   }, [props.product]);
 
