@@ -1,6 +1,6 @@
 "use client";
 import { Search } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Label from "./Label";
 
 type Props = {
@@ -12,10 +12,18 @@ type Props = {
   icon?: any;
   type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
   placeholder?: string;
+  ref?: any;
 };
 
 const InputBox = (props: Props) => {
-  const textRef: any = useRef(null);
+  let textRef: any = useRef(null);
+
+  useEffect(() => {
+    if (props.ref) {
+      textRef = props.ref;
+    }
+  }, [props.ref]);
+
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.setValue) {
       props.setValue(e.target.value);

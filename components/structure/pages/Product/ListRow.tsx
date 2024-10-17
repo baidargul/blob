@@ -2,6 +2,7 @@ import React from "react";
 
 type Props = {
   value: string;
+  product?: any;
   isSelected?: boolean;
   setValue?: (value: any) => void;
 };

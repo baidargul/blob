@@ -6,10 +6,10 @@ import Label from "@/components/myui/Label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { product } from "@prisma/client";
 import { Trash } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
-  product: product | null;
+  product: product | null | any;
   setProduct: any;
 };
 
@@ -19,28 +19,62 @@ const ProductForm = (props: Props) => {
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
+  const txtNameRef: any = useRef(null);
 
   useEffect(() => {
+    if (props.product) {
+      setName(props.product.name);
+      setCost(props.product.cost);
+      setPrice(props.product.price);
+      setImages(props.product.images);
+      if (props.product?.images?.length > 0) {
+        setCoverImage(props.product.images[0]);
+      } else {
+        setCoverImage("");
+      }
+
+      if (txtNameRef.current) {
+        txtNameRef.current.select();
+      }
+    }
+  }, [props.product]);
+
+  const handleNameChange = (value: string | number) => {
+    setName(String(value));
     const temp = {
-      name,
+      name: String(value),
       images,
       cost,
       price,
     };
 
     props.setProduct({ ...temp });
-  }, [coverImage, images, name, cost, price]);
-
-  const handleNameChange = (value: string | number) => {
-    setName(String(value));
   };
 
   const handleCostChange = (value: string | number) => {
     setCost(Number(value));
+
+    const temp = {
+      name,
+      images,
+      cost: Number(value),
+      price,
+    };
+
+    props.setProduct({ ...temp });
   };
 
   const handlePriceChange = (value: string | number) => {
     setPrice(Number(value));
+
+    const temp = {
+      name,
+      images,
+      cost,
+      price: Number(value),
+    };
+
+    props.setProduct({ ...temp });
   };
 
   const handleImageUpload = (value: string[]) => {
@@ -48,6 +82,15 @@ const ProductForm = (props: Props) => {
     if (value.length > 0) {
       const lastImage = value[value.length - 1];
       setCoverImage(lastImage);
+
+      const temp = {
+        name,
+        images: value,
+        cost,
+        price,
+      };
+
+      props.setProduct({ ...temp });
     }
   };
 
@@ -60,6 +103,15 @@ const ProductForm = (props: Props) => {
       setCoverImage("");
     }
     setImages(updatedImages);
+
+    const temp = {
+      name,
+      images: updatedImages,
+      cost,
+      price,
+    };
+
+    props.setProduct({ ...temp });
   };
 
   return (
@@ -72,7 +124,12 @@ const ProductForm = (props: Props) => {
           images={images}
         />
         <div className="w-full">
-          <InputBox label="Name:" setValue={handleNameChange} value={name} />
+          <InputBox
+            ref={txtNameRef}
+            label="Name:"
+            setValue={handleNameChange}
+            value={name}
+          />
           <InputBox
             label="Cost:"
             setValue={handleCostChange}
@@ -87,7 +144,7 @@ const ProductForm = (props: Props) => {
           />
         </div>
       </div>
-      {images.length > 0 && (
+      {images && images.length > 0 && (
         <AccordionProvider content={AcordionContent(images, handleRemoveImage)}>
           <Label label={`Media (${images.length})`} size="text-sm" />
         </AccordionProvider>

@@ -18,6 +18,7 @@ type Props = {
     price: number,
     images: string[]
   ) => void;
+  createProduct: () => void;
 };
 
 const ProductWindowHeader = (props: Props) => {
@@ -34,10 +35,16 @@ const ProductWindowHeader = (props: Props) => {
     }
   };
 
+  const handleCreateNewProduct = () => {
+    props.createProduct();
+  };
+
   return (
     <div className="p-2 rounded">
       <div className="flex justify-end items-center gap-2">
-        <Button variant="primary">Create new product</Button>
+        <Button onClick={handleCreateNewProduct} variant="primary">
+          Create new product
+        </Button>
         <Button onClick={handleSave} variant="secondary">
           Save
         </Button>

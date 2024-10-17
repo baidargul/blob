@@ -17,7 +17,9 @@ import { product } from "@prisma/client";
 type Props = {};
 
 const ProductList = (props: Props) => {
-  const [selectedProduct, setSelectedProduct] = useState<product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<product | null | any>(
+    null
+  );
   const [filterFound, setFilterFound] = useState(0);
   const [filterText, setFilterText] = useState("");
   const [productList, setProductList] = useState<product[] | any>([]);
@@ -50,6 +52,17 @@ const ProductList = (props: Props) => {
       }
     });
     setFilterFound(count);
+  };
+
+  const createNewProduct = () => {
+    const product = {
+      name: "",
+      cost: 0,
+      price: 0,
+      images: [],
+    };
+
+    setSelectedProduct((prev: any) => product);
   };
 
   const saveProduct = async (
@@ -100,6 +113,7 @@ const ProductList = (props: Props) => {
                   <ListRow
                     key={index}
                     value={product.name}
+                    product={product}
                     isSelected={selectedProduct === product}
                     setValue={handleSelectProduct}
                   />
@@ -116,6 +130,7 @@ const ProductList = (props: Props) => {
             <ProductWindowHeader
               saveProduct={saveProduct}
               product={selectedProduct}
+              createProduct={createNewProduct}
             />
             <ProductForm
               product={selectedProduct}
