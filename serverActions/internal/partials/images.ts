@@ -107,7 +107,10 @@ async function create(image: string) {
   }`;
 
   // Define the directory and file path to save the image
-  const uploadDir = path.join(__dirname, SERVER_IMAGE_UPLOADS_DIR); // Adjust path as necessary
+  const uploadDir = path.join(
+    `${process.cwd()}/Public/`,
+    SERVER_IMAGE_UPLOADS_DIR
+  ); // path.join(__dirname, SERVER_IMAGE_UPLOADS_DIR); // Adjust path as necessary
   const filePath = path.join(uploadDir, newFileName);
 
   // Decode base64 image to binary data
