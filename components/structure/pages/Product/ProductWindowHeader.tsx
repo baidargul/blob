@@ -1,14 +1,48 @@
 import Button from "@/components/myui/Button";
+import { product } from "@prisma/client";
 import React from "react";
 
-type Props = {};
+type Props = {
+  product:
+    | {
+        name: string;
+        cost: number;
+        price: number;
+        images: string[];
+      }
+    | null
+    | any;
+  saveProduct?: (
+    name: string,
+    cost: number,
+    price: number,
+    images: string[]
+  ) => void;
+  fetchProducts: () => void;
+};
 
 const ProductWindowHeader = (props: Props) => {
+  const handleSave = async () => {
+    if (props.saveProduct) {
+      if (props.product) {
+        props.saveProduct(
+          props.product.name,
+          Number(props.product.cost),
+          Number(props.product.price),
+          props.product.images || []
+        );
+        props.fetchProducts();
+      }
+    }
+  };
+
   return (
     <div className="p-2 rounded">
       <div className="flex justify-end items-center gap-2">
         <Button variant="primary">Create new product</Button>
-        <Button variant="secondary">Save</Button>
+        <Button onClick={handleSave} variant="secondary">
+          Save
+        </Button>
       </div>
     </div>
   );

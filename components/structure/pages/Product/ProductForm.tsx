@@ -4,10 +4,14 @@ import ImageUpload from "@/components/myui/ImageUpload";
 import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { product } from "@prisma/client";
 import { Trash } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-type Props = {};
+type Props = {
+  product: product | null;
+  setProduct: any;
+};
 
 const ProductForm = (props: Props) => {
   const [coverImage, setCoverImage] = useState("");
@@ -15,6 +19,17 @@ const ProductForm = (props: Props) => {
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
   const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    const temp = {
+      name,
+      images,
+      cost,
+      price,
+    };
+
+    props.setProduct({ ...temp });
+  }, [coverImage, images, name, cost, price]);
 
   const handleNameChange = (value: string | number) => {
     setName(String(value));

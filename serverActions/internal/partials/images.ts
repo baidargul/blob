@@ -3,6 +3,7 @@ import path from "path";
 import prisma from "@/lib/prisma";
 import { SERVER_RESPONSE } from "../server";
 import { v4 as uuidv4 } from "uuid";
+import sharp from "sharp";
 
 export type SERVER_IMAGE = {
   extension: string;
@@ -13,17 +14,25 @@ export type SERVER_IMAGE = {
   };
 };
 
-function getImageDimensions(
+async function getImageDimensions(
   image: string
 ): Promise<{ width: number; height: number }> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = image;
-    img.onload = () => {
-      resolve({ width: img.width, height: img.height });
-    };
-    img.onerror = (error) => reject(error);
-  });
+  const sharp = require("sharp");
+  try {
+    // Remove the base64 prefix if present
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+
+    // Convert the base64 string to a buffer
+    const imageBuffer = Buffer.from(base64Data, "base64");
+
+    // Use sharp to get the metadata (dimensions, etc.)
+    const metadata = await sharp(imageBuffer).metadata();
+
+    return { width: metadata.width || 0, height: metadata.height || 0 };
+  } catch (error) {
+    console.error("Error getting image dimensions:", error);
+    throw error;
+  }
 }
 
 export const SERVER_IMAGE_UPLOADS_DIR = "userUploads";
@@ -39,7 +48,9 @@ const base64ToImage = async (image: string) => {
     },
   };
 
-  const isBase64 = /^data:image\/(png|jpeg|jpg|gif);base64,/.test(image);
+  const isBase64 = /^data:image\/(png|jpeg|jpg|gif|webp|bmp);base64,/i.test(
+    image
+  );
   if (!isBase64) {
     return {
       ...response,
@@ -84,6 +95,7 @@ async function create(image: string) {
   const targetResponse: SERVER_RESPONSE = await base64ToImage(image);
 
   if (targetResponse.status !== 200) {
+    console.log(`[SERVER]: ${targetResponse.message}`);
     return response;
   }
 
@@ -170,11 +182,14 @@ async function createBulk(images: string[]) {
   const successfulImages: SERVER_IMAGE[] = [];
   const failedImages: { image: string; reason: string }[] = [];
 
+  let imageProcessed = 1;
   for (const image of images) {
+    console.log(`processing image: ${imageProcessed}`);
     const targetResponse: SERVER_RESPONSE = await create(image);
 
     if (targetResponse.status === 200) {
       // Add successfully processed image to the successfulImages array
+      console.log(`${imageProcessed} image processed.`);
       successfulImages.push(targetResponse.data);
     } else {
       // Add failed image info to the failedImages array
@@ -182,11 +197,13 @@ async function createBulk(images: string[]) {
         image, // The base64 string or image identifier
         reason: targetResponse.message, // Reason for failure
       });
+      console.log(`${imageProcessed} failed`);
+      console.log(targetResponse.message);
     }
   }
 
   // Update the response with results
-  response.status = 200;
+  response.status = failedImages.length > 0 ? 400 : 200;
   response.message = `${successfulImages.length} files uploaded, Failed: ${failedImages.length} / ${images.length}`;
   response.data = {
     successfulImages,
