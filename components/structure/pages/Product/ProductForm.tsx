@@ -156,9 +156,26 @@ const ProductForm = (props: Props) => {
               />
             </div>
           </div>
-          <SelectProvider>
-            <div>Brand Select</div>
-          </SelectProvider>
+          <div className="w-full flex justify-between items-center gap-2">
+            <div className="w-full">
+              <Label label="Brand:" size="text-sm" />
+              <SelectProvider>
+                <div>Brand Select</div>
+              </SelectProvider>
+            </div>
+            <div className="w-full">
+              <Label label="Category:" size="text-sm" />
+              <SelectProvider>
+                <div>Category Select</div>
+              </SelectProvider>
+            </div>
+            <div className="w-full">
+              <Label label="Type:" size="text-sm" />
+              <SelectProvider>
+                <div>Type Select</div>
+              </SelectProvider>
+            </div>
+          </div>
         </div>
       </div>
       {images && images.length > 0 && (

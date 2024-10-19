@@ -15,7 +15,7 @@ type Props = {
 const SelectProvider = (props: Props) => {
   return (
     <Select>
-      <SelectTrigger className="w-[180px] focus:border-none focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover">
+      <SelectTrigger className="w-full rounded focus:border-none focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover">
         {/* <SelectValue placeholder="Theme" /> */}
         {props.children}
       </SelectTrigger>
