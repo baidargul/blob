@@ -17,7 +17,7 @@ const ListRow = (props: Props) => {
   return (
     <div
       onClick={handleClick}
-      className={` text-sm p-1  ${
+      className={` text-sm p-2  ${
         props.isSelected
           ? "bg-interface-primary/60 "
           : "hover:bg-interface-primary/10 even:bg-interface-accent/10"

@@ -53,7 +53,7 @@ const PurchaseQuotation = (props: Props) => {
 
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={40} className="w-full">
+      <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
         <ScrollArea className="h-[88dvh]">
           <div>
             <Label
@@ -80,7 +80,7 @@ const PurchaseQuotation = (props: Props) => {
                   />
                 </div>
                 <div className="">
-                  <ScrollArea className="h-[72dvh]">
+                  <ScrollArea className="h-[40dvh] border rounded">
                     {productList.map((product: any, index: number) => {
                       if (
                         filterText &&
