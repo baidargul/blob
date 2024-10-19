@@ -1,4 +1,5 @@
 import ProductList from "@/components/structure/pages/Product/List";
+import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
 import { create } from "zustand";
 
 type PageState = {
@@ -20,6 +21,11 @@ const pages: PageState[] = [
     name: "ProductList",
     description: "Product List and definations page.",
     page: <ProductList />,
+  },
+  {
+    name: "PurchaseQuotation",
+    description: "Create order quotation",
+    page: <PurchaseQuotation />,
   },
 ];
 
