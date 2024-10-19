@@ -136,13 +136,13 @@ const ProductForm = (props: Props) => {
             value={name}
           />
           <InputBox
-            label="Cost:"
+            label="Default cost:"
             setValue={handleCostChange}
             value={cost}
             type="number"
           />
           <InputBox
-            label="Price:"
+            label="Default price:"
             setValue={handlePriceChange}
             value={price}
             type="number"
