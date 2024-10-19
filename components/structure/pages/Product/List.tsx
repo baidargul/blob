@@ -101,7 +101,7 @@ const ProductList = (props: Props) => {
             />
           </div>
           <div className="">
-            <ScrollArea className="h-[70dvh] ">
+            <ScrollArea className="h-[72dvh] ">
               {productList.map((product: any, index: number) => {
                 if (
                   filterText &&
