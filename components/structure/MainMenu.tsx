@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Menubar,
@@ -11,10 +12,16 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { MenubarSub } from "@radix-ui/react-menubar";
+import { PageName, usePageStore } from "@/states/usePage";
 
 type Props = {};
 
 const MainMenu = (props: Props) => {
+  const setPage = usePageStore((state) => state.setPage);
+  const handleChangePage = (page: PageName) => {
+    setPage(page);
+  };
+
   return (
     <Menubar className="bg-zinc-100">
       <MenubarMenu>
@@ -38,7 +45,9 @@ const MainMenu = (props: Props) => {
       <MenubarMenu>
         <MenubarTrigger>Products</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Product list</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("ProductList")}>
+            Product list
+          </MenubarItem>
           <MenubarItem>Inventory</MenubarItem>
           <MenubarSub>
             <MenubarSubTrigger>Find</MenubarSubTrigger>
@@ -90,7 +99,9 @@ const MainMenu = (props: Props) => {
       <MenubarMenu>
         <MenubarTrigger>Purchases</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Create quotation</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("PurchaseQuotation")}>
+            Create quotation
+          </MenubarItem>
           <MenubarItem>Create purchase order</MenubarItem>
           <MenubarSeparator />
           <MenubarItem>Purchase list</MenubarItem>

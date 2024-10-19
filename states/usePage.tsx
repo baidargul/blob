@@ -9,7 +9,7 @@ type PageState = {
   page: React.ReactNode;
 } | null;
 
-type PageName = "Home" | "ProductList" | "PurchaseQuotation";
+export type PageName = "Home" | "ProductList" | "PurchaseQuotation";
 
 type PageType = {
   page: PageState;
