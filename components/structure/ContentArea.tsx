@@ -1,14 +1,22 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import ProductList from "./pages/Product/List";
+import { usePageStore } from "@/states/usePage";
 
 type Props = {};
 
 const ContentArea = (props: Props) => {
+  const pageHook = usePageStore();
+
+  const currentPage = pageHook.page;
+
+  useEffect(() => {
+    pageHook.setPage("ProductList");
+  }, []);
+
   return (
     <div>
-      <div className="">
-        <ProductList />
-      </div>
+      <div className="">{currentPage?.page}</div>
     </div>
   );
 };
