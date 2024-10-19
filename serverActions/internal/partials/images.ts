@@ -172,6 +172,54 @@ async function listAll() {
   return response;
 }
 
+async function removeImage(id: string) {
+  const response = {
+    status: 500,
+    message: "Internal Server Error",
+    data: null,
+  };
+
+  try {
+    // Find the image in the database by its ID
+    const image: any = await prisma.images.findUnique({
+      where: { id: id },
+    });
+
+    if (!image) {
+      response.status = 404;
+      response.message = "Image not found";
+      return response;
+    }
+
+    // Construct the full path of the image file
+    const filePath = path.join(
+      process.cwd(),
+      "public", // Assuming the 'public' directory contains the uploaded files
+      SERVER_IMAGE_UPLOADS_DIR,
+      image.name // image.name holds the filename
+    );
+
+    // Delete the file from the file system
+    await fs.unlink(filePath);
+
+    // Delete the image record from the database
+    await prisma.images.delete({
+      where: { id: id },
+    });
+
+    // Respond with success
+    response.status = 200;
+    response.message = "Image deleted successfully";
+    response.data = null;
+    return response;
+  } catch (error: any) {
+    console.error("Error removing image:", error);
+    response.status = 500;
+    response.message = "Error removing image: " + error.message;
+    return response;
+  }
+}
+
 async function createBulk(images: string[]) {
   const response: SERVER_RESPONSE = {
     status: 500,
@@ -219,6 +267,7 @@ async function createBulk(images: string[]) {
 export const images = {
   create,
   createBulk,
+  removeImage,
   list,
   listAll,
 };

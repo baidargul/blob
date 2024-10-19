@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { SERVER } from "@/serverActions/internal/server";
-import { images } from "@prisma/client";
+import { images, productImages } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -143,16 +143,37 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
-    for (const product of productList) {
-      await prisma.images.delete({
-        where: {
-          id: product.id,
+    const images: productImages[] = await prisma.productImages.findMany({
+      where: {
+        productId: {
+          in: productList.map((product) => product.id),
         },
-      });
+      },
+    });
+
+    console.log(images);
+    for (const image of images) {
+      const res = await SERVER.images.removeImage(image.imageId);
+      // await prisma.images.delete({
+      //   where: {
+      //     id: image.imageId,
+      //   },
+      // });
+      if (res.status !== 200) {
+        response.status = res.status;
+        response.message = res.message;
+        response.data = null;
+        return new Response(JSON.stringify(response));
+      }
     }
 
-    await prisma.product.deleteMany();
     await prisma.productImages.deleteMany();
+    await prisma.product.deleteMany();
+
+    response.status = 200;
+    response.message = "Products deleted successfully";
+    response.data = null;
+    return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);
     response.status = 500;

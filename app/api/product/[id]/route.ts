@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { SERVER } from "@/serverActions/internal/server";
 import { product, productImages } from "@prisma/client";
 import { NextRequest } from "next/server";
 
@@ -88,8 +89,6 @@ export async function DELETE(req: any) {
         productId: product.id,
       },
     });
-    console.log(`IMAGES`);
-    console.log(images);
 
     for (const image of images) {
       await prisma.productImages.deleteMany({
@@ -97,11 +96,18 @@ export async function DELETE(req: any) {
           imageId: image.imageId,
         },
       });
-      await prisma.images.delete({
-        where: {
-          id: image.imageId,
-        },
-      });
+      const res = await SERVER.images.removeImage(image.imageId);
+      if (res.status !== 200) {
+        response.status = res.status;
+        response.message = res.message;
+        response.data = null;
+        return new Response(JSON.stringify(response));
+      }
+      // await prisma.images.delete({
+      //   where: {
+      //     id: image.imageId,
+      //   },
+      // });
     }
 
     await prisma.product.delete({

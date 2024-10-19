@@ -43,7 +43,7 @@ const ProductWindowHeader = (props: Props) => {
 
   const handleRemove = async () => {
     const response = await serverActions.product.remove(props.product.id);
-    console.log(response);
+    // const response = await serverActions.product.removeAll();
     if (response.status === 200) {
       props.createProduct();
       props.fetchProducts();
