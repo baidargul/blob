@@ -20,7 +20,7 @@ async function removeAll() {
 }
 
 async function remove(id: string) {
-  const response = await axios.delete(`/api/product/${id}`);
+  const response = await axios.delete(`/api/product/x?id=${id}`);
   return response.data;
 }
 

@@ -1,5 +1,6 @@
 import Button from "@/components/myui/Button";
-import { product } from "@prisma/client";
+import { product } from "@/serverActions/partials/product";
+import { serverActions } from "@/serverActions/serverActions";
 import React from "react";
 
 type Props = {
@@ -19,6 +20,7 @@ type Props = {
     images: string[]
   ) => void;
   createProduct: () => void;
+  fetchProducts: () => void;
 };
 
 const ProductWindowHeader = (props: Props) => {
@@ -39,6 +41,15 @@ const ProductWindowHeader = (props: Props) => {
     props.createProduct();
   };
 
+  const handleRemove = async () => {
+    const response = await serverActions.product.remove(props.product.id);
+    console.log(response);
+    if (response.status === 200) {
+      props.createProduct();
+      props.fetchProducts();
+    }
+  };
+
   return (
     <div className="p-2 rounded">
       <div className="flex justify-end items-center gap-2">
@@ -47,6 +58,9 @@ const ProductWindowHeader = (props: Props) => {
         </Button>
         <Button onClick={handleSave} variant="secondary">
           Save
+        </Button>
+        <Button onClick={handleRemove} variant="secondary">
+          Remove
         </Button>
       </div>
     </div>

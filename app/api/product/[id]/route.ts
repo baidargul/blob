@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { product, productImages } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -53,7 +54,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req: any) {
   const response = {
     status: 500,
     message: "Internal Server Error",
@@ -70,21 +71,42 @@ export async function DELETE(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
-    const product = await prisma.product.delete({
+    const product: product | null = await prisma.product.findUnique({
       where: {
         id: id,
       },
     });
 
-    await prisma.productImages.deleteMany({
+    if (!product) {
+      response.status = 400;
+      response.message = "Product not found";
+      return new Response(JSON.stringify(response));
+    }
+
+    const images: productImages[] = await prisma.productImages.findMany({
       where: {
-        productId: id,
+        productId: product.id,
       },
     });
+    console.log(`IMAGES`);
+    console.log(images);
 
-    await prisma.images.deleteMany({
+    for (const image of images) {
+      await prisma.productImages.deleteMany({
+        where: {
+          imageId: image.imageId,
+        },
+      });
+      await prisma.images.delete({
+        where: {
+          id: image.imageId,
+        },
+      });
+    }
+
+    await prisma.product.delete({
       where: {
-        id: id,
+        id: product.id,
       },
     });
 

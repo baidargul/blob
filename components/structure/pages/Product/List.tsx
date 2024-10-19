@@ -131,6 +131,7 @@ const ProductList = (props: Props) => {
               saveProduct={saveProduct}
               product={selectedProduct}
               createProduct={createNewProduct}
+              fetchProducts={fetchProducts}
             />
             <ProductForm
               product={selectedProduct}
