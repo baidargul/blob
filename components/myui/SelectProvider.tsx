@@ -7,19 +7,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type Props = {};
+type Props = {
+  children: React.ReactNode;
+  options?: any[];
+};
 
 const SelectProvider = (props: Props) => {
   return (
     <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Theme" />
+      <SelectTrigger className="w-[180px] focus:border-none focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover">
+        {/* <SelectValue placeholder="Theme" /> */}
+        {props.children}
       </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-        <SelectItem value="system">System</SelectItem>
-      </SelectContent>
+      {props.options && props.options?.length > 0 && (
+        <SelectContent>
+          {props.options &&
+            props.options?.map((option) => (
+              <SelectItem key={option} value={option}></SelectItem>
+            ))}
+        </SelectContent>
+      )}
+      {props.options && props.options?.length < 1 && (
+        <SelectContent>
+          <SelectItem value="No options">No option</SelectItem>
+        </SelectContent>
+      )}
     </Select>
   );
 };

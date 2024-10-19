@@ -3,6 +3,7 @@ import AccordionProvider from "@/components/myui/AccordionProvider";
 import ImageUpload from "@/components/myui/ImageUpload";
 import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
+import SelectProvider from "@/components/myui/SelectProvider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { product } from "@prisma/client";
 import { Trash } from "lucide-react";
@@ -128,25 +129,36 @@ const ProductForm = (props: Props) => {
           coverImage={coverImage}
           images={images}
         />
-        <div className="w-full">
-          <InputBox
-            ref={txtNameRef}
-            label="Name:"
-            setValue={handleNameChange}
-            value={name}
-          />
-          <InputBox
-            label="Default cost:"
-            setValue={handleCostChange}
-            value={cost}
-            type="number"
-          />
-          <InputBox
-            label="Default price:"
-            setValue={handlePriceChange}
-            value={price}
-            type="number"
-          />
+        <div className="w-full flex flex-col gap-2">
+          <div className="w-full">
+            <InputBox
+              ref={txtNameRef}
+              label="Name:"
+              setValue={handleNameChange}
+              value={name}
+            />
+          </div>
+          <div className="flex justify-between gap-2 items-center w-full">
+            <div className="w-full">
+              <InputBox
+                label="Default cost:"
+                setValue={handleCostChange}
+                value={cost}
+                type="number"
+              />
+            </div>
+            <div className="w-full">
+              <InputBox
+                label="Default price:"
+                setValue={handlePriceChange}
+                value={price}
+                type="number"
+              />
+            </div>
+          </div>
+          <SelectProvider>
+            <div>Brand Select</div>
+          </SelectProvider>
         </div>
       </div>
       {images && images.length > 0 && (

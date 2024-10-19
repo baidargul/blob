@@ -47,7 +47,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   return (
     <div>
       {props.label && props.label.length > 0 && (
-        <div className="flex justify-between items-center">
+        <div className="flex w-full justify-between items-center">
           <Label label={props.label} size="text-sm" />
           {props.subLabel && props.subLabel.length > 0 && (
             <Label
