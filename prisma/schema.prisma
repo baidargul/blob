@@ -13,6 +13,8 @@ model product {
   cost                  Decimal?                @db.Decimal
   price                 Decimal?                @db.Decimal
   productImages productImages[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model images {

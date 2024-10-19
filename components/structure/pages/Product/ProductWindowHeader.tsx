@@ -43,7 +43,6 @@ const ProductWindowHeader = (props: Props) => {
 
   const handleRemove = async () => {
     const response = await serverActions.product.remove(props.product.id);
-    // const response = await serverActions.product.removeAll();
     if (response.status === 200) {
       props.createProduct();
       props.fetchProducts();
@@ -53,15 +52,21 @@ const ProductWindowHeader = (props: Props) => {
   return (
     <div className="p-2 rounded">
       <div className="flex justify-end items-center gap-2">
-        <Button onClick={handleCreateNewProduct} variant="primary">
-          Create new product
-        </Button>
-        <Button onClick={handleSave} variant="secondary">
-          Save
-        </Button>
-        <Button onClick={handleRemove} variant="secondary">
-          Remove
-        </Button>
+        {props.product?.createdAt?.length > 0 && (
+          <Button onClick={handleCreateNewProduct} variant="primary">
+            Create new product
+          </Button>
+        )}
+        {!props.product?.createdAt?.length && (
+          <Button onClick={handleSave} variant="secondary">
+            Save
+          </Button>
+        )}
+        {props.product?.createdAt?.length > 0 && (
+          <Button onClick={handleRemove} variant="secondary">
+            Remove
+          </Button>
+        )}
       </div>
     </div>
   );
