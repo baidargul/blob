@@ -12,7 +12,7 @@ import ListRow from "./ListRow";
 import ProductForm from "./ProductForm";
 import ProductWindowHeader from "./ProductWindowHeader";
 import { serverActions } from "@/serverActions/serverActions";
-import { product } from "@prisma/client";
+import { brand, product } from "@prisma/client";
 
 type Props = {};
 
@@ -23,6 +23,7 @@ const ProductList = (props: Props) => {
   const [filterFound, setFilterFound] = useState(0);
   const [filterText, setFilterText] = useState("");
   const [productList, setProductList] = useState<product[] | any>([]);
+  const [brandList, setBrandList] = useState<brand[] | any>([]);
 
   const fetchProducts = async () => {
     const response = await serverActions.product.listAll();
