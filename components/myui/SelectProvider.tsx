@@ -6,32 +6,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { brand } from "@prisma/client";
 
 type Props = {
   children: React.ReactNode;
+  setValue?: (value: any) => void;
+  selectedValue?: any;
   options?: any[];
 };
 
 const SelectProvider = (props: Props) => {
+  const handleSelect = (brand: brand) => {
+    if (props.setValue) {
+      props.setValue(brand);
+    }
+  };
+
   return (
-    <Select>
+    <Select onValueChange={(option: any) => handleSelect(option)}>
       <SelectTrigger className="w-full rounded focus:border-none focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover">
-        {/* <SelectValue placeholder="Theme" /> */}
-        {props.children}
+        {props.selectedValue ? props.selectedValue.name : props.children}
       </SelectTrigger>
-      {props.options && props.options?.length > 0 && (
-        <SelectContent>
-          {props.options &&
-            props.options?.map((option) => (
-              <SelectItem key={option} value={option}></SelectItem>
-            ))}
-        </SelectContent>
-      )}
-      {props.options && props.options?.length < 1 && (
-        <SelectContent>
-          <SelectItem value="No options">No option</SelectItem>
-        </SelectContent>
-      )}
+      <SelectContent>
+        {props.options &&
+          props.options.map((option) => (
+            <SelectItem key={option.id || option.name} value={option}>
+              {option.name}
+            </SelectItem>
+          ))}
+      </SelectContent>
     </Select>
   );
 };

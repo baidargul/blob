@@ -20,6 +20,7 @@ const ProductList = (props: Props) => {
   const [selectedProduct, setSelectedProduct] = useState<product | null | any>(
     null
   );
+  const [selectedBrand, setSelectedBrand] = useState<brand | null | any>(null);
   const [filterFound, setFilterFound] = useState(0);
   const [filterText, setFilterText] = useState("");
   const [productList, setProductList] = useState<product[] | any>([]);
@@ -30,12 +31,22 @@ const ProductList = (props: Props) => {
     setProductList((prev: any) => response.data);
   };
 
+  const fetchBrands = async () => {
+    const response = await serverActions.brand.listAll();
+    setBrandList((prev: any) => response.data);
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchBrands();
   }, []);
 
   const handleSelectProduct = (product: any) => {
     setSelectedProduct(product);
+  };
+
+  const handleSelectBrand = (brand: brand) => {
+    setSelectedBrand(brand);
   };
 
   const handleFilterTextChange = (value: string) => {
@@ -135,8 +146,11 @@ const ProductList = (props: Props) => {
               fetchProducts={fetchProducts}
             />
             <ProductForm
+              brandList={brandList}
               product={selectedProduct}
               setProduct={setSelectedProduct}
+              setBrand={handleSelectBrand}
+              selectedBrand={selectedBrand}
             />
           </div>
         </div>

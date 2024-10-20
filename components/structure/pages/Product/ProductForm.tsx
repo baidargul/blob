@@ -5,13 +5,16 @@ import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
 import SelectProvider from "@/components/myui/SelectProvider";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { product } from "@prisma/client";
+import { brand, product } from "@prisma/client";
 import { Trash } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
   product: product | null | any;
+  brandList: brand[] | any;
   setProduct: any;
+  setBrand: (brand: brand) => void;
+  selectedBrand: brand | null | any;
 };
 
 const ProductForm = (props: Props) => {
@@ -159,7 +162,11 @@ const ProductForm = (props: Props) => {
           <div className="w-full flex justify-between items-center gap-2">
             <div className="w-full">
               <Label label="Brand:" size="text-sm" />
-              <SelectProvider>
+              <SelectProvider
+                options={props.brandList}
+                setValue={props.setBrand}
+                selectedValue={props.selectedBrand}
+              >
                 <div>Brand Select</div>
               </SelectProvider>
             </div>
