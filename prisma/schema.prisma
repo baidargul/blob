@@ -14,6 +14,12 @@ model product {
   price         Decimal?        @db.Decimal
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now())
+  brandId       String?
+  categoryId    String?
+  typeId        String?
+  brand         brand?          @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category      category?       @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  type          type?           @relation(fields: [typeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   productImages productImages[]
 }
 
@@ -37,23 +43,26 @@ model productImages {
 }
 
 model brand {
-  id          String  @id @default(uuid())
-  name        String  @unique
+  id          String    @id @default(uuid())
+  name        String    @unique
   phone1      String?
   phone2      String?
   address1    String?
   address2    String?
   description String?
+  product     product[]
 }
 
-model category{
-  id  String @id @default(uuid())
-  name String @unique
+model category {
+  id          String    @id @default(uuid())
+  name        String    @unique
   description String?
+  product     product[]
 }
 
-model type{
-  id String @id @default(uuid())
-  name String @unique
+model type {
+  id          String    @id @default(uuid())
+  name        String    @unique
   description String?
+  product     product[]
 }
