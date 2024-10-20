@@ -1,5 +1,5 @@
 import Button from "@/components/myui/Button";
-import { product } from "@/serverActions/partials/product";
+import { Product } from "@/serverActions/partials/product";
 import { serverActions } from "@/serverActions/serverActions";
 import React from "react";
 
@@ -42,7 +42,7 @@ const ProductWindowHeader = (props: Props) => {
   };
 
   const handleRemove = async () => {
-    const response = await serverActions.product.remove(props.product.id);
+    const response = await serverActions.Product.remove(props.product.id);
     if (response.status === 200) {
       props.createProduct();
       props.fetchProducts();

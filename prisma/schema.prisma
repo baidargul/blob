@@ -45,3 +45,15 @@ model brand {
   address2    String?
   description String?
 }
+
+model category{
+  id  String @id @default(uuid())
+  name String @unique
+  description String?
+}
+
+model type{
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+}

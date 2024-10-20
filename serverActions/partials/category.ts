@@ -1,3 +1,4 @@
+import { category } from "@prisma/client";
 import axios from "axios";
 
 async function create(
@@ -8,39 +9,35 @@ async function create(
   phone1: string,
   phone2: string
 ) {
-  const data = {
+  const data: any = {
     name,
     description,
-    address1,
-    address2,
-    phone1,
-    phone2,
   };
-  const response = await axios.post("/api/brand", data);
+  const response = await axios.post("/api/category", data);
   return response.data;
 }
 
 async function list(id: string) {
-  const response = await axios.get(`/api/brand/${id}`);
+  const response = await axios.get(`/api/category/${id}`);
   return response.data;
 }
 
 async function listAll() {
-  const response = await axios.get("/api/brand");
+  const response = await axios.get("/api/category");
   return response.data;
 }
 
 async function remove(id: string) {
-  const response = await axios.delete(`/api/brand/x?id=${id}`);
+  const response = await axios.delete(`/api/category/x?id=${id}`);
   return response.data;
 }
 
 async function removeAll() {
-  const response = await axios.delete("/api/brand");
+  const response = await axios.delete("/api/category");
   return response.data;
 }
 
-export const Brand = {
+export const Category = {
   create,
   list,
   listAll,

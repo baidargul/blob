@@ -1,7 +1,9 @@
-import { brand } from "./partials/brand";
-import { product } from "./partials/product";
+import { Brand } from "./partials/brand";
+import { Category } from "./partials/category";
+import { Product } from "./partials/product";
 
 export const serverActions = {
-  brand,
-  product,
+  Brand,
+  Category,
+  Product,
 };

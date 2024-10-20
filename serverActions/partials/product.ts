@@ -41,7 +41,7 @@ async function create(
   return resposne.data;
 }
 
-export const product = {
+export const Product = {
   create,
   remove,
   removeAll,

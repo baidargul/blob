@@ -22,7 +22,7 @@ const PurchaseQuotation = (props: Props) => {
   const [productList, setProductList] = useState<product[] | any>([]);
 
   const fetchProducts = async () => {
-    const response = await serverActions.product.listAll();
+    const response = await serverActions.Product.listAll();
     setProductList((prev: any) => response.data);
   };
 

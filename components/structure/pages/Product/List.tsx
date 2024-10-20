@@ -27,12 +27,12 @@ const ProductList = (props: Props) => {
   const [brandList, setBrandList] = useState<brand[] | any>([]);
 
   const fetchProducts = async () => {
-    const response = await serverActions.product.listAll();
+    const response = await serverActions.Product.listAll();
     setProductList((prev: any) => response.data);
   };
 
   const fetchBrands = async () => {
-    const response = await serverActions.brand.listAll();
+    const response = await serverActions.Brand.listAll();
     setBrandList((prev: any) => response.data);
   };
 
@@ -84,7 +84,7 @@ const ProductList = (props: Props) => {
     images: string[]
   ) => {
     if (name.length < 1) return;
-    const response = await serverActions.product.create(
+    const response = await serverActions.Product.create(
       name,
       cost,
       price,
