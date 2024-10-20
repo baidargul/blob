@@ -5,16 +5,22 @@ import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
 import SelectProvider from "@/components/myui/SelectProvider";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { brand, product } from "@prisma/client";
+import { brand, category, product, type } from "@prisma/client";
 import { Trash } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 type Props = {
   product: product | null | any;
   brandList: brand[] | any;
+  categoryList: category[] | any;
+  typeList: type[] | any;
   setProduct: any;
   setBrand: (brand: brand) => void;
+  setCategory: (category: category) => void;
+  setType: (type: type) => void;
   selectedBrand: brand | null | any;
+  selectedCategory: category | null | any;
+  selectedType: type | null | any;
 };
 
 const ProductForm = (props: Props) => {
@@ -172,13 +178,21 @@ const ProductForm = (props: Props) => {
             </div>
             <div className="w-full">
               <Label label="Category:" size="text-sm" />
-              <SelectProvider>
+              <SelectProvider
+                options={props.categoryList}
+                setValue={props.setCategory}
+                selectedValue={props.selectedCategory}
+              >
                 <div>Category Select</div>
               </SelectProvider>
             </div>
             <div className="w-full">
               <Label label="Type:" size="text-sm" />
-              <SelectProvider>
+              <SelectProvider
+                options={props.typeList}
+                setValue={props.setType}
+                selectedValue={props.selectedType}
+              >
                 <div>Type Select</div>
               </SelectProvider>
             </div>

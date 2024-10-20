@@ -12,7 +12,7 @@ import ListRow from "./ListRow";
 import ProductForm from "./ProductForm";
 import ProductWindowHeader from "./ProductWindowHeader";
 import { serverActions } from "@/serverActions/serverActions";
-import { brand, product } from "@prisma/client";
+import { brand, category, product, type } from "@prisma/client";
 
 type Props = {};
 
@@ -21,10 +21,16 @@ const ProductList = (props: Props) => {
     null
   );
   const [selectedBrand, setSelectedBrand] = useState<brand | null | any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<
+    category | null | any
+  >();
+  const [selectedType, setSelectedType] = useState<type | null | any>();
   const [filterFound, setFilterFound] = useState(0);
   const [filterText, setFilterText] = useState("");
   const [productList, setProductList] = useState<product[] | any>([]);
   const [brandList, setBrandList] = useState<brand[] | any>([]);
+  const [categoryList, setCategoryList] = useState<category[] | any>([]);
+  const [typeList, setTypeList] = useState<type[] | any>([]);
 
   const fetchProducts = async () => {
     const response = await serverActions.Product.listAll();
@@ -36,9 +42,21 @@ const ProductList = (props: Props) => {
     setBrandList((prev: any) => response.data);
   };
 
+  const fetchCategories = async () => {
+    const response = await serverActions.Category.listAll();
+    setCategoryList((prev: any) => response.data);
+  };
+
+  const fetchTypes = async () => {
+    const response = await serverActions.Type.listAll();
+    setTypeList((prev: any) => response.data);
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchBrands();
+    fetchCategories();
+    fetchTypes();
   }, []);
 
   const handleSelectProduct = (product: any) => {
@@ -47,6 +65,14 @@ const ProductList = (props: Props) => {
 
   const handleSelectBrand = (brand: brand) => {
     setSelectedBrand(brand);
+  };
+
+  const handleSelectCategory = (category: category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleSelectType = (type: type) => {
+    setSelectedType(type);
   };
 
   const handleFilterTextChange = (value: string) => {
@@ -151,6 +177,12 @@ const ProductList = (props: Props) => {
               setProduct={setSelectedProduct}
               setBrand={handleSelectBrand}
               selectedBrand={selectedBrand}
+              categoryList={categoryList}
+              typeList={typeList}
+              selectedCategory={selectedCategory}
+              selectedType={selectedType}
+              setType={handleSelectType}
+              setCategory={handleSelectCategory}
             />
           </div>
         </div>
