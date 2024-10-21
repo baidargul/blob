@@ -19,10 +19,28 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
+    if (!data.brand.name) {
+      response.status = 400;
+      response.message = "Brand is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    if (!data.category.name) {
+      response.status = 400;
+      response.message = "Category is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    if (!data.type.name) {
+      response.status = 400;
+      response.message = "Type is required";
+      return new Response(JSON.stringify(response));
+    }
+
     let cost = data.cost | 0;
     let price = data.price | 0;
 
-    let isExists = await prisma.product.findFirst({
+    let isExists: any = await prisma.product.findFirst({
       where: {
         name: data.name,
       },
@@ -31,6 +49,42 @@ export async function POST(req: NextRequest) {
     if (isExists) {
       response.status = 400;
       response.message = "Product already exists";
+      return new Response(JSON.stringify(response));
+    }
+
+    isExists = await prisma.brand.findFirst({
+      where: {
+        name: data.brand.name,
+      },
+    });
+
+    if (!isExists) {
+      response.status = 400;
+      response.message = "Brand does not exist";
+      return new Response(JSON.stringify(response));
+    }
+
+    isExists = await prisma.category.findFirst({
+      where: {
+        name: data.category.name,
+      },
+    });
+
+    if (!isExists) {
+      response.status = 400;
+      response.message = "Category does not exist";
+      return new Response(JSON.stringify(response));
+    }
+
+    isExists = await prisma.type.findFirst({
+      where: {
+        name: data.type.name,
+      },
+    });
+
+    if (!isExists) {
+      response.status = 400;
+      response.message = "Type does not exist";
       return new Response(JSON.stringify(response));
     }
 
