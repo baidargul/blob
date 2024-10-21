@@ -1,6 +1,7 @@
 import Button from "@/components/myui/Button";
 import { Product } from "@/serverActions/partials/product";
 import { serverActions } from "@/serverActions/serverActions";
+import { brand, category, type } from "@prisma/client";
 import React from "react";
 
 type Props = {
@@ -13,11 +14,17 @@ type Props = {
       }
     | null
     | any;
+  brand: brand | null | any;
+  category: category | null | any;
+  type: type | null | any;
   saveProduct?: (
     name: string,
     cost: number,
     price: number,
-    images: string[]
+    images: string[],
+    brand: brand | null | any,
+    category: category | null | any,
+    type: type | null | any
   ) => void;
   createProduct: () => void;
   fetchProducts: () => void;
@@ -31,7 +38,10 @@ const ProductWindowHeader = (props: Props) => {
           props.product.name,
           Number(props.product.cost),
           Number(props.product.price),
-          props.product.images || []
+          props.product.images || [],
+          props.brand,
+          props.category,
+          props.type
         );
       }
     }

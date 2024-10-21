@@ -107,14 +107,20 @@ const ProductList = (props: Props) => {
     name: string,
     cost: number,
     price: number,
-    images: string[]
+    images: string[],
+    brand: brand | null | any,
+    category: category | null | any,
+    type: type | null | any
   ) => {
     if (name.length < 1) return;
     const response = await serverActions.Product.create(
       name,
       cost,
       price,
-      images
+      images,
+      brand,
+      category,
+      type
     );
     fetchProducts();
   };
@@ -168,6 +174,9 @@ const ProductList = (props: Props) => {
             <ProductWindowHeader
               saveProduct={saveProduct}
               product={selectedProduct}
+              brand={selectedBrand}
+              category={selectedCategory}
+              type={selectedType}
               createProduct={createNewProduct}
               fetchProducts={fetchProducts}
             />

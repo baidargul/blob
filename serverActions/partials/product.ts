@@ -1,3 +1,4 @@
+import { brand, category, type } from "@prisma/client";
 import axios from "axios";
 
 async function listAll() {
@@ -28,6 +29,9 @@ async function create(
   name: string,
   cost: number,
   price: number,
+  brand: brand | null | any,
+  category: category | null | any,
+  type: type | null | any,
   images?: string[]
 ) {
   const data = {
@@ -35,6 +39,9 @@ async function create(
     cost,
     price,
     images,
+    brand,
+    category,
+    type,
   };
 
   const resposne = await axios.post("/api/product", data);
