@@ -10,6 +10,7 @@ import { serverActions } from "@/serverActions/serverActions";
 import { brand } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import ListRow from "../Product/ListRow";
+import BrandForm from "./BrandForm";
 
 type Props = {};
 
@@ -107,7 +108,9 @@ const BrandList = (props: Props) => {
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel>
-        <ScrollArea className="h-[88dvh]"></ScrollArea>
+        <ScrollArea className="h-[88dvh]">
+          <BrandForm />
+        </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>
   );
