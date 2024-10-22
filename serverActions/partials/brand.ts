@@ -2,19 +2,19 @@ import axios from "axios";
 
 async function create(
   name: string,
-  description: string,
+  phone1: string,
+  phone2: string,
   address1: string,
   address2: string,
-  phone1: string,
-  phone2: string
+  description: string
 ) {
   const data = {
     name,
-    description,
-    address1,
-    address2,
     phone1,
     phone2,
+    address1,
+    address2,
+    description,
   };
   const response = await axios.post("/api/brand", data);
   return response.data;

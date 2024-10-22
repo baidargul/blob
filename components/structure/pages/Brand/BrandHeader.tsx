@@ -51,7 +51,7 @@ const BrandHeader = (props: Props) => {
       <div className="flex justify-end items-center gap-2">
         {props.brand?.createdAt?.length > 0 && (
           <Button onClick={handleCreateNewProduct} variant="primary">
-            Create new product
+            Create new brand
           </Button>
         )}
         {!props.brand?.createdAt?.length && (
