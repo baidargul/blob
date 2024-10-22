@@ -1,14 +1,7 @@
 import { category } from "@prisma/client";
 import axios from "axios";
 
-async function create(
-  name: string,
-  description: string,
-  address1: string,
-  address2: string,
-  phone1: string,
-  phone2: string
-) {
+async function create(name: string, description: string) {
   const data: any = {
     name,
     description,
