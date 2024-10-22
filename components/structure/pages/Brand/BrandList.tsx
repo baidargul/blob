@@ -50,6 +50,10 @@ const BrandList = (props: Props) => {
     setBrandList((prev: any) => response.data);
   };
 
+  const handleSetBrand = (item: any) => {
+    setSelectedBrand(item);
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
@@ -109,7 +113,7 @@ const BrandList = (props: Props) => {
       <ResizableHandle />
       <ResizablePanel>
         <ScrollArea className="h-[88dvh]">
-          <BrandForm />
+          <BrandForm selectedBrand={selectedBrand} setBrand={handleSetBrand} />
         </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>
