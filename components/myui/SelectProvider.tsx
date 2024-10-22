@@ -13,6 +13,7 @@ type Props = {
   setValue?: (value: any) => void;
   selectedValue?: any;
   options?: any[];
+  readonly?: boolean;
 };
 
 const SelectProvider = (props: Props) => {
@@ -27,14 +28,16 @@ const SelectProvider = (props: Props) => {
       <SelectTrigger className="w-full rounded focus:border-none focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover">
         {props.selectedValue ? props.selectedValue.name : props.children}
       </SelectTrigger>
-      <SelectContent>
-        {props.options &&
-          props.options.map((option) => (
-            <SelectItem key={option.id || option.name} value={option}>
-              {option.name}
-            </SelectItem>
-          ))}
-      </SelectContent>
+      {props.readonly !== true && (
+        <SelectContent>
+          {props.options &&
+            props.options.map((option) => (
+              <SelectItem key={option.id || option.name} value={option}>
+                {option.name}
+              </SelectItem>
+            ))}
+        </SelectContent>
+      )}
     </Select>
   );
 };

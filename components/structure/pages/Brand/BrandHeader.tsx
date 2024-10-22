@@ -16,6 +16,7 @@ type Props = {
   ) => void;
   createBrand: () => void;
   fetchBrands: () => void;
+  isReadOnly: boolean;
 };
 
 const BrandHeader = (props: Props) => {

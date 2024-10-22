@@ -21,6 +21,7 @@ type Props = {
   selectedBrand: brand | null | any;
   selectedCategory: category | null | any;
   selectedType: type | null | any;
+  isReadOnly: boolean;
 };
 
 const ProductForm = (props: Props) => {
@@ -51,6 +52,7 @@ const ProductForm = (props: Props) => {
       // if (txtNameRef.current) {
       //   txtNameRef.current.select();
       // }
+    } else {
     }
   }, [props.product]);
 
@@ -145,6 +147,7 @@ const ProductForm = (props: Props) => {
               label="Name:"
               setValue={handleNameChange}
               value={name}
+              readonly={props.isReadOnly}
             />
           </div>
           <div className="flex justify-between gap-2 items-center w-full">
@@ -154,6 +157,7 @@ const ProductForm = (props: Props) => {
                 setValue={handleCostChange}
                 value={cost}
                 type="number"
+                readonly={props.isReadOnly}
               />
             </div>
             <div className="w-full">
@@ -162,6 +166,7 @@ const ProductForm = (props: Props) => {
                 setValue={handlePriceChange}
                 value={price}
                 type="number"
+                readonly={props.isReadOnly}
               />
             </div>
           </div>
@@ -172,6 +177,7 @@ const ProductForm = (props: Props) => {
                 options={props.brandList}
                 setValue={props.setBrand}
                 selectedValue={props.selectedBrand}
+                readonly={props.isReadOnly}
               >
                 <div>Brand Select</div>
               </SelectProvider>
@@ -182,6 +188,7 @@ const ProductForm = (props: Props) => {
                 options={props.categoryList}
                 setValue={props.setCategory}
                 selectedValue={props.selectedCategory}
+                readonly={props.isReadOnly}
               >
                 <div>Category Select</div>
               </SelectProvider>
@@ -192,6 +199,7 @@ const ProductForm = (props: Props) => {
                 options={props.typeList}
                 setValue={props.setType}
                 selectedValue={props.selectedType}
+                readonly={props.isReadOnly}
               >
                 <div>Type Select</div>
               </SelectProvider>

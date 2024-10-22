@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 type Props = {
   selectedBrand?: brand | null | any;
   setBrand: (brand: brand) => void;
+  isReadOnly: boolean;
 };
 
 const BrandForm = (props: Props) => {
@@ -132,17 +133,24 @@ const BrandForm = (props: Props) => {
   return (
     <div className="p-2 min-w-[370px]">
       <div>
-        <InputBox label="Name" setValue={handleNameChange} value={name} />
+        <InputBox
+          label="Name"
+          setValue={handleNameChange}
+          value={name}
+          readonly={props.isReadOnly}
+        />
         <div className="grid grid-cols-2 gap-2">
           <InputBox
             label="Phone #1"
             setValue={handlePhone1Change}
             value={phone1}
+            readonly={props.isReadOnly}
           />
           <InputBox
             label="Phone #2"
             setValue={handlePhone2Change}
             value={phone2}
+            readonly={props.isReadOnly}
           />
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -150,17 +158,20 @@ const BrandForm = (props: Props) => {
             label="Address #1"
             setValue={handleAddress1Change}
             value={address1}
+            readonly={props.isReadOnly}
           />
           <InputBox
             label="Address #2"
             setValue={handleAddress2Change}
             value={address2}
+            readonly={props.isReadOnly}
           />
         </div>
         <InputBox
           label="Description"
           setValue={handleDescriptionChange}
           value={description}
+          readonly={props.isReadOnly}
         />
       </div>
     </div>

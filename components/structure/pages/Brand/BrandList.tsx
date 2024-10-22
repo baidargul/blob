@@ -17,6 +17,7 @@ import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 type Props = {};
 
 const BrandList = (props: Props) => {
+  const [isReadOnly, setIsReadOnly] = useState(false);
   const [brandList, setBrandList] = useState<brand[] | any>([]);
   const [selectedBrand, setSelectedBrand] = useState<brand | null | any>(null);
   const [filterFound, setFilterFound] = useState(0);
@@ -27,6 +28,7 @@ const BrandList = (props: Props) => {
   }, []);
 
   const handleSelectBrand = (item: any) => {
+    setIsReadOnly(true);
     setSelectedBrand(item);
   };
 
@@ -50,6 +52,7 @@ const BrandList = (props: Props) => {
   const fetchBrands = async () => {
     const response = await serverActions.Brand.listAll();
     setBrandList((prev: any) => response.data);
+    setIsReadOnly(false);
   };
 
   const handleSetBrand = (item: any) => {
@@ -69,6 +72,7 @@ const BrandList = (props: Props) => {
       updatedAt: null,
     };
 
+    setIsReadOnly(false);
     setSelectedBrand(temp);
   };
 
@@ -158,8 +162,13 @@ const BrandList = (props: Props) => {
             fetchBrands={fetchBrands}
             createBrand={createNewBrand}
             saveBrand={saveBrand}
+            isReadOnly={isReadOnly}
           />
-          <BrandForm selectedBrand={selectedBrand} setBrand={handleSetBrand} />
+          <BrandForm
+            selectedBrand={selectedBrand}
+            setBrand={handleSetBrand}
+            isReadOnly={isReadOnly}
+          />
         </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>

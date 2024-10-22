@@ -17,6 +17,7 @@ import { brand, category, product, type } from "@prisma/client";
 type Props = {};
 
 const ProductList = (props: Props) => {
+  const [isReadOnly, setIsReadOnly] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<product | null | any>(
     null
   );
@@ -60,6 +61,7 @@ const ProductList = (props: Props) => {
   }, []);
 
   const handleSelectProduct = (product: any) => {
+    setIsReadOnly(true);
     setSelectedProduct(product);
     setSelectedBrand(product.brand);
     setSelectedCategory(product.category);
@@ -103,6 +105,7 @@ const ProductList = (props: Props) => {
       images: [],
     };
 
+    setIsReadOnly(false);
     setSelectedProduct((prev: any) => product);
   };
 
@@ -195,6 +198,7 @@ const ProductList = (props: Props) => {
               selectedType={selectedType}
               setType={handleSelectType}
               setCategory={handleSelectCategory}
+              isReadOnly={isReadOnly}
             />
           </div>
         </div>
