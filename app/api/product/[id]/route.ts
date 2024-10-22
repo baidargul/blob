@@ -25,6 +25,9 @@ export async function GET(req: NextRequest) {
         id: id,
       },
       include: {
+        brand: true,
+        category: true,
+        type: true,
         productImages: {
           include: {
             images: true,
@@ -103,11 +106,6 @@ export async function DELETE(req: any) {
         response.data = null;
         return new Response(JSON.stringify(response));
       }
-      // await prisma.images.delete({
-      //   where: {
-      //     id: image.imageId,
-      //   },
-      // });
     }
 
     await prisma.product.delete({

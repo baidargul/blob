@@ -124,6 +124,9 @@ export async function POST(req: NextRequest) {
         id: product.id,
       },
       include: {
+        brand: true,
+        category: true,
+        type: true,
         productImages: {
           include: {
             images: true,
@@ -155,6 +158,9 @@ export async function GET(req: NextRequest) {
   try {
     const products: any = await prisma.product.findMany({
       include: {
+        brand: true,
+        category: true,
+        type: true,
         productImages: {
           include: {
             images: true,
