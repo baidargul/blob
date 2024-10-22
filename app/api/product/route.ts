@@ -52,37 +52,37 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
-    isExists = await prisma.brand.findFirst({
+    const brand = await prisma.brand.findFirst({
       where: {
         name: data.brand.name,
       },
     });
 
-    if (!isExists) {
+    if (!brand) {
       response.status = 400;
       response.message = "Brand does not exist";
       return new Response(JSON.stringify(response));
     }
 
-    isExists = await prisma.category.findFirst({
+    const category = await prisma.category.findFirst({
       where: {
         name: data.category.name,
       },
     });
 
-    if (!isExists) {
+    if (!category) {
       response.status = 400;
       response.message = "Category does not exist";
       return new Response(JSON.stringify(response));
     }
 
-    isExists = await prisma.type.findFirst({
+    const type = await prisma.type.findFirst({
       where: {
         name: data.type.name,
       },
     });
 
-    if (!isExists) {
+    if (!type) {
       response.status = 400;
       response.message = "Type does not exist";
       return new Response(JSON.stringify(response));
@@ -104,6 +104,9 @@ export async function POST(req: NextRequest) {
         name: data.name,
         cost,
         price,
+        brandId: brand.id,
+        categoryId: category.id,
+        typeId: type.id,
       },
     });
 
