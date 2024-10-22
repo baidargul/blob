@@ -25,7 +25,11 @@ const SelectProvider = (props: Props) => {
 
   return (
     <Select onValueChange={(option: any) => handleSelect(option)}>
-      <SelectTrigger className="w-full rounded focus:border-none focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover">
+      <SelectTrigger
+        className={`w-full rounded focus:border-interface-hover focus:ring-transparent focus:ring-offset-0 h-9 border border-interface-hover ${
+          props.readonly && "bg-interface-hover/20"
+        }`}
+      >
         {props.selectedValue ? props.selectedValue.name : props.children}
       </SelectTrigger>
       {props.readonly !== true && (
