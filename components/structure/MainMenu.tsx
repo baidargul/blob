@@ -58,11 +58,17 @@ const MainMenu = (props: Props) => {
             </MenubarSubContent>
           </MenubarSub>
           <MenubarSeparator />
-          <MenubarItem>Brand list</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("BrandList")}>
+            Brand list
+          </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem>Category list</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("CategoryList")}>
+            Category list
+          </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem>Type list</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("TypeList")}>
+            Type list
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>

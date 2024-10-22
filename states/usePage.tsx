@@ -1,5 +1,8 @@
+import BrandList from "@/components/structure/pages/Brand/BrandList";
+import CategoryList from "@/components/structure/pages/Category/CategoryList";
 import ProductList from "@/components/structure/pages/Product/List";
 import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
+import TypeList from "@/components/structure/pages/Type/TypeList";
 import { create } from "zustand";
 
 type PageState = {
@@ -9,7 +12,13 @@ type PageState = {
   page: React.ReactNode;
 } | null;
 
-export type PageName = "Home" | "ProductList" | "PurchaseQuotation";
+export type PageName =
+  | "Home"
+  | "ProductList"
+  | "PurchaseQuotation"
+  | "BrandList"
+  | "TypeList"
+  | "CategoryList";
 
 type PageType = {
   page: PageState;
@@ -26,6 +35,21 @@ const pages: PageState[] = [
     name: "PurchaseQuotation",
     description: "Create order quotation",
     page: <PurchaseQuotation />,
+  },
+  {
+    name: "BrandList",
+    description: "Brand List and definations page.",
+    page: <BrandList />,
+  },
+  {
+    name: "CategoryList",
+    description: "Category List and definations page.",
+    page: <CategoryList />,
+  },
+  {
+    name: "TypeList",
+    description: "Type List and definations page.",
+    page: <TypeList />,
   },
 ];
 
