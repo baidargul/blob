@@ -11,6 +11,8 @@ import { brand } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import ListRow from "../Product/ListRow";
 import BrandForm from "./BrandForm";
+import BrandHeader from "./BrandHeader";
+import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 
 type Props = {};
 
@@ -54,6 +56,44 @@ const BrandList = (props: Props) => {
     setSelectedBrand(item);
   };
 
+  const createNewBrand = () => {
+    const temp: brand = {
+      id: "",
+      name: "",
+      phone1: "",
+      phone2: "",
+      address1: "",
+      address2: "",
+      description: "",
+      createdAt: null,
+      updatedAt: null,
+    };
+
+    setSelectedBrand(temp);
+  };
+
+  const saveBrand = async (
+    name: string,
+    phone1: string,
+    phone2: string,
+    address1: string,
+    address2: string,
+    description: string
+  ) => {
+    const response: SERVER_RESPONSE = await serverActions.Brand.create(
+      name,
+      phone1,
+      phone2,
+      address1,
+      address2,
+      description
+    );
+
+    if (response.status === 200) {
+      await fetchBrands();
+      createNewBrand();
+    }
+  };
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
@@ -113,6 +153,12 @@ const BrandList = (props: Props) => {
       <ResizableHandle />
       <ResizablePanel>
         <ScrollArea className="h-[88dvh]">
+          <BrandHeader
+            brand={selectedBrand}
+            fetchBrands={fetchBrands}
+            createBrand={createNewBrand}
+            saveBrand={saveBrand}
+          />
           <BrandForm selectedBrand={selectedBrand} setBrand={handleSetBrand} />
         </ScrollArea>
       </ResizablePanel>

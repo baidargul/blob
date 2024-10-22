@@ -51,6 +51,8 @@ model brand {
   address2    String?
   description String?
   product     product[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
 }
 
 model category {
@@ -58,6 +60,8 @@ model category {
   name        String    @unique
   description String?
   product     product[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
 }
 
 model type {
@@ -65,4 +69,6 @@ model type {
   name        String    @unique
   description String?
   product     product[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
 }

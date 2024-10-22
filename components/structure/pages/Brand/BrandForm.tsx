@@ -37,6 +37,8 @@ const BrandForm = (props: Props) => {
       address1,
       address2,
       description,
+      createdAt: null,
+      updatedAt: null,
     };
 
     props.setBrand({ ...temp });
@@ -52,6 +54,8 @@ const BrandForm = (props: Props) => {
       address1,
       address2,
       description,
+      createdAt: null,
+      updatedAt: null,
     };
 
     props.setBrand({ ...temp });
@@ -67,6 +71,8 @@ const BrandForm = (props: Props) => {
       address1,
       address2,
       description,
+      createdAt: null,
+      updatedAt: null,
     };
 
     props.setBrand({ ...temp });
@@ -82,6 +88,8 @@ const BrandForm = (props: Props) => {
       address1: value,
       address2,
       description,
+      createdAt: null,
+      updatedAt: null,
     };
 
     props.setBrand({ ...temp });
@@ -97,6 +105,8 @@ const BrandForm = (props: Props) => {
       address1,
       address2: value,
       description,
+      createdAt: null,
+      updatedAt: null,
     };
 
     props.setBrand({ ...temp });
@@ -112,6 +122,8 @@ const BrandForm = (props: Props) => {
       address1,
       address2,
       description: value,
+      createdAt: null,
+      updatedAt: null,
     };
 
     props.setBrand({ ...temp });
