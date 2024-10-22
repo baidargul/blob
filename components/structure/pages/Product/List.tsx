@@ -61,6 +61,9 @@ const ProductList = (props: Props) => {
 
   const handleSelectProduct = (product: any) => {
     setSelectedProduct(product);
+    setSelectedBrand(product.brand);
+    setSelectedCategory(product.category);
+    setSelectedType(product.type);
   };
 
   const handleSelectBrand = (brand: brand) => {
