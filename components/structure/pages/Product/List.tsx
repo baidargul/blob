@@ -64,6 +64,8 @@ const ProductList = (props: Props) => {
   };
 
   const handleSelectBrand = (brand: brand) => {
+    console.log(`Seleted brand`);
+    console.log(brand);
     setSelectedBrand(brand);
   };
 
@@ -117,11 +119,12 @@ const ProductList = (props: Props) => {
       name,
       cost,
       price,
-      images,
-      brand,
-      category,
-      type
+      selectedBrand,
+      selectedCategory,
+      selectedType,
+      images
     );
+    console.log(response.message);
     fetchProducts();
   };
 
