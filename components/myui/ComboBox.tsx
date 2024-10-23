@@ -95,7 +95,7 @@ export function Combobox(props: Props) {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-full justify-between focus:border-transparent outline-transparent ring-transparent"
+            className="w-full hover:bg-white px-2 justify-between focus:border-transparent outline-transparent ring-transparent"
           >
             {value
               ? props.options &&

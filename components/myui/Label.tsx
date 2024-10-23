@@ -10,9 +10,11 @@ type Props = {
 const Label = (props: Props) => {
   return (
     <div
-      className={`${props.size ? props.size : "text-base"} font-semibold  ${
-        props.className
-      } ${props.color ? props.color : "text-interface-text/80"} `}
+      className={`${
+        props.size ? props.size : "text-base"
+      } font-semibold truncate  ${props.className} ${
+        props.color ? props.color : "text-interface-text/80"
+      } `}
     >
       {props.label}
     </div>
