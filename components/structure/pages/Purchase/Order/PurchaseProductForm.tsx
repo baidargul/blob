@@ -2,6 +2,7 @@ import {
   Combobox,
   ComboBox_ADD_VALUE_TO_EACH_OPTION,
 } from "@/components/myui/ComboBox";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { serverActions } from "@/serverActions/serverActions";
 import React, { useEffect, useState } from "react";
 
@@ -21,9 +22,12 @@ const PurchaseProductForm = (props: Props) => {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <div>
         <Combobox options={productList} label="Select Product" />
+      </div>
+      <div>
+        <ScrollArea className="h-[70dvh] border rounded w-full p-2"></ScrollArea>
       </div>
     </div>
   );

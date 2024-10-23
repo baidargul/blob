@@ -15,24 +15,22 @@ const PurchaseOrder = (props: Props) => {
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
-        <ScrollArea className="h-[88dvh]">
+        <div>
+          <Label
+            label="Purchase Order"
+            size="text-lg"
+            className="text-start text-2xl my-2"
+            color="text-interface-primary"
+          />
           <div>
-            <Label
-              label="Purchase Order"
-              size="text-lg"
-              className="text-start text-2xl my-2"
-              color="text-interface-primary"
-            />
-            <div>
-              <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
-                <div></div>
-                <div className="">
-                  <PurchaseProductForm />
-                </div>
+            <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
+              <div></div>
+              <div className="">
+                <PurchaseProductForm />
               </div>
             </div>
           </div>
-        </ScrollArea>
+        </div>
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel>
