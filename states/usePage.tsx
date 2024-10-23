@@ -1,6 +1,7 @@
 import BrandList from "@/components/structure/pages/Brand/BrandList";
 import CategoryList from "@/components/structure/pages/Category/CategoryList";
 import ProductList from "@/components/structure/pages/Product/List";
+import PurchaseOrder from "@/components/structure/pages/Purchase/Order/PurchaseOrder";
 import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
 import TypeList from "@/components/structure/pages/Type/TypeList";
 import { create } from "zustand";
@@ -18,7 +19,8 @@ export type PageName =
   | "PurchaseQuotation"
   | "BrandList"
   | "TypeList"
-  | "CategoryList";
+  | "CategoryList"
+  | "PurchaseOrder";
 
 type PageType = {
   page: PageState;
@@ -50,6 +52,11 @@ const pages: PageState[] = [
     name: "TypeList",
     description: "Type List and definations page.",
     page: <TypeList />,
+  },
+  {
+    name: "PurchaseOrder",
+    description: "Create purchase order",
+    page: <PurchaseOrder />,
   },
 ];
 

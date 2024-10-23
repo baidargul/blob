@@ -108,7 +108,9 @@ const MainMenu = (props: Props) => {
           <MenubarItem onClick={() => handleChangePage("PurchaseQuotation")}>
             Create quotation
           </MenubarItem>
-          <MenubarItem>Create purchase order</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("PurchaseOrder")}>
+            Create purchase order
+          </MenubarItem>
           <MenubarSeparator />
           <MenubarItem>Purchase list</MenubarItem>
           <MenubarItem>Find...</MenubarItem>
