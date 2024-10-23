@@ -20,11 +20,11 @@ const PurchaseOrder = (props: Props) => {
             <Label
               label="Purchase Order"
               size="text-lg"
-              className="text-center text-2xl my-2"
+              className="text-start text-2xl my-2"
               color="text-interface-primary"
             />
             <div>
-              <div className="flex flex-col gap-2 pl-2 pr-4 mt-4">
+              <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
                 <div></div>
                 <div className="">
                   <PurchaseProductForm />
