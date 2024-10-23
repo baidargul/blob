@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Label from "./Label";
 
 const frameworks = [
   {
@@ -53,6 +54,7 @@ type Props = {
   options?: ComboBoxOptions[];
   setValue?: (value: ComboBoxOptions) => void;
   placeholder?: string;
+  label?: string;
 };
 
 export const ComboBox_ADD_VALUE_TO_EACH_OPTION = (
@@ -81,20 +83,28 @@ export function Combobox(props: Props) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="w-full focus:border-transparent">
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between"
-        >
-          {value
-            ? props.options &&
-              props.options.find((framework) => framework.value === value)
-                ?.label
-            : "Select option"}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+      <PopoverTrigger
+        asChild
+        className="w-full focus:border-transparent outline-transparent ring-transparent"
+      >
+        <div>
+          {props.label && props.label.length > 0 && (
+            <Label label={props.label} size="text-sm" className="pb-1" />
+          )}
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between focus:border-transparent outline-transparent ring-transparent"
+          >
+            {value
+              ? props.options &&
+                props.options.find((framework) => framework.value === value)
+                  ?.label
+              : "Select option"}
+            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]">
         <Command className="w-full">

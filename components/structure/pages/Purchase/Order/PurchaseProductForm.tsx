@@ -23,7 +23,7 @@ const PurchaseProductForm = (props: Props) => {
   return (
     <div>
       <div>
-        <Combobox options={productList} />
+        <Combobox options={productList} label="Select Product" />
       </div>
     </div>
   );
