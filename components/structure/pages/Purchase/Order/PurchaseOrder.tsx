@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
-import ListRow from "../../Product/ListRow";
 import PurchaseProductForm from "./PurchaseProductForm";
 
 type Props = {};
