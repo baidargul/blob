@@ -2,7 +2,6 @@ import BasicSideBar from "@/components/layouts/BasicSideBar";
 import ContentArea from "@/components/structure/ContentArea";
 import MainMenu from "@/components/structure/MainMenu";
 import SideBarNavigation from "@/components/structure/SideBarNavigation";
-import { serverActions } from "@/serverActions/serverActions";
 
 export default function Home() {
   return (
