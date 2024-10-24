@@ -73,7 +73,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
           readOnly={props.readonly}
           placeholder={props.placeholder ? props.placeholder : ""}
           type={props.type ? props.type : "text"}
-          className={`appearance-none p-1 rounded w-full border border-interface-hover focus:outline-none focus:border-interface-secondry transition-all duration-500 selection:bg-interface-secondry/30 px-2 ${
+          className={`appearance-none truncate p-1 rounded w-full border border-interface-hover focus:outline-none focus:border-interface-secondry transition-all duration-500 selection:bg-interface-secondry/30 px-2 ${
             props.icon && "pl-7"
           } pr-7 focus:drop-shadow-sm read-only:bg-interface-hover/20`}
         />

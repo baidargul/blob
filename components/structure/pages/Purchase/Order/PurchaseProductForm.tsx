@@ -24,11 +24,11 @@ const PurchaseProductForm = (props: Props) => {
     response.data = ComboBox_ADD_VALUE_TO_EACH_OPTION(response.data);
     setProductList((prev: any) => response.data);
   };
-
   const calculateDifference = (c: number, i: number) => {
     let temp: any = c / i;
     temp = temp * 100;
     temp = 100 - temp;
+    temp = temp;
     setDifference((prev: any) => temp);
   };
 
