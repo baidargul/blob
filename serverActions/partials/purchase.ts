@@ -23,7 +23,7 @@ async function addProduct(
     barcode,
   };
   const response: SERVER_RESPONSE = await axios.post(
-    "/api/purchase/product",
+    "/api/purchase/product/",
     data
   );
   return response.data;

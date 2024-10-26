@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   };
 
   try {
-    const { data } = await req.json();
+    const data = await req.json();
 
     if (!data.purchaseId) {
       response.status = 400;
