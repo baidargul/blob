@@ -69,7 +69,9 @@ const PurchaseOrder = (props: Props) => {
               <Button onClick={handleCreateNewPurchaseOrder}>Save</Button>
             )}
             {purchaseOrder && purchaseOrder.closed === false && (
-              <Button onClick={handleCreateNewPurchaseOrder}>Close</Button>
+              <Button onClick={handleCreateNewPurchaseOrder}>
+                Close order
+              </Button>
             )}
           </div>
           <div>
