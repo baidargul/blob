@@ -1,5 +1,7 @@
+import Button from "@/components/myui/Button";
 import DialogProvider from "@/components/myui/DialogProvider";
-import React from "react";
+import InputBox from "@/components/myui/InputBox";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   item: any;
@@ -56,9 +58,69 @@ const ProductOrderRow = (props: Props) => {
 export default ProductOrderRow;
 
 function ProductEditor({ item }: any) {
+  const [barcode, setBarcode] = useState("");
+  const [color, setColor] = useState("");
+  const [cost, setCost] = useState(0);
+  const [invoice, setInvoice] = useState(0);
+
+  useEffect(() => {
+    setBarcode(item.barcodeRegister[0].barcode);
+    setColor(item.barcodeRegister[0].color);
+    setCost(item.barcodeRegister[0].cost);
+    setInvoice(item.barcodeRegister[0].invoice);
+  }, [item]);
+
+  const handleBarcodeChange = (value: string) => {
+    setBarcode(value);
+  };
+
+  const handleColorChange = (value: string) => {
+    setColor(value);
+  };
+
+  const handleCostChange = (value: number) => {
+    setCost(value);
+  };
+
+  const handleInvoiceChange = (value: number) => {
+    setInvoice(value);
+  };
+
+  const handleBarcodeKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.ctrlKey && e.key === " ") {
+      let temp: any = Math.random();
+      temp = temp.toString(16);
+      temp = `${temp.slice(2, 10)}${Math.random().toFixed(
+        0
+      )}${new Date().getMinutes()}${new Date().getSeconds()}${new Date().getMilliseconds()}${new Date().getFullYear()}${new Date().getMonth()}${new Date().getDate()}`;
+      //Get first 15 characters
+      temp = temp.slice(0, 15);
+      setBarcode(String(temp).toLocaleUpperCase());
+    }
+  };
+
   return (
-    <div>
-      <div>{item.name}</div>
+    <div className="flex flex-col gap-2">
+      <div className="text-xl text-interface-text font-bold">{item.name}</div>
+      <div className="grid grid-cols-2 gap-2">
+        <InputBox
+          label="Barcode"
+          value={barcode}
+          setValue={handleBarcodeChange}
+          onKeyDown={handleBarcodeKeyPress}
+          placeholder="Press Ctrl+Space to generate barcode"
+        />
+        <InputBox label="Color" value={color} setValue={handleColorChange} />
+        <InputBox
+          label="Invoice"
+          value={invoice}
+          setValue={handleInvoiceChange}
+        />
+        <InputBox label="Cost" value={cost} setValue={handleCostChange} />
+      </div>
+      <div className="flex">
+        <Button>Update</Button>
+      </div>
     </div>
   );
 }

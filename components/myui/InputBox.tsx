@@ -52,7 +52,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   };
 
   return (
-    <div>
+    <div className="truncate">
       {props.label && props.label.length > 0 && (
         <div className="flex w-full justify-between items-center">
           <Label label={props.label} size="text-sm" />
