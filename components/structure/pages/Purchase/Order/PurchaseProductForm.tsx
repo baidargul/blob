@@ -11,16 +11,49 @@ import React, { useEffect, useState } from "react";
 
 type Props = {
   purchaseOrder: purchase | null;
+  productList: product[] | null;
+  setProductList: any;
 };
 
 const PurchaseProductForm = (props: Props) => {
   const [productList, setProductList] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState<product | null>(null);
   const [color, setColor] = useState("");
   const [invoice, setInvoice] = useState(0);
   const [cost, setCost] = useState(0);
   const [difference, setDifference] = useState(0);
   const [barcode, setBarcode] = useState("");
+
+  const handleAddToCart = async () => {
+    if (selectedProduct && selectedProduct.name?.length > 0) {
+      if (barcode.length < 1) {
+        alert("Barcode is required");
+        return;
+      }
+
+      if (props.purchaseOrder && !props.purchaseOrder.id) {
+        alert("Purchase Order is not created");
+        return;
+      }
+
+      if (props.purchaseOrder) {
+        const product = await serverActions.Purchase.addProduct(
+          props.purchaseOrder.id,
+          selectedProduct.id,
+          color,
+          cost,
+          invoice,
+          barcode
+        );
+
+        if (product.status === 200) {
+          props.setProductList((prev: any) => product.data);
+          console.log(product.data);
+          setBarcode("");
+        }
+      }
+    }
+  };
 
   const fetchProducts = async () => {
     const response = await serverActions.Product.listAll();
@@ -151,7 +184,10 @@ const PurchaseProductForm = (props: Props) => {
                   placeholder="Press Ctrl+Space to generate barcode"
                 />
               </div>
-              <Button className="h-9 w-20 text-center text-sm ml-auto">
+              <Button
+                onClick={handleAddToCart}
+                className="h-9 w-20 text-center text-sm ml-auto"
+              >
                 Add
               </Button>
             </div>

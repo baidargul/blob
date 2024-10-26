@@ -75,33 +75,26 @@ model type {
 }
 
 model barcodeRegister {
-  id               String             @id @default(uuid())
-  productId        String
-  color            String?
-  cost             Decimal?           @default(0) @db.Decimal
-  invoice          Decimal?           @default(0) @db.Decimal
-  barcode          String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now())
-  product          product            @relation(fields: [productId], references: [id], onDelete: Cascade)
-  purchaseRegister purchaseRegister[]
+  id         String   @id @default(uuid())
+  productId  String
+  color      String?
+  cost       Decimal? @default(0) @db.Decimal
+  invoice    Decimal? @default(0) @db.Decimal
+  barcode    String? @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  purchaseId String
+  product    product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  purchase   purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model purchase {
-  id               String             @id @default(uuid())
-  purchaseDate     DateTime?          @default(now())
-  vendorId         String?
-  createdAt        DateTime?          @default(now())
-  updatedAt        DateTime?          @default(now())
-  orderNo          Int                @default(autoincrement())
-  closed           Boolean?           @default(false)
-  purchaseRegister purchaseRegister[]
-}
-
-model purchaseRegister {
-  id               String          @id @default(uuid())
-  barodeRegisterId String
-  purchaseId       String
-  barcodeRegister  barcodeRegister @relation(fields: [barodeRegisterId], references: [id], onDelete: Cascade)
-  purchase         purchase        @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  id              String            @id @default(uuid())
+  vendorId        String?
+  createdAt       DateTime?         @default(now())
+  updatedAt       DateTime?         @default(now())
+  orderNo         Int               @default(autoincrement())
+  closed          Boolean?          @default(false)
+  purchaseDate    DateTime?         @default(now())
+  barcodeRegister barcodeRegister[]
 }

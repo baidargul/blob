@@ -8,13 +8,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useState } from "react";
 import PurchaseProductForm from "./PurchaseProductForm";
 import Button from "@/components/myui/Button";
-import { purchase } from "@prisma/client";
+import { product, purchase } from "@prisma/client";
 import { serverActions } from "@/serverActions/serverActions";
 
 type Props = {};
 
 const PurchaseOrder = (props: Props) => {
   const [purchaseOrder, setPurchaseOrder] = useState<purchase | null>(null);
+  const [productList, setProductList] = useState<product[] | null>(null);
 
   const handleCreateNewPurchaseOrder = async () => {
     const purchase = await serverActions.Purchase.create();
@@ -49,7 +50,11 @@ const PurchaseOrder = (props: Props) => {
               <div></div>
               <div className="">
                 {purchaseOrder && purchaseOrder.id?.length > 0 && (
-                  <PurchaseProductForm purchaseOrder={purchaseOrder} />
+                  <PurchaseProductForm
+                    purchaseOrder={purchaseOrder}
+                    productList={productList}
+                    setProductList={setProductList}
+                  />
                 )}
               </div>
             </div>
