@@ -1,3 +1,4 @@
+import Button from "@/components/myui/Button";
 import {
   Combobox,
   ComboBox_ADD_VALUE_TO_EACH_OPTION,
@@ -73,6 +74,17 @@ const PurchaseProductForm = (props: Props) => {
 
   return (
     <div className="flex flex-col gap-2">
+      <div className="mb-2 flex flex-col gap-2">
+        <div className="grid grid-cols-2 gap-2">
+          <InputBox label="Order #" readonly />
+          <InputBox label="Date" readonly value={new Date().toDateString()} />
+        </div>
+        <Combobox
+          options={productList}
+          label="Select Vendor"
+          setValue={handleProductSelect}
+        />
+      </div>
       <div>
         <Combobox
           options={productList}
@@ -81,7 +93,7 @@ const PurchaseProductForm = (props: Props) => {
         />
       </div>
       <div>
-        <ScrollArea className="h-[70dvh] border rounded w-full p-2">
+        <ScrollArea className="h-[50dvh] border rounded w-full p-2">
           <div className="flex flex-col gap-2">
             <div>
               <InputBox
@@ -103,7 +115,7 @@ const PurchaseProductForm = (props: Props) => {
                 value={isNaN(difference) ? 0 : difference}
               />
             </div>
-            <div>
+            <div className="grid grid-cols-[auto_1fr] justify-center items-end ">
               <InputBox
                 label="Barcode"
                 setValue={handleBarcodeChange}
@@ -112,6 +124,9 @@ const PurchaseProductForm = (props: Props) => {
                 maxLength={15}
                 placeholder="Press Ctrl+Space to generate barcode"
               />
+              <Button className="h-9 w-20 text-center text-sm ml-auto">
+                Add
+              </Button>
             </div>
           </div>
         </ScrollArea>
