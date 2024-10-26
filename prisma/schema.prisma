@@ -8,19 +8,20 @@ datasource db {
 }
 
 model product {
-  id            String          @id @default(uuid())
-  name          String
-  cost          Decimal?        @db.Decimal
-  price         Decimal?        @db.Decimal
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now())
-  brandId       String?
-  categoryId    String?
-  typeId        String?
-  brand         brand?          @relation(fields: [brandId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  category      category?       @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  type          type?           @relation(fields: [typeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  productImages productImages[]
+  id              String            @id @default(uuid())
+  name            String
+  cost            Decimal?          @db.Decimal
+  price           Decimal?          @db.Decimal
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now())
+  brandId         String?
+  categoryId      String?
+  typeId          String?
+  barcodeRegister barcodeRegister[]
+  brand           brand?            @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category        category?         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  type            type?             @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  productImages   productImages[]
 }
 
 model images {
@@ -50,25 +51,55 @@ model brand {
   address1    String?
   address2    String?
   description String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
   product     product[]
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @default(now())
 }
 
 model category {
   id          String    @id @default(uuid())
   name        String    @unique
   description String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
   product     product[]
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @default(now())
 }
 
 model type {
   id          String    @id @default(uuid())
   name        String    @unique
   description String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
   product     product[]
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @default(now())
+}
+
+model barcodeRegister {
+  id               String             @id @default(uuid())
+  productId        String
+  color            String?
+  cost             Decimal?           @default(0) @db.Decimal
+  invoice          Decimal?           @default(0) @db.Decimal
+  barcode          String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  product          product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  purchaseRegister purchaseRegister[]
+}
+
+model purchase {
+  id               String             @id @default(uuid())
+  purhcaseDate     DateTime?          @default(now())
+  vendorId         String?
+  createdAt        DateTime?          @default(now())
+  updatedAt        DateTime?          @default(now())
+  purchaseRegister purchaseRegister[]
+}
+
+model purchaseRegister {
+  id               String          @id @default(uuid())
+  barodeRegisterId String
+  purchaseId       String
+  barcodeRegister  barcodeRegister @relation(fields: [barodeRegisterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  purchase         purchase        @relation(fields: [purchaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
