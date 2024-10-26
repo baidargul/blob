@@ -12,7 +12,7 @@ const BasicSideBar = (props: Props) => {
         <div className="w-full h-[90dvh] bg-zinc-100 p-2 rounded-md">
           {props.sidebar}
         </div>
-        <div className="w-full h-[90dvh] bg-zinc-100 p-2 rounded-md">
+        <div className="w-full h-[90dvh] bg-zinc-100 p-2 rounded-md overflow-y-scroll">
           {props.content}
         </div>
       </div>

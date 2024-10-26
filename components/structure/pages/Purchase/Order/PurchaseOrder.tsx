@@ -63,7 +63,7 @@ const PurchaseOrder = (props: Props) => {
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel>
-        <ScrollArea className="h-[88dvh]">
+        <ScrollArea className="h-[88dvh] pl-2">
           <div>
             <div className="flex flex-col gap-2">
               {productList &&
