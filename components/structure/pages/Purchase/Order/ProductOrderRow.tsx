@@ -118,8 +118,15 @@ function ProductEditor({ item }: any) {
         />
         <InputBox label="Cost" value={cost} setValue={handleCostChange} />
       </div>
-      <div className="flex">
-        <Button>Update</Button>
+      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-2">
+        <Button className="text-sm text-center sm:text-start">Update</Button>
+        <Button className="text-sm text-center sm:text-start">
+          Update all
+        </Button>
+        <Button className="text-sm text-center sm:text-start">Remove</Button>
+        <Button className="text-sm text-center sm:text-start">
+          Remove all
+        </Button>
       </div>
     </div>
   );
