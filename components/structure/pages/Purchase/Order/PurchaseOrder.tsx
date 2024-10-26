@@ -68,11 +68,39 @@ const PurchaseOrder = (props: Props) => {
             <div className="flex flex-col gap-2">
               {productList &&
                 productList.length > 0 &&
-                productList.map((item: any) => {
+                productList.map((item: any, index: number) => {
                   console.log(item);
                   return (
-                    <div key={item.id} className="p-2 bg-white">
-                      <div>{item.name}</div>
+                    <div
+                      key={item.id}
+                      className="p-2 bg-white rounded flex gap-1 items-start"
+                    >
+                      <div className="font-bold text-interface-text/30">
+                        {index + 1}-
+                      </div>
+                      <div className="flex flex-col gap-1 w-full">
+                        <div className="font-semibold tracking-tight text-interface-text/80 text-sm flex justify-between items-center">
+                          <div className="text-base">
+                            {item.name} [
+                            {String(item.brand.name).toLocaleUpperCase()}]
+                          </div>
+                          <div className="text-xs tracking-widest">
+                            {item.category.name}/{item.type.name}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs tracking-widest flex gap-2">
+                            <div className="flex gap-1 items-center">
+                              <div className="font-semibold">Cost:</div>{" "}
+                              {item.barcodeRegister[0].cost}
+                            </div>
+                            <div className="flex gap-1 items-center">
+                              <div className="font-semibold">Invoice:</div>{" "}
+                              {item.barcodeRegister[0].invoice}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   );
                 })}

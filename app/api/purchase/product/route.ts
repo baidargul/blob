@@ -98,6 +98,9 @@ export async function POST(req: NextRequest) {
       },
       include: {
         barcodeRegister: {
+          where: {
+            barcode: createdProduct.barcode,
+          },
           include: {
             purchase: true,
           },
