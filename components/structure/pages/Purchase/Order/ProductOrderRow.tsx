@@ -7,15 +7,15 @@ type Props = {
 
 const ProductOrderRow = (props: Props) => {
   return (
-    <div className="p-2 bg-white rounded flex gap-1 items-start">
+    <div className="p-2 bg-white min-w-fit lg:w-full rounded flex gap-1 lg:items-start border border-transparent hover:bg-interface-secondry/30 hover:border-interface-secondry transition-all duration-200 cursor-pointer">
       <div className="font-bold text-interface-text/30">{props.index + 1}-</div>
-      <div className="flex flex-col gap-1 w-full">
+      <div className="flex flex-col items-center lg:items-stretch gap-1 min-w-fit w-full">
         <div className="font-semibold tracking-tight text-interface-text/80 text-sm flex justify-between items-center">
           <div className="text-base">
             {props.item.name}
             {` [${String(props.item.brand.name).toLocaleUpperCase()}]`}
           </div>
-          <div className="text-xs tracking-widest">
+          <div className="text-xs tracking-widest hidden lg:block">
             <div>
               <div>
                 {props.item.category.name}/{props.item.type.name}
@@ -24,7 +24,7 @@ const ProductOrderRow = (props: Props) => {
           </div>
         </div>
         <div>
-          <div className="text-xs tracking-widest flex gap-2 justify-between items-end">
+          <div className="text-xs tracking-widest  lg:text-left lg:flex lg:justify-between lg:items-end">
             <div className="flex gap-1 items-center">
               <div className="flex gap-1 items-center">
                 <div className="font-semibold">Cost:</div>{" "}
@@ -35,7 +35,7 @@ const ProductOrderRow = (props: Props) => {
                 {props.item.barcodeRegister[0].invoice}
               </div>
             </div>
-            <div className="border-b">
+            <div className="border-b text-center lg:text-start">
               {props.item.barcodeRegister[0].barcode}
             </div>
           </div>
