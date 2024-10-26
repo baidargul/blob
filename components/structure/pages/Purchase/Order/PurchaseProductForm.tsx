@@ -54,7 +54,18 @@ const PurchaseProductForm = (props: Props) => {
     setBarcode(e);
   };
 
-  const handleBarcodeKeyPress = (e: any) => {};
+  const handleBarcodeKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.ctrlKey && e.key === " ") {
+      let temp: any = Math.random();
+      temp = temp.toString(16);
+      temp = `${temp.slice(2, 10)}${Math.random().toFixed(
+        0
+      )}${new Date().getMinutes()}${new Date().getSeconds()}${new Date().getMilliseconds()}${new Date().getFullYear()}${new Date().getMonth()}${new Date().getDate()}`;
+      //Get first 15 characters
+      temp = temp.slice(0, 15);
+      setBarcode(String(temp).toLocaleUpperCase());
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -96,7 +107,9 @@ const PurchaseProductForm = (props: Props) => {
               <InputBox
                 label="Barcode"
                 setValue={handleBarcodeChange}
+                onKeyDown={handleBarcodeKeyPress}
                 value={barcode}
+                maxLength={15}
               />
             </div>
           </div>
