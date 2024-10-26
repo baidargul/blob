@@ -47,9 +47,12 @@ const PurchaseProductForm = (props: Props) => {
         );
 
         if (product.status === 200) {
-          props.setProductList((prev: any) => product.data);
-          console.log(product.data);
+          const temp: any = props.productList || [];
+          temp.push(product.data);
+          props.setProductList((prev: any) => temp);
           setBarcode("");
+        } else {
+          console.log(product);
         }
       }
     }

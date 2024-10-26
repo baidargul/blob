@@ -92,9 +92,26 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
+    const finalProduct = await prisma.product.findUnique({
+      where: {
+        id: createdProduct.productId,
+      },
+      include: {
+        barcodeRegister: {
+          include: {
+            purchase: true,
+          },
+        },
+        category: true,
+        brand: true,
+        productImages: true,
+        type: true,
+      },
+    });
+
     response.status = 200;
     response.message = "Product created successfully";
-    response.data = createdProduct;
+    response.data = finalProduct;
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);

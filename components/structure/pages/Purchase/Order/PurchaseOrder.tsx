@@ -63,7 +63,22 @@ const PurchaseOrder = (props: Props) => {
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel>
-        <ScrollArea className="h-[88dvh]"></ScrollArea>
+        <ScrollArea className="h-[88dvh]">
+          <div>
+            <div className="flex flex-col gap-2">
+              {productList &&
+                productList.length > 0 &&
+                productList.map((item: any) => {
+                  console.log(item);
+                  return (
+                    <div key={item.id} className="p-2 bg-white">
+                      <div>{item.name}</div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>
   );
