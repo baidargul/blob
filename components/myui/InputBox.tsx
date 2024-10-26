@@ -14,6 +14,7 @@ type Props = {
   placeholder?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   maxLength?: number;
+  className?: string;
 };
 
 const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
@@ -83,7 +84,9 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
           maxLength={props.maxLength}
           className={`appearance-none truncate p-1 rounded w-full border border-interface-hover focus:outline-none focus:border-interface-secondry transition-all duration-500 selection:bg-interface-secondry/30 px-2 ${
             props.icon && "pl-7"
-          } pr-7 focus:drop-shadow-sm read-only:bg-interface-hover/20`}
+          } pr-7 focus:drop-shadow-sm read-only:bg-interface-hover/20 ${
+            props.className && props.className
+          }`}
         />
         {String(props.value).length > 0 && !props.readonly && (
           <div
