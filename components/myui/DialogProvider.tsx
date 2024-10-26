@@ -18,7 +18,7 @@ const DialogProvider = (props: Props) => {
   return (
     <Dialog>
       <DialogTrigger>{props.children}</DialogTrigger>
-      <DialogContent className="p-2">
+      <DialogContent className="p-4">
         <DialogHeader className="">
           <DialogTitle>{props.title}</DialogTitle>
           <DialogDescription className="hidden">
