@@ -89,7 +89,7 @@ model barcodeRegister {
 
 model purchase {
   id               String             @id @default(uuid())
-  purhcaseDate     DateTime?          @default(now())
+  purchaseDate     DateTime?          @default(now())
   vendorId         String?
   createdAt        DateTime?          @default(now())
   updatedAt        DateTime?          @default(now())

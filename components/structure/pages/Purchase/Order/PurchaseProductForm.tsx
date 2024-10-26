@@ -94,7 +94,15 @@ const PurchaseProductForm = (props: Props) => {
               props.purchaseOrder ? `PO-${props.purchaseOrder.orderNo}` : ""
             }
           />
-          <InputBox label="Date" readonly value={new Date().toDateString()} />
+          <InputBox
+            label="Date"
+            readonly
+            value={
+              props.purchaseOrder && props.purchaseOrder.purchaseDate
+                ? new Date(props.purchaseOrder.purchaseDate).toDateString()
+                : ""
+            }
+          />
         </div>
         <Combobox
           options={productList}
