@@ -110,6 +110,7 @@ const PurchaseProductForm = (props: Props) => {
                 onKeyDown={handleBarcodeKeyPress}
                 value={barcode}
                 maxLength={15}
+                placeholder="Press Ctrl+Space to generate barcode"
               />
             </div>
           </div>
