@@ -12,6 +12,7 @@ type Props = {
   icon?: any;
   type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
   placeholder?: string;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
@@ -26,6 +27,10 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
       handleClearValue();
+    }
+
+    if (props.onKeyDown) {
+      props.onKeyDown(e);
     }
   };
 

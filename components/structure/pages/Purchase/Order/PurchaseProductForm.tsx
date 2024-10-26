@@ -54,6 +54,8 @@ const PurchaseProductForm = (props: Props) => {
     setBarcode(e);
   };
 
+  const handleBarcodeKeyPress = (e: any) => {};
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -84,7 +86,11 @@ const PurchaseProductForm = (props: Props) => {
                 value={invoice}
               />
               <InputBox label="Cost" setValue={handleCostChange} value={cost} />
-              <InputBox label="Difference %" readonly value={difference} />
+              <InputBox
+                label="Difference %"
+                readonly
+                value={isNaN(difference) ? 0 : difference}
+              />
             </div>
             <div>
               <InputBox
