@@ -35,6 +35,15 @@ const PurchaseProductForm = (props: Props) => {
 
   const handleProductSelect = (p: product | any) => {
     setSelectedProduct(p);
+    if (p.cost) {
+      setCost((prev: any) => p.cost);
+    }
+
+    if (p.price) {
+      setInvoice((prev: any) => p.price);
+    }
+
+    calculateDifference(p.cost, p.price);
   };
 
   const handleColorChange = (e: any) => {
@@ -115,15 +124,17 @@ const PurchaseProductForm = (props: Props) => {
                 value={isNaN(difference) ? 0 : difference}
               />
             </div>
-            <div className="grid grid-cols-[auto_1fr] justify-center items-end ">
-              <InputBox
-                label="Barcode"
-                setValue={handleBarcodeChange}
-                onKeyDown={handleBarcodeKeyPress}
-                value={barcode}
-                maxLength={15}
-                placeholder="Press Ctrl+Space to generate barcode"
-              />
+            <div className="flex gap-2 items-end">
+              <div className="w-full">
+                <InputBox
+                  label="Barcode"
+                  setValue={handleBarcodeChange}
+                  onKeyDown={handleBarcodeKeyPress}
+                  value={barcode}
+                  maxLength={15}
+                  placeholder="Press Ctrl+Space to generate barcode"
+                />
+              </div>
               <Button className="h-9 w-20 text-center text-sm ml-auto">
                 Add
               </Button>
