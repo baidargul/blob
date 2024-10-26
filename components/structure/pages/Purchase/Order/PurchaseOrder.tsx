@@ -1,4 +1,3 @@
-import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
 import {
   ResizableHandle,
@@ -6,12 +5,24 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React from "react";
+import React, { useState } from "react";
 import PurchaseProductForm from "./PurchaseProductForm";
+import Button from "@/components/myui/Button";
+import { purchase } from "@prisma/client";
+import { serverActions } from "@/serverActions/serverActions";
 
 type Props = {};
 
 const PurchaseOrder = (props: Props) => {
+  const [purchaseOrder, setPurchaseOrder] = useState<purchase | null>(null);
+
+  const handleCreateNewPurchaseOrder = async () => {
+    const purchase = await serverActions.Purchase.create();
+    if (purchase.status === 200) {
+      setPurchaseOrder(purchase.data);
+    }
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
@@ -22,11 +33,24 @@ const PurchaseOrder = (props: Props) => {
             className="text-start text-2xl my-2"
             color="text-interface-primary"
           />
+          <div className="flex gap-2 items-center ">
+            {!purchaseOrder && (
+              <Button onClick={handleCreateNewPurchaseOrder}>Create</Button>
+            )}
+            {purchaseOrder && purchaseOrder.closed === false && (
+              <Button onClick={handleCreateNewPurchaseOrder}>Save</Button>
+            )}
+            {purchaseOrder && purchaseOrder.closed === false && (
+              <Button onClick={handleCreateNewPurchaseOrder}>Close</Button>
+            )}
+          </div>
           <div>
             <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
               <div></div>
               <div className="">
-                <PurchaseProductForm />
+                {purchaseOrder && purchaseOrder.id?.length > 0 && (
+                  <PurchaseProductForm purchaseOrder={purchaseOrder} />
+                )}
               </div>
             </div>
           </div>

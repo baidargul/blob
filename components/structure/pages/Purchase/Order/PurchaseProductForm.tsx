@@ -6,10 +6,12 @@ import {
 import InputBox from "@/components/myui/InputBox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { serverActions } from "@/serverActions/serverActions";
-import { product } from "@prisma/client";
+import { product, purchase } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 
-type Props = {};
+type Props = {
+  purchaseOrder: purchase | null;
+};
 
 const PurchaseProductForm = (props: Props) => {
   const [productList, setProductList] = useState([]);
@@ -85,7 +87,13 @@ const PurchaseProductForm = (props: Props) => {
     <div className="flex flex-col gap-2">
       <div className="mb-2 flex flex-col gap-2">
         <div className="grid grid-cols-2 gap-2">
-          <InputBox label="Order #" readonly />
+          <InputBox
+            label="Order #"
+            readonly
+            value={
+              props.purchaseOrder ? `PO-${props.purchaseOrder.orderNo}` : ""
+            }
+          />
           <InputBox label="Date" readonly value={new Date().toDateString()} />
         </div>
         <Combobox
@@ -102,7 +110,7 @@ const PurchaseProductForm = (props: Props) => {
         />
       </div>
       <div>
-        <ScrollArea className="h-[50dvh] border rounded w-full p-2">
+        <ScrollArea className="h-[43dvh] border rounded w-full p-2">
           <div className="flex flex-col gap-2">
             <div>
               <InputBox

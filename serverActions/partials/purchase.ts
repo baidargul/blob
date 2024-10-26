@@ -1,7 +1,8 @@
 import axios from "axios";
+import { SERVER_RESPONSE } from "../internal/server";
 
 async function create() {
-  const response = await axios.post("/api/purchase");
+  const response: SERVER_RESPONSE = await axios.post("/api/purchase");
   return response.data;
 }
 

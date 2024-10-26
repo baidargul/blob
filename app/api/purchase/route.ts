@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const response = {
     status: 500,
     message: "Internal Server Error",
@@ -9,7 +9,12 @@ export async function GET(req: NextRequest) {
   };
 
   try {
-    const purchase = await prisma.purchase.create({});
+    const purchase = await prisma.purchase.create({
+      data: {
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
 
     response.status = 200;
     response.message = "Purchase created successfully";
