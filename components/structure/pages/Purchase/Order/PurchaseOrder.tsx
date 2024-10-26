@@ -5,11 +5,12 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PurchaseProductForm from "./PurchaseProductForm";
 import Button from "@/components/myui/Button";
 import { product, purchase } from "@prisma/client";
 import { serverActions } from "@/serverActions/serverActions";
+import ProductOrderRow from "./ProductOrderRow";
 
 type Props = {};
 
@@ -21,6 +22,32 @@ const PurchaseOrder = (props: Props) => {
     const purchase = await serverActions.Purchase.create();
     if (purchase.status === 200) {
       setPurchaseOrder(purchase.data);
+    }
+  };
+
+  const handleAddToCart = async (
+    productId: string,
+    color: string,
+    cost: number,
+    invoice: number,
+    barcode: string
+  ) => {
+    if (!purchaseOrder) {
+      alert("Purchase Order is not created");
+      return;
+    }
+
+    const product = await serverActions.Purchase.addProduct(
+      purchaseOrder.id,
+      productId,
+      color,
+      cost,
+      invoice,
+      barcode
+    );
+
+    if (product.status === 200) {
+      setProductList((prev: any) => [...(prev || []), product.data]);
     }
   };
 
@@ -54,6 +81,7 @@ const PurchaseOrder = (props: Props) => {
                     purchaseOrder={purchaseOrder}
                     productList={productList}
                     setProductList={setProductList}
+                    handleAddToCart={handleAddToCart}
                   />
                 )}
               </div>
@@ -69,39 +97,12 @@ const PurchaseOrder = (props: Props) => {
               {productList &&
                 productList.length > 0 &&
                 productList.map((item: any, index: number) => {
-                  console.log(item);
                   return (
-                    <div
-                      key={item.id}
-                      className="p-2 bg-white rounded flex gap-1 items-start"
-                    >
-                      <div className="font-bold text-interface-text/30">
-                        {index + 1}-
-                      </div>
-                      <div className="flex flex-col gap-1 w-full">
-                        <div className="font-semibold tracking-tight text-interface-text/80 text-sm flex justify-between items-center">
-                          <div className="text-base">
-                            {item.name} [
-                            {String(item.brand.name).toLocaleUpperCase()}]
-                          </div>
-                          <div className="text-xs tracking-widest">
-                            {item.category.name}/{item.type.name}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-xs tracking-widest flex gap-2">
-                            <div className="flex gap-1 items-center">
-                              <div className="font-semibold">Cost:</div>{" "}
-                              {item.barcodeRegister[0].cost}
-                            </div>
-                            <div className="flex gap-1 items-center">
-                              <div className="font-semibold">Invoice:</div>{" "}
-                              {item.barcodeRegister[0].invoice}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <ProductOrderRow
+                      item={item}
+                      index={index}
+                      key={`${item.id}-${index}`}
+                    />
                   );
                 })}
             </div>

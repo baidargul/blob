@@ -13,6 +13,7 @@ type Props = {
   purchaseOrder: purchase | null;
   productList: product[] | null;
   setProductList: any;
+  handleAddToCart: any;
 };
 
 const PurchaseProductForm = (props: Props) => {
@@ -31,29 +32,14 @@ const PurchaseProductForm = (props: Props) => {
         return;
       }
 
-      if (props.purchaseOrder && !props.purchaseOrder.id) {
-        alert("Purchase Order is not created");
-        return;
-      }
-
-      if (props.purchaseOrder) {
-        const product = await serverActions.Purchase.addProduct(
-          props.purchaseOrder.id,
+      if (props.handleAddToCart) {
+        props.handleAddToCart(
           selectedProduct.id,
           color,
           cost,
           invoice,
           barcode
         );
-
-        if (product.status === 200) {
-          const temp: any = props.productList || [];
-          temp.push(product.data);
-          props.setProductList((prev: any) => temp);
-          setBarcode("");
-        } else {
-          console.log(product);
-        }
       }
     }
   };
