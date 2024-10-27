@@ -171,7 +171,7 @@ const PurchaseOrder = (props: Props) => {
                   return (
                     <ProductOrderRow
                       item={item}
-                      index={index}
+                      index={index + 1}
                       key={`${item.id}-${index}`}
                       updateProducts={updateProducts}
                     />

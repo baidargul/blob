@@ -21,15 +21,14 @@ const ProductOrderRow = (props: Props) => {
       content={
         <ProductEditor
           item={{ ...props.item }}
+          index={props.index}
           updateProducts={props.updateProducts}
         />
       }
       title="Edit Product"
     >
       <div className="p-2 bg-white min-w-fit lg:w-full rounded flex gap-1 lg:items-start border border-transparent hover:bg-interface-secondry/30 hover:border-interface-secondry transition-all duration-200 cursor-pointer">
-        <div className="font-bold text-interface-text/30">
-          {props.index + 1}-
-        </div>
+        <div className="font-bold text-interface-text/30">{props.index}-</div>
         <div className="flex flex-col items-center lg:items-stretch gap-1 min-w-fit w-full">
           <div className="font-semibold tracking-tight text-interface-text/80 text-sm flex justify-between items-center">
             <div className="text-base">
@@ -49,11 +48,15 @@ const ProductOrderRow = (props: Props) => {
               <div className="flex gap-1 items-center">
                 <div className="flex gap-1 items-center">
                   <div className="font-semibold">Cost:</div>{" "}
-                  {props.item.barcodeRegister[0].cost}
+                  {props.item.barcodeRegister[0].cost},
                 </div>
                 <div className="flex gap-1 items-center">
                   <div className="font-semibold">Invoice:</div>{" "}
-                  {props.item.barcodeRegister[0].invoice}
+                  {props.item.barcodeRegister[0].invoice},
+                </div>
+                <div className="flex gap-1 items-center">
+                  <div className="font-semibold">Color:</div>{" "}
+                  {props.item.barcodeRegister[0].color},
                 </div>
               </div>
               <div className="border-b text-center lg:text-start">
@@ -71,6 +74,7 @@ export default ProductOrderRow;
 
 type ProductEditorProps = {
   item: any;
+  index?: number;
   updateProducts: (
     item: any,
     command: "update" | "updateAll" | "remove" | "removeAll",
@@ -124,7 +128,10 @@ function ProductEditor(props: ProductEditorProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-xl text-interface-text font-bold">
+      <div className="text-xl text-interface-text font-bold flex gap-1 items-center">
+        {props.index && (
+          <span className="text-interface-text/40">{props.index}-</span>
+        )}
         {props.item.name}
       </div>
       <div className="grid grid-cols-2 gap-2">
