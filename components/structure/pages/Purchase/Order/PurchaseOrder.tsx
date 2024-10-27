@@ -172,7 +172,6 @@ const PurchaseOrder = (props: Props) => {
     if (!purchaseOrder) return null;
     const order = await serverActions.Purchase.get.next(purchaseOrder.id);
 
-    console.log(order);
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
@@ -183,7 +182,6 @@ const PurchaseOrder = (props: Props) => {
       purchaseOrder && purchaseOrder.id ? purchaseOrder.id : ""
     );
 
-    console.log(order);
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
@@ -191,7 +189,6 @@ const PurchaseOrder = (props: Props) => {
   };
   const handleFirstOrder = async () => {
     const order = await serverActions.Purchase.get.first();
-    console.log(order);
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
@@ -200,7 +197,6 @@ const PurchaseOrder = (props: Props) => {
   const handleLastOrder = async () => {
     const order = await serverActions.Purchase.get.last();
 
-    console.log(order);
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
