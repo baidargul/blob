@@ -1,6 +1,7 @@
 import Button from "@/components/myui/Button";
 import DialogProvider from "@/components/myui/DialogProvider";
 import InputBox from "@/components/myui/InputBox";
+import { formatCurrency } from "@/lib/utils";
 import { ColorWheelIcon } from "@radix-ui/react-icons";
 import {
   Barcode,
@@ -68,14 +69,14 @@ const ProductOrderRow = (props: Props) => {
                 <div className="flex gap-1 items-center">
                   <ReceiptCent className="w-4 h-4" />
                   <div className="font-semibold hidden lg:block">Cost:</div>
-                  {props.item.barcodeRegister[0].cost},
+                  {formatCurrency(props.item.barcodeRegister[0].cost, "Rs")},
                 </div>
                 <div className="flex gap-1 items-center">
                   <Receipt className="w-4 h-4" />
                   <div className="font-semibold hidden lg:block">Invoice:</div>
-                  {props.item.barcodeRegister[0].invoice},
+                  {formatCurrency(props.item.barcodeRegister[0].invoice, "Rs")},
                 </div>
-                {String(props.item.barcodeRegister[0].color).length > -1 && (
+                {String(props.item.barcodeRegister[0].color).length > 0 && (
                   <div className="flex gap-1 items-center">
                     <Palette className="w-4 h-4" />
                     <div className="font-semibold hidden lg:block">Color:</div>
