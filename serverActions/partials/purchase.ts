@@ -57,8 +57,16 @@ async function updateProduct(
   return response.data;
 }
 
+async function deleteProduct(id: string) {
+  const response: SERVER_RESPONSE = await axios.delete(
+    `/api/purchase/product?id=${id}`
+  );
+  return response.data;
+}
+
 export const Purchase = {
   create,
   addProduct,
   updateProduct,
+  deleteProduct,
 };

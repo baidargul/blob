@@ -128,11 +128,18 @@ const PurchaseOrder = (props: Props) => {
               item.barcodeRegister[0].barcode
             ) {
               newData.push(target);
+            } else {
+              const ress: SERVER_RESPONSE =
+                await serverActions.Purchase.deleteProduct(
+                  target.barcodeRegister[0].id
+                );
             }
             break;
 
           case "removeAll":
-            // Skip adding this item to newData to remove it from the list
+            await serverActions.Purchase.deleteProduct(
+              target.barcodeRegister[0].id
+            );
             break;
 
           default:

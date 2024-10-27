@@ -137,7 +137,7 @@ export async function PATCH(req: NextRequest) {
 
     if (!data.id) {
       response.status = 400;
-      response.message = "Purchase Id is required";
+      response.message = "Barcode register id is required";
       return new Response(JSON.stringify(response));
     }
 
@@ -198,6 +198,48 @@ export async function PATCH(req: NextRequest) {
     response.status = 200;
     response.message = "Product updated successfully";
     response.data = finalProduct;
+    return new Response(JSON.stringify(response));
+  } catch (error: any) {
+    console.log("[SERVER ERROR]: " + error.message);
+    response.status = 500;
+    response.message = error.message;
+    response.data = null;
+    return new Response(JSON.stringify(response));
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const response = {
+    status: 500,
+    message: "Internal Server Error",
+    data: null as any,
+  };
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const id: string | null = searchParams.get("id");
+
+    if (!id) {
+      response.status = 400;
+      response.message = "Barcode register Id is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    const deletedProduct = await prisma.barcodeRegister.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!deletedProduct) {
+      response.status = 400;
+      response.message = "Unable to delete product";
+      return new Response(JSON.stringify(response));
+    }
+
+    response.status = 200;
+    response.message = "Product deleted successfully";
+    response.data = deletedProduct;
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);
