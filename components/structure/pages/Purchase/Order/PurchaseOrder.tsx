@@ -207,7 +207,7 @@ const PurchaseOrder = (props: Props) => {
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
         <div>
-          <div className="flex justify-between items-center pr-2">
+          <div className="flex flex-col mb-2 lg:mb-0 lg:flex-row justify-between items-center lg:pr-2">
             <Label
               label="Purchase Order"
               size="text-lg"

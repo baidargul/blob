@@ -43,9 +43,11 @@ const ProductOrderRow = (props: Props) => {
         <div className="font-bold text-interface-text/30">{props.index}-</div>
         <div className="flex flex-col items-start lg:items-stretch gap-1 min-w-fit w-full">
           <div className="font-semibold tracking-tight text-interface-text/80 text-sm flex justify-between items-center">
-            <div className="text-base transition-all duration-500 tracking-widest lg:tracking-normal">
+            <div className="text-base transition-all duration-500 tracking-widest lg:tracking-normal flex lg:flex-row flex-row-reverse items-center gap-1">
               {props.item.name}
-              {` [${String(props.item.brand.name).toLocaleUpperCase()}]`}
+              <span className="text-xs -ml-1 lg:ml-0 p-1 bg-interface-secondry/30 lg:rounded-md scale-90 lg:px-2">
+                {` ${String(props.item.brand.name).toLocaleUpperCase()}`}
+              </span>
             </div>
             <div className="text-xs tracking-widest hidden lg:block">
               <div>
