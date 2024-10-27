@@ -1,6 +1,7 @@
 import Button from "@/components/myui/Button";
 import DialogProvider from "@/components/myui/DialogProvider";
 import InputBox from "@/components/myui/InputBox";
+import { Save, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -134,13 +135,14 @@ function ProductEditor(props: ProductEditorProps) {
         )}
         {props.item.name}
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <InputBox
           label="Barcode"
           value={barcode}
           setValue={handleBarcodeChange}
           onKeyDown={handleBarcodeKeyPress}
           placeholder="Press Ctrl+Space to generate barcode"
+          maxLength={15}
         />
         <InputBox label="Color" value={color} setValue={handleColorChange} />
         <InputBox
@@ -150,33 +152,37 @@ function ProductEditor(props: ProductEditorProps) {
         />
         <InputBox label="Cost" value={cost} setValue={handleCostChange} />
       </div>
-      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-2">
         <Button
           onClick={() =>
             props.updateProducts(props.item, "update", color, cost, invoice)
           }
-          className="text-sm text-center sm:text-start"
+          className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
+          <Save className="w-4 h-4" />
           Update
         </Button>
         <Button
           onClick={() =>
             props.updateProducts(props.item, "updateAll", color, cost, invoice)
           }
-          className="text-sm text-center sm:text-start"
+          className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
+          <Save className="w-4 h-4" />
           Update all
         </Button>
         <Button
           onClick={() => props.updateProducts(props.item, "remove")}
-          className="text-sm text-center sm:text-start"
+          className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
+          <Trash className="w-4 h-4" />
           Remove
         </Button>
         <Button
           onClick={() => props.updateProducts(props.item, "removeAll")}
-          className="text-sm text-center sm:text-start"
+          className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
+          <Trash className="w-4 h-4" />
           Remove all
         </Button>
       </div>
