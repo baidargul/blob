@@ -6,6 +6,17 @@ async function create() {
   return response.data;
 }
 
+async function toggleClose(id: string) {
+  const data = {
+    id: id,
+  };
+  const response: SERVER_RESPONSE = await axios.patch(
+    `/api/purchase/close`,
+    data
+  );
+  return response.data;
+}
+
 async function getPrevious(id: string) {
   const response: SERVER_RESPONSE = await axios.get(
     `/api/purchase/previous?id=${id}`
@@ -96,6 +107,7 @@ export const Purchase = {
     last: getLast,
   },
   create,
+  toggleClose,
   addProduct,
   updateProduct,
   deleteProduct,

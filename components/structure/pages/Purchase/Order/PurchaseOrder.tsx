@@ -203,6 +203,16 @@ const PurchaseOrder = (props: Props) => {
     }
   };
 
+  const handleCloseInvoice = async () => {
+    if (!purchaseOrder) return null;
+    const order = await serverActions.Purchase.toggleClose(purchaseOrder.id);
+
+    if (order.status === 200) {
+      setPurchaseOrder(order.data);
+      setProductList(order.data.products);
+    }
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
@@ -237,9 +247,7 @@ const PurchaseOrder = (props: Props) => {
               <Button onClick={handleCreateNewPurchaseOrder}>Save</Button>
             )}
             {purchaseOrder && purchaseOrder.closed === false && (
-              <Button onClick={handleCreateNewPurchaseOrder}>
-                Close order
-              </Button>
+              <Button onClick={handleCloseInvoice}>Close order</Button>
             )}
           </div>
           <div>
