@@ -12,6 +12,12 @@ import { product, purchase } from "@prisma/client";
 import { serverActions } from "@/serverActions/serverActions";
 import ProductOrderRow from "./ProductOrderRow";
 import { SERVER_RESPONSE } from "@/serverActions/internal/server";
+import {
+  ChevronFirst,
+  ChevronLast,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 type Props = {};
 
@@ -166,12 +172,28 @@ const PurchaseOrder = (props: Props) => {
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
         <div>
-          <Label
-            label="Purchase Order"
-            size="text-lg"
-            className="text-start text-2xl my-2"
-            color="text-interface-primary"
-          />
+          <div className="flex justify-between items-center pr-2">
+            <Label
+              label="Purchase Order"
+              size="text-lg"
+              className="text-start text-2xl my-2"
+              color="text-interface-primary"
+            />
+            <div className="flex gap-2">
+              <Button>
+                <ChevronFirst className="w-4 h-4" />
+              </Button>
+              <Button>
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <Button>
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+              <Button>
+                <ChevronLast className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
           <div className="flex gap-2 items-center ">
             {!purchaseOrder && (
               <Button onClick={handleCreateNewPurchaseOrder}>Create</Button>
