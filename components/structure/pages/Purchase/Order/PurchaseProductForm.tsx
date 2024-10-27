@@ -141,48 +141,48 @@ const PurchaseProductForm = (props: Props) => {
         />
       </div>
       <div>
-        <ScrollArea className="h-[43dvh] border rounded w-full p-2">
-          <div className="flex flex-col gap-2">
-            <div>
-              <InputBox
-                label="Color"
-                setValue={handleColorChange}
-                value={color}
-              />
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <InputBox
-                label="Invoice"
-                setValue={handleInvoiceChange}
-                value={invoice}
-              />
-              <InputBox label="Cost" setValue={handleCostChange} value={cost} />
-              <InputBox
-                label="Difference %"
-                readonly
-                value={isNaN(difference) ? 0 : difference}
-              />
-            </div>
-            <div className="flex gap-2 items-end">
-              <div className="w-full">
-                <InputBox
-                  label="Barcode"
-                  setValue={handleBarcodeChange}
-                  onKeyDown={handleBarcodeKeyPress}
-                  value={barcode}
-                  maxLength={15}
-                  placeholder="Press Ctrl+Space to generate barcode"
-                />
-              </div>
-              <Button
-                onClick={handleAddToCart}
-                className="h-9 w-20 text-center text-sm ml-auto"
-              >
-                Add
-              </Button>
-            </div>
+        {/* <ScrollArea className="h-[43dvh] border rounded w-full p-2"> */}
+        <div className="flex flex-col gap-2">
+          <div>
+            <InputBox
+              label="Color"
+              setValue={handleColorChange}
+              value={color}
+            />
           </div>
-        </ScrollArea>
+          <div className="grid grid-cols-3 gap-2">
+            <InputBox
+              label="Invoice"
+              setValue={handleInvoiceChange}
+              value={invoice}
+            />
+            <InputBox label="Cost" setValue={handleCostChange} value={cost} />
+            <InputBox
+              label="Difference %"
+              readonly
+              value={isNaN(difference) ? 0 : difference}
+            />
+          </div>
+          <div className="flex gap-2 items-end">
+            <div className="w-full">
+              <InputBox
+                label="Barcode"
+                setValue={handleBarcodeChange}
+                onKeyDown={handleBarcodeKeyPress}
+                value={barcode}
+                maxLength={15}
+                placeholder="Press Ctrl+Space to generate barcode"
+              />
+            </div>
+            <Button
+              onClick={handleAddToCart}
+              className="h-9 w-20 text-center text-sm ml-auto"
+            >
+              Add
+            </Button>
+          </div>
+        </div>
+        {/* </ScrollArea> */}
       </div>
     </div>
   );
