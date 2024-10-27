@@ -13,6 +13,7 @@ import { serverActions } from "@/serverActions/serverActions";
 import ProductOrderRow from "./ProductOrderRow";
 import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 import {
+  Check,
   ChevronFirst,
   ChevronLast,
   ChevronLeft,
@@ -218,12 +219,27 @@ const PurchaseOrder = (props: Props) => {
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
         <div>
           <div className="flex flex-col mb-2 lg:mb-0 lg:flex-row justify-between items-center lg:pr-2">
-            <Label
-              label="Purchase Order"
-              size="text-lg"
-              className="text-start text-2xl my-2"
-              color="text-interface-primary"
-            />
+            <div
+              className={`transition-all duration-800 ${
+                purchaseOrder && purchaseOrder.closed === true
+                  ? "bg-interface-primary group p-1 scale-75 flex gap-1 items-center -ml-4 px-4 rounded-md ring-2 ring-interface-primary ring-offset-2"
+                  : "bg-transparent"
+              }`}
+            >
+              {purchaseOrder && purchaseOrder.closed === true && (
+                <Check className="w-6 h-6 text-white group-hover:-rotate-12 transition-all duration-200" />
+              )}
+              <Label
+                label="Purchase Order"
+                size="text-lg"
+                className="text-start text-2xl my-2"
+                color={`${
+                  purchaseOrder && purchaseOrder.closed === true
+                    ? "text-white"
+                    : "text-interface-primary"
+                }`}
+              />
+            </div>
             <div className="flex gap-2">
               <Button onClick={handleFirstOrder}>
                 <ChevronFirst className="w-3 h-3" />
@@ -253,7 +269,13 @@ const PurchaseOrder = (props: Props) => {
           <div>
             <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
               <div></div>
-              <div className="">
+              <div
+                className={
+                  purchaseOrder && purchaseOrder.closed === true
+                    ? "opacity-50 pointer-events-none  cursor-not-allowed"
+                    : "opacity-100"
+                }
+              >
                 {purchaseOrder && purchaseOrder.id?.length > 0 && (
                   <PurchaseProductForm
                     purchaseOrder={purchaseOrder}
@@ -268,7 +290,13 @@ const PurchaseOrder = (props: Props) => {
         </div>
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel className="min-w-[280px]">
+      <ResizablePanel
+        className={`min-w-[280px] ${
+          purchaseOrder && purchaseOrder.closed === true
+            ? "opacity-50 pointer-events-none  cursor-not-allowed"
+            : "opacity-100"
+        }`}
+      >
         <ScrollArea className="h-[88dvh] pl-2">
           <div>
             <div className="flex flex-col gap-2">
