@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { Formatter } from "@/serverActions/internal/partials/formatters";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -12,35 +13,85 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
+    let purchase: any = {};
+    let previousPurchase: any = {};
+
+    // If `id` is not provided, get the most recent purchase
     if (!id) {
-      response.status = 400;
-      response.message = "ID is required";
-      return new Response(JSON.stringify(response));
-    }
-
-    const purchase = await prisma.purchase.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!purchase) {
-      response.status = 400;
-      response.message = "Purchase not found";
-      return new Response(JSON.stringify(response));
-    }
-
-    const previousPurchase = await prisma.purchase.findFirst({
-      where: {
-        createdAt: {
-          lt: purchase.createdAt || new Date(),
+      purchase = await prisma.purchase.findFirst({
+        orderBy: { createdAt: "desc" },
+        include: {
+          barcodeRegister: {
+            include: {
+              product: {
+                include: {
+                  brand: true,
+                  category: true,
+                  type: true,
+                },
+              },
+            },
+          },
         },
-      },
-    });
+      });
+      previousPurchase = purchase; // Set initial previous as current if no ID
+    } else {
+      // Retrieve specific purchase if `id` is provided
+      purchase = await prisma.purchase.findUnique({
+        where: { id },
+        include: {
+          barcodeRegister: {
+            include: {
+              product: {
+                include: {
+                  brand: true,
+                  category: true,
+                  type: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // Only proceed if `purchase` was successfully retrieved
+      if (purchase && purchase.createdAt) {
+        previousPurchase = await prisma.purchase.findFirst({
+          where: { createdAt: { lt: purchase.createdAt } },
+          orderBy: { createdAt: "desc" }, // To ensure fetching the immediate previous record
+          include: {
+            barcodeRegister: {
+              include: {
+                product: {
+                  include: {
+                    brand: true,
+                    category: true,
+                    type: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+    }
+
+    // Format `products` from `barcodeRegister` if `previousPurchase` was found
+    let products = [];
+    if (previousPurchase && previousPurchase.barcodeRegister) {
+      for (const item of previousPurchase.barcodeRegister) {
+        try {
+          const temp = await Formatter.getProduct(item.productId, item.barcode);
+          products.push(temp);
+        } catch (error: any) {
+          console.error("Error formatting product:", error.message);
+        }
+      }
+    }
 
     response.status = 200;
     response.message = "Previous purchase found successfully";
-    response.data = previousPurchase;
+    response.data = { ...previousPurchase, products };
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);

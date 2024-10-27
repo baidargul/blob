@@ -168,6 +168,45 @@ const PurchaseOrder = (props: Props) => {
     }
   };
 
+  const handleNextOrder = async () => {
+    if (!purchaseOrder) return null;
+    const order = await serverActions.Purchase.get.next(purchaseOrder.id);
+
+    console.log(order);
+    if (order.status === 200) {
+      setPurchaseOrder(order.data);
+      setProductList(order.data.products);
+    }
+  };
+  const handlePreviousOrder = async () => {
+    const order = await serverActions.Purchase.get.previous(
+      purchaseOrder && purchaseOrder.id ? purchaseOrder.id : ""
+    );
+
+    console.log(order);
+    if (order.status === 200) {
+      setPurchaseOrder(order.data);
+      setProductList(order.data.products);
+    }
+  };
+  const handleFirstOrder = async () => {
+    const order = await serverActions.Purchase.get.first();
+    console.log(order);
+    if (order.status === 200) {
+      setPurchaseOrder(order.data);
+      setProductList(order.data.products);
+    }
+  };
+  const handleLastOrder = async () => {
+    const order = await serverActions.Purchase.get.last();
+
+    console.log(order);
+    if (order.status === 200) {
+      setPurchaseOrder(order.data);
+      setProductList(order.data.products);
+    }
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
@@ -180,16 +219,16 @@ const PurchaseOrder = (props: Props) => {
               color="text-interface-primary"
             />
             <div className="flex gap-2">
-              <Button>
+              <Button onClick={handleFirstOrder}>
                 <ChevronFirst className="w-3 h-3" />
               </Button>
-              <Button>
+              <Button onClick={handlePreviousOrder}>
                 <ChevronLeft className="w-3 h-3" />
               </Button>
-              <Button>
+              <Button onClick={handleNextOrder}>
                 <ChevronRight className="w-3 h-3" />
               </Button>
-              <Button>
+              <Button onClick={handleLastOrder}>
                 <ChevronLast className="w-3 h-3" />
               </Button>
             </div>

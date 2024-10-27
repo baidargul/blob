@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { Formatter } from "@/serverActions/internal/partials/formatters";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -13,11 +14,35 @@ export async function GET(req: NextRequest) {
       orderBy: {
         createdAt: "asc",
       },
+      include: {
+        barcodeRegister: {
+          include: {
+            product: {
+              include: {
+                brand: true,
+                category: true,
+                type: true,
+              },
+            },
+          },
+        },
+      },
     });
+
+    let products = [];
+    if (purchase) {
+      for (const item of purchase?.barcodeRegister) {
+        const temp = await Formatter.getProduct(
+          item.productId,
+          item.barcode || ""
+        );
+        products.push(temp);
+      }
+    }
 
     response.status = 200;
     response.message = "Purchase found successfully";
-    response.data = purchase;
+    response.data = { ...purchase, products: products };
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);
