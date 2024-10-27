@@ -13,7 +13,8 @@ type Props = {
     barcode: string,
     color?: string,
     cost?: number,
-    invoice?: number
+    invoice?: number,
+    setWait?: any
   ) => void;
 };
 
@@ -83,7 +84,8 @@ type ProductEditorProps = {
     barcode: string,
     color?: string,
     cost?: number,
-    invoice?: number
+    invoice?: number,
+    setWait?: any
   ) => void;
 };
 
@@ -92,6 +94,7 @@ function ProductEditor(props: ProductEditorProps) {
   const [color, setColor] = useState("");
   const [cost, setCost] = useState(0);
   const [invoice, setInvoice] = useState(0);
+  const [isWorking, setIsWorking] = useState(false);
 
   useEffect(() => {
     setBarcode(props.item.barcodeRegister[0].barcode);
@@ -129,6 +132,20 @@ function ProductEditor(props: ProductEditorProps) {
     }
   };
 
+  const executeUpdateFunction = async (
+    command: "update" | "updateAll" | "remove" | "removeAll"
+  ) => {
+    await props.updateProducts(
+      props.item,
+      command,
+      barcode,
+      color,
+      cost,
+      invoice,
+      setIsWorking
+    );
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="text-xl text-interface-text font-bold flex gap-1 items-center">
@@ -145,57 +162,55 @@ function ProductEditor(props: ProductEditorProps) {
           onKeyDown={handleBarcodeKeyPress}
           placeholder="Press Ctrl+Space to generate barcode"
           maxLength={15}
+          readonly={isWorking}
         />
-        <InputBox label="Color" value={color} setValue={handleColorChange} />
+        <InputBox
+          label="Color"
+          value={color}
+          setValue={handleColorChange}
+          readonly={isWorking}
+        />
         <InputBox
           label="Invoice"
           value={invoice}
           setValue={handleInvoiceChange}
+          readonly={isWorking}
         />
-        <InputBox label="Cost" value={cost} setValue={handleCostChange} />
+        <InputBox
+          label="Cost"
+          value={cost}
+          setValue={handleCostChange}
+          readonly={isWorking}
+        />
       </div>
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-2">
         <Button
-          onClick={() =>
-            props.updateProducts(
-              props.item,
-              "update",
-              barcode,
-              color,
-              cost,
-              invoice
-            )
-          }
+          disabled={isWorking}
+          onClick={() => executeUpdateFunction("update")}
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
           <Save className="w-4 h-4" />
           Update
         </Button>
         <Button
-          onClick={() =>
-            props.updateProducts(
-              props.item,
-              "updateAll",
-              barcode,
-              color,
-              cost,
-              invoice
-            )
-          }
+          disabled={isWorking}
+          onClick={() => executeUpdateFunction("updateAll")}
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
           <Save className="w-4 h-4" />
           Update all
         </Button>
         <Button
-          onClick={() => props.updateProducts(props.item, "remove", barcode)}
+          disabled={isWorking}
+          onClick={() => executeUpdateFunction("remove")}
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
           <Trash className="w-4 h-4" />
           Remove
         </Button>
         <Button
-          onClick={() => props.updateProducts(props.item, "removeAll", barcode)}
+          disabled={isWorking}
+          onClick={() => executeUpdateFunction("removeAll")}
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
           <Trash className="w-4 h-4" />

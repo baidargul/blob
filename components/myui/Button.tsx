@@ -3,6 +3,7 @@ import React from "react";
 type Props = {
   children?: React.ReactNode;
   variant?: "primary" | "secondary";
+  disabled?: boolean;
   className?: string;
   isBusy?: boolean;
   onClick?: any;
@@ -33,7 +34,9 @@ const Button = (props: Props) => {
       onClick={props.onClick ? props.onClick : null}
       className={`py-2 px-4 tracking-wide rounded cursor-pointer transition-all duration-500 ${style} ${
         props.className
-      } ${props.isBusy && "cursor-not-allowed animate-pulse"}`}
+      } ${props.isBusy && "cursor-not-allowed animate-pulse"} ${
+        props.disabled && props.disabled === true ? "opacity-40" : "opacity-100"
+      }`}
     >
       {props.children ? props.children : "Button"}
     </div>

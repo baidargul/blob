@@ -58,8 +58,12 @@ const PurchaseOrder = (props: Props) => {
     barcode: string,
     color?: string,
     cost?: number,
-    invoice?: number
+    invoice?: number,
+    setWait?: any
   ) => {
+    if (setWait) {
+      setWait(true);
+    }
     const temp: any = productList;
 
     // Helper function to check if two products are the same
@@ -153,6 +157,9 @@ const PurchaseOrder = (props: Props) => {
 
     // Update the state with the modified product list
     setProductList(newData);
+    if (setWait) {
+      setWait(false);
+    }
   };
 
   return (
