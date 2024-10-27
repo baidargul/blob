@@ -6,6 +6,30 @@ async function create() {
   return response.data;
 }
 
+async function getPrevious(id: string) {
+  const response: SERVER_RESPONSE = await axios.get(
+    `/api/purchase/previous?id=${id}`
+  );
+  return response.data;
+}
+
+async function getNext(id: string) {
+  const response: SERVER_RESPONSE = await axios.get(
+    `/api/purchase/next?id=${id}`
+  );
+  return response.data;
+}
+
+async function getFirst() {
+  const response: SERVER_RESPONSE = await axios.get("/api/purchase/first");
+  return response.data;
+}
+
+async function getLast() {
+  const response: SERVER_RESPONSE = await axios.get("/api/purchase/last");
+  return response.data;
+}
+
 async function addProduct(
   purchaseId: string,
   productId: string,
@@ -65,6 +89,12 @@ async function deleteProduct(id: string) {
 }
 
 export const Purchase = {
+  get: {
+    previous: getPrevious,
+    next: getNext,
+    first: getFirst,
+    last: getLast,
+  },
   create,
   addProduct,
   updateProduct,
