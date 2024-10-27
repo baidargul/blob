@@ -40,6 +40,7 @@ const PurchaseProductForm = (props: Props) => {
           invoice,
           barcode
         );
+        setBarcode("");
       }
     }
   };
