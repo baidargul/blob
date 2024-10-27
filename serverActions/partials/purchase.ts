@@ -29,7 +29,36 @@ async function addProduct(
   return response.data;
 }
 
+async function updateProduct(
+  id: string,
+  barcode: string,
+  color?: string,
+  cost?: number,
+  invoice?: number
+) {
+  const data = {
+    id,
+    barcode,
+    color: color ? color : "",
+    cost,
+    invoice,
+  };
+  if (!barcode) {
+    return {
+      status: 400,
+      message: "Barcode required!",
+      data: null,
+    };
+  }
+  const response: SERVER_RESPONSE = await axios.patch(
+    "/api/purchase/product",
+    data
+  );
+  return response.data;
+}
+
 export const Purchase = {
   create,
   addProduct,
+  updateProduct,
 };

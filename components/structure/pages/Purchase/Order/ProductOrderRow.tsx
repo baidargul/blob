@@ -10,6 +10,7 @@ type Props = {
   updateProducts: (
     item: any,
     command: "update" | "updateAll" | "remove" | "removeAll",
+    barcode: string,
     color?: string,
     cost?: number,
     invoice?: number
@@ -79,6 +80,7 @@ type ProductEditorProps = {
   updateProducts: (
     item: any,
     command: "update" | "updateAll" | "remove" | "removeAll",
+    barcode: string,
     color?: string,
     cost?: number,
     invoice?: number
@@ -155,7 +157,14 @@ function ProductEditor(props: ProductEditorProps) {
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-2">
         <Button
           onClick={() =>
-            props.updateProducts(props.item, "update", color, cost, invoice)
+            props.updateProducts(
+              props.item,
+              "update",
+              barcode,
+              color,
+              cost,
+              invoice
+            )
           }
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
@@ -164,7 +173,14 @@ function ProductEditor(props: ProductEditorProps) {
         </Button>
         <Button
           onClick={() =>
-            props.updateProducts(props.item, "updateAll", color, cost, invoice)
+            props.updateProducts(
+              props.item,
+              "updateAll",
+              barcode,
+              color,
+              cost,
+              invoice
+            )
           }
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
@@ -172,14 +188,14 @@ function ProductEditor(props: ProductEditorProps) {
           Update all
         </Button>
         <Button
-          onClick={() => props.updateProducts(props.item, "remove")}
+          onClick={() => props.updateProducts(props.item, "remove", barcode)}
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
           <Trash className="w-4 h-4" />
           Remove
         </Button>
         <Button
-          onClick={() => props.updateProducts(props.item, "removeAll")}
+          onClick={() => props.updateProducts(props.item, "removeAll", barcode)}
           className="text-sm text-center sm:text-start flex gap-1 items-center justify-center sm:justify-normal"
         >
           <Trash className="w-4 h-4" />

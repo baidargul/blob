@@ -11,6 +11,7 @@ import Button from "@/components/myui/Button";
 import { product, purchase } from "@prisma/client";
 import { serverActions } from "@/serverActions/serverActions";
 import ProductOrderRow from "./ProductOrderRow";
+import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 
 type Props = {};
 
@@ -54,6 +55,7 @@ const PurchaseOrder = (props: Props) => {
   const updateProducts = async (
     item: any,
     command: "update" | "updateAll" | "remove" | "removeAll",
+    barcode: string,
     color?: string,
     cost?: number,
     invoice?: number
@@ -84,14 +86,40 @@ const PurchaseOrder = (props: Props) => {
               target.barcodeRegister[0].cost = cost;
               target.barcodeRegister[0].invoice = invoice;
             }
-            newData.push(target);
+            const res: SERVER_RESPONSE =
+              await serverActions.Purchase.updateProduct(
+                target.barcodeRegister[0].id,
+                barcode,
+                color,
+                cost,
+                invoice
+              );
+            if (
+              res.status === 200 ||
+              res.message === "Barcode already alloted to other product!"
+            ) {
+              newData.push(target);
+            }
             break;
 
           case "updateAll":
             target.barcodeRegister[0].color = color;
             target.barcodeRegister[0].cost = cost;
             target.barcodeRegister[0].invoice = invoice;
-            newData.push(target);
+            const ress: SERVER_RESPONSE =
+              await serverActions.Purchase.updateProduct(
+                target.barcodeRegister[0].id,
+                barcode,
+                color,
+                cost,
+                invoice
+              );
+            if (
+              ress.status === 200 ||
+              ress.message === "Barcode already alloted to other product!"
+            ) {
+              newData.push(target);
+            }
             break;
 
           case "remove":
