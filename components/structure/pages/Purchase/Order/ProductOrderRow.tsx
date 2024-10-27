@@ -6,12 +6,24 @@ import React, { useEffect, useState } from "react";
 type Props = {
   item: any;
   index: number;
+  updateProducts: (
+    item: any,
+    command: "update" | "updateAll" | "remove" | "removeAll",
+    color?: string,
+    cost?: number,
+    invoice?: number
+  ) => void;
 };
 
 const ProductOrderRow = (props: Props) => {
   return (
     <DialogProvider
-      content={<ProductEditor item={{ ...props.item }} />}
+      content={
+        <ProductEditor
+          item={{ ...props.item }}
+          updateProducts={props.updateProducts}
+        />
+      }
       title="Edit Product"
     >
       <div className="p-2 bg-white min-w-fit lg:w-full rounded flex gap-1 lg:items-start border border-transparent hover:bg-interface-secondry/30 hover:border-interface-secondry transition-all duration-200 cursor-pointer">
@@ -57,18 +69,29 @@ const ProductOrderRow = (props: Props) => {
 
 export default ProductOrderRow;
 
-function ProductEditor({ item }: any) {
+type ProductEditorProps = {
+  item: any;
+  updateProducts: (
+    item: any,
+    command: "update" | "updateAll" | "remove" | "removeAll",
+    color?: string,
+    cost?: number,
+    invoice?: number
+  ) => void;
+};
+
+function ProductEditor(props: ProductEditorProps) {
   const [barcode, setBarcode] = useState("");
   const [color, setColor] = useState("");
   const [cost, setCost] = useState(0);
   const [invoice, setInvoice] = useState(0);
 
   useEffect(() => {
-    setBarcode(item.barcodeRegister[0].barcode);
-    setColor(item.barcodeRegister[0].color);
-    setCost(item.barcodeRegister[0].cost);
-    setInvoice(item.barcodeRegister[0].invoice);
-  }, [item]);
+    setBarcode(props.item.barcodeRegister[0].barcode);
+    setColor(props.item.barcodeRegister[0].color);
+    setCost(props.item.barcodeRegister[0].cost);
+    setInvoice(props.item.barcodeRegister[0].invoice);
+  }, [props.item]);
 
   const handleBarcodeChange = (value: string) => {
     setBarcode(value);
@@ -101,7 +124,9 @@ function ProductEditor({ item }: any) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-xl text-interface-text font-bold">{item.name}</div>
+      <div className="text-xl text-interface-text font-bold">
+        {props.item.name}
+      </div>
       <div className="grid grid-cols-2 gap-2">
         <InputBox
           label="Barcode"
@@ -119,12 +144,32 @@ function ProductEditor({ item }: any) {
         <InputBox label="Cost" value={cost} setValue={handleCostChange} />
       </div>
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-2">
-        <Button className="text-sm text-center sm:text-start">Update</Button>
-        <Button className="text-sm text-center sm:text-start">
+        <Button
+          onClick={() =>
+            props.updateProducts(props.item, "update", color, cost, invoice)
+          }
+          className="text-sm text-center sm:text-start"
+        >
+          Update
+        </Button>
+        <Button
+          onClick={() =>
+            props.updateProducts(props.item, "updateAll", color, cost, invoice)
+          }
+          className="text-sm text-center sm:text-start"
+        >
           Update all
         </Button>
-        <Button className="text-sm text-center sm:text-start">Remove</Button>
-        <Button className="text-sm text-center sm:text-start">
+        <Button
+          onClick={() => props.updateProducts(props.item, "remove")}
+          className="text-sm text-center sm:text-start"
+        >
+          Remove
+        </Button>
+        <Button
+          onClick={() => props.updateProducts(props.item, "removeAll")}
+          className="text-sm text-center sm:text-start"
+        >
           Remove all
         </Button>
       </div>

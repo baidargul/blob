@@ -51,6 +51,75 @@ const PurchaseOrder = (props: Props) => {
     }
   };
 
+  const updateProducts = async (
+    item: any,
+    command: "update" | "updateAll" | "remove" | "removeAll",
+    color?: string,
+    cost?: number,
+    invoice?: number
+  ) => {
+    const temp: any = productList;
+
+    // Helper function to check if two products are the same
+    function isSameProduct(target: any) {
+      return (
+        target.name === item.name &&
+        target.brand.name === item.brand.name &&
+        target.category.name === item.category.name &&
+        target.type.name === item.type.name
+      );
+    }
+
+    let newData = [];
+
+    for (const target of temp) {
+      if (isSameProduct(target)) {
+        switch (command) {
+          case "update":
+            if (
+              target.barcodeRegister[0].barcode ===
+              item.barcodeRegister[0].barcode
+            ) {
+              target.barcodeRegister[0].color = color;
+              target.barcodeRegister[0].cost = cost;
+              target.barcodeRegister[0].invoice = invoice;
+            }
+            newData.push(target);
+            break;
+
+          case "updateAll":
+            target.barcodeRegister[0].color = color;
+            target.barcodeRegister[0].cost = cost;
+            target.barcodeRegister[0].invoice = invoice;
+            newData.push(target);
+            break;
+
+          case "remove":
+            if (
+              target.barcodeRegister[0].barcode !==
+              item.barcodeRegister[0].barcode
+            ) {
+              newData.push(target);
+            }
+            break;
+
+          case "removeAll":
+            // Skip adding this item to newData to remove it from the list
+            break;
+
+          default:
+            newData.push(target);
+        }
+      } else {
+        // For non-matching products, always add them to newData
+        newData.push(target);
+      }
+    }
+
+    // Update the state with the modified product list
+    setProductList(newData);
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
@@ -104,6 +173,7 @@ const PurchaseOrder = (props: Props) => {
                       item={item}
                       index={index}
                       key={`${item.id}-${index}`}
+                      updateProducts={updateProducts}
                     />
                   );
                 })}
