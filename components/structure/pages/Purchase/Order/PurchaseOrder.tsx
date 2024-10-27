@@ -181,16 +181,16 @@ const PurchaseOrder = (props: Props) => {
             />
             <div className="flex gap-2">
               <Button>
-                <ChevronFirst className="w-4 h-4" />
+                <ChevronFirst className="w-3 h-3" />
               </Button>
               <Button>
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-3 h-3" />
               </Button>
               <Button>
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-3 h-3" />
               </Button>
               <Button>
-                <ChevronLast className="w-4 h-4" />
+                <ChevronLast className="w-3 h-3" />
               </Button>
             </div>
           </div>
