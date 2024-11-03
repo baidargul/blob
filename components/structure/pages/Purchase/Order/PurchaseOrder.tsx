@@ -20,12 +20,14 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import InputBox from "@/components/myui/InputBox";
 
 type Props = {};
 
 const PurchaseOrder = (props: Props) => {
   const [purchaseOrder, setPurchaseOrder] = useState<purchase | null>(null);
   const [productList, setProductList] = useState<product[] | any | null>(null);
+  const [searchText, setSearchText] = useState<string>("");
 
   const handleCreateNewPurchaseOrder = async () => {
     const purchase = await serverActions.Purchase.create();
@@ -215,6 +217,10 @@ const PurchaseOrder = (props: Props) => {
     }
   };
 
+  const handleSearchProduct = (value: string) => {
+    setSearchText(value);
+  };
+
   const sumTotal = () => {
     let total = 0;
     if (productList) {
@@ -313,12 +319,84 @@ const PurchaseOrder = (props: Props) => {
             : "opacity-100"
         }`}
       >
+        <div className="p-2 pr-0">
+          <InputBox
+            label="Search"
+            placeholder="Search Product"
+            setValue={handleSearchProduct}
+            value={searchText}
+          />
+        </div>
         <ScrollArea className="h-[88dvh] pl-2">
           <div>
             <div className="flex flex-col gap-2">
               {productList &&
                 productList.length > 0 &&
                 productList.map((item: any, index: number) => {
+
+                  let isExists = false;
+
+                  if (
+                    item.name.toLowerCase().includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.brand.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.brand.description?
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.barcodeRegister[0].barcode
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.category.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.category.description &&  item.category.description.toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.price.toLowerCase().includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.cost.toLowerCase().includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (!isExists) {
+                    return null;
+                  }
+
                   return (
                     <ProductOrderRow
                       item={item}
