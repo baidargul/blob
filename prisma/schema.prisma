@@ -75,17 +75,18 @@ model type {
 }
 
 model barcodeRegister {
-  id         String   @id @default(uuid())
+  id         String      @id @default(uuid())
   productId  String
   color      String?
-  cost       Decimal? @default(0) @db.Decimal
-  invoice    Decimal? @default(0) @db.Decimal
-  barcode    String? @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
+  cost       Decimal?    @default(0) @db.Decimal
+  invoice    Decimal?    @default(0) @db.Decimal
+  barcode    String?     @unique
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now())
   purchaseId String
-  product    product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  purchase   purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product    product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  purchase   purchase    @relation(fields: [purchaseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  inventory  inventory[]
 }
 
 model purchase {
@@ -97,4 +98,12 @@ model purchase {
   closed          Boolean?          @default(false)
   purchaseDate    DateTime?         @default(now())
   barcodeRegister barcodeRegister[]
+}
+
+model inventory {
+  id                String          @id @default(uuid())
+  barcodeRegisterId String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @default(now())
+  barcodeRegister   barcodeRegister @relation(fields: [barcodeRegisterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

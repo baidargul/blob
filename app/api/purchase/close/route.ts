@@ -18,6 +18,13 @@ export async function PATCH(req: NextRequest) {
     }
 
     let purchase: any = await prisma.purchase.findUnique({
+      include: {
+        barcodeRegister: {
+          include: {
+            product: true,
+          },
+        },
+      },
       where: {
         id: data.id,
       },
@@ -27,6 +34,14 @@ export async function PATCH(req: NextRequest) {
       response.status = 404;
       response.message = "Purchase not found";
       return new Response(JSON.stringify(response));
+    }
+
+    for (const item of purchase.barcodeRegister) {
+      await prisma.inventory.create({
+        data: {
+          barcodeRegisterId: item.id,
+        },
+      });
     }
 
     const temp = purchase.closed === true ? false : true;
