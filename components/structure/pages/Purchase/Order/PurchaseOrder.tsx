@@ -333,7 +333,6 @@ const PurchaseOrder = (props: Props) => {
               {productList &&
                 productList.length > 0 &&
                 productList.map((item: any, index: number) => {
-
                   let isExists = false;
 
                   if (
@@ -351,7 +350,7 @@ const PurchaseOrder = (props: Props) => {
                   }
 
                   if (
-                    item.brand.description?
+                    item.brand.description
                       .toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
@@ -375,7 +374,9 @@ const PurchaseOrder = (props: Props) => {
                   }
 
                   if (
-                    item.category.description &&  item.category.description.toLowerCase()
+                    item.category.description &&
+                    item.category.description
+                      .toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
