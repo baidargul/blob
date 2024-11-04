@@ -19,7 +19,11 @@ export const getProduct = async (id: string, barcode: string) => {
         },
         category: true,
         brand: true,
-        productImages: true,
+        productImages: {
+          include: {
+            images: true,
+          },
+        },
         type: true,
       },
     });
@@ -31,7 +35,11 @@ export const getProduct = async (id: string, barcode: string) => {
       include: {
         category: true,
         brand: true,
-        productImages: true,
+        productImages: {
+          include: {
+            images: true,
+          },
+        },
         type: true,
       },
     });
