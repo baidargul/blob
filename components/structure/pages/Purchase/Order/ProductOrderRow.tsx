@@ -1,6 +1,7 @@
 import Button from "@/components/myui/Button";
 import DialogProvider from "@/components/myui/DialogProvider";
 import InputBox from "@/components/myui/InputBox";
+import Tag from "@/components/myui/Tag";
 import { formatCurrency } from "@/lib/utils";
 import { ColorWheelIcon } from "@radix-ui/react-icons";
 import {
@@ -46,9 +47,7 @@ const ProductOrderRow = (props: Props) => {
           <div className="font-semibold tracking-tight text-interface-text/80 text-sm flex justify-between items-center">
             <div className="text-base transition-all duration-500 tracking-widest lg:tracking-normal flex lg:flex-row flex-row-reverse items-center gap-1">
               {props.item.name}
-              <span className="text-xs -ml-1 lg:ml-0 p-1 bg-interface-secondry/30 lg:rounded-md scale-90 lg:px-2">
-                {` ${String(props.item.brand.name).toLocaleUpperCase()}`}
-              </span>
+              <Tag value={String(props.item.brand.name).toLocaleUpperCase()} />
             </div>
             <div className="text-xs tracking-widest hidden lg:block">
               <div>
