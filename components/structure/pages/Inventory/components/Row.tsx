@@ -106,9 +106,15 @@ type Props = {
 const Row = (props: Props) => {
   console.log(props.product);
 
+  const ItemAge = calculateStockAge(
+    new Date(
+      props.product.barcodeRegister[0].inventory[0].createdAt.toLocaleLowerCase()
+    ).toDateString()
+  );
+
   return (
     <div
-      className={`py-2 text-sm min-w-[400px] grid grid-cols-[.0fr_2fr_2fr_1fr]  md:grid-cols-[.3fr_2fr_1fr_1fr_2fr] lg:grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr]  truncate justify-items-center place-items-center ${
+      className={`py-2 text-sm min-w-[440px] grid grid-cols-[.0fr_2fr_2fr_1fr_.2fr_.2fr]  md:grid-cols-[.3fr_2fr_1fr_1fr_2fr_.2fr_.2fr] lg:grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr_.2fr]  truncate justify-items-center place-items-center ${
         props.index === 1 ? "border-b" : "border-y"
       }`}
     >
@@ -172,8 +178,28 @@ const Row = (props: Props) => {
           )}
         </div>
       </div>
+      <div className="ml-auto opacity-50 text-xs pr-2">{ItemAge}</div>
     </div>
   );
 };
 
 export default Row;
+
+function calculateStockAge(dateString: string) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  if (days >= 0 && days < 30) {
+    return `${days === 1 ? "1 day" : `${days} days`}`;
+  } else if (days >= 30 && days < 365) {
+    const months = Math.floor(days / 30);
+    return `${months} months`;
+  } else if (days >= 365) {
+    const years = Math.floor(days / 365);
+    return `${years} years`;
+  } else {
+    return "Unknown";
+  }
+}
