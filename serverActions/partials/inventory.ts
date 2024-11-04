@@ -7,4 +7,12 @@ async function list() {
   return response.data;
 }
 
-export const Inventory = {};
+async function getByBarcode(barcode: string) {
+  const response = await axios.get(`${apiPath}/${barcode}?id=${barcode}`);
+  return response.data;
+}
+
+export const Inventory = {
+  list,
+  getByBarcode,
+};
