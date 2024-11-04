@@ -1,5 +1,6 @@
 import BrandList from "@/components/structure/pages/Brand/BrandList";
 import CategoryList from "@/components/structure/pages/Category/CategoryList";
+import InventoryManage from "@/components/structure/pages/Inventory/InventoryManage";
 import ProductList from "@/components/structure/pages/Product/List";
 import PurchaseOrder from "@/components/structure/pages/Purchase/Order/PurchaseOrder";
 import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
@@ -20,7 +21,8 @@ export type PageName =
   | "BrandList"
   | "TypeList"
   | "CategoryList"
-  | "PurchaseOrder";
+  | "PurchaseOrder"
+  | "InventoryList";
 
 type PageType = {
   page: PageState;
@@ -57,6 +59,11 @@ const pages: PageState[] = [
     name: "PurchaseOrder",
     description: "Create purchase order",
     page: <PurchaseOrder />,
+  },
+  {
+    name: "InventoryList",
+    description: "Manage inventory",
+    page: <InventoryManage />,
   },
 ];
 
