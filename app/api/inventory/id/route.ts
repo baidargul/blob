@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+    const id = searchParams.get("inventoryId");
 
     if (!id) {
       response.status = 400;

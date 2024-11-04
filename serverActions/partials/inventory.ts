@@ -13,14 +13,12 @@ async function getByBarcode(barcode: string) {
 }
 
 async function getByName(name: string) {
-  const response = await axios.get(`${apiPath}/${name}?name=${name}`);
+  const response = await axios.get(`${apiPath}/name?name=${name}`);
   return response.data;
 }
 
 async function getById(inventoryId: string) {
-  const response = await axios.get(
-    `${apiPath}/${inventoryId}?id=${inventoryId}`
-  );
+  const response = await axios.get(`${apiPath}/id?inventoryId=${inventoryId}`);
   return response.data;
 }
 
