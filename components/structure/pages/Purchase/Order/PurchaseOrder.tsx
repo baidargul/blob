@@ -342,6 +342,14 @@ const PurchaseOrder = (props: Props) => {
                   }
 
                   if (
+                    item.type.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
                     item.brand.name
                       .toLowerCase()
                       .includes(searchText.toLowerCase())
