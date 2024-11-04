@@ -108,11 +108,17 @@ const Row = (props: Props) => {
 
   return (
     <div
-      className={`py-2 grid grid-cols-[.2fr_.4fr_.2fr_.4fr_.4fr_.4fr] truncate justify-items-start ${
+      className={`py-2 grid grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr]  truncate justify-items-center ${
         props.index === 1 ? "border-b" : "border-y"
       }`}
     >
       {<div className="opacity-50">{props.index} - </div>}
+      <div>
+        <Tag
+          value={`${props.product.category.name}/${props.product.type.name}`}
+          className="tracking-widest"
+        />
+      </div>
       <div title={props.product.name} className="flex gap-1 items-center">
         <span>{props.product.name}</span>
         <Tag value={props.product.brand.name.toLocaleUpperCase()} />
@@ -121,13 +127,13 @@ const Row = (props: Props) => {
       <div>{props.product.barcodeRegister[0].barcode}</div>
       <div className="ml-auto">
         {" "}
-        {formatCurrency(parseInt(props.product.barcodeRegister[0].cost), "Rs")}
-      </div>
-      <div className="ml-auto">
         {formatCurrency(
           parseInt(props.product.barcodeRegister[0].invoice),
           "Rs"
         )}
+      </div>
+      <div className="ml-auto">
+        {formatCurrency(parseInt(props.product.barcodeRegister[0].cost), "Rs")}
       </div>
     </div>
   );
