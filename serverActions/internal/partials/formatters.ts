@@ -28,6 +28,12 @@ export const getProduct = async (id: string, barcode: string) => {
       where: {
         id: id,
       },
+      include: {
+        category: true,
+        brand: true,
+        productImages: true,
+        type: true,
+      },
     });
   }
   return finalProduct;
