@@ -23,8 +23,8 @@ const InventoryManage = (props: Props) => {
       <div>
         {inventory.map((item: any, index: number) => {
           return (
-            <div key={item.id}>
-              <Row key={item.id} product={item} index={index + 1} />
+            <div key={item.id} className="even:bg-white/80">
+              <Row product={item} index={index + 1} />
             </div>
           );
         })}

@@ -165,7 +165,7 @@ const Row = (props: Props) => {
         </div>
       </div>
       <div className="ml-auto">
-        <div className="hidden lg:block">
+        <div className="hidden lg:block pr-2">
           {formatCurrency(
             parseInt(props.product.barcodeRegister[0].cost),
             "Rs"
