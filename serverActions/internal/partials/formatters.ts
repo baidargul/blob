@@ -1,25 +1,34 @@
 import prisma from "@/lib/prisma";
 
 export const getProduct = async (id: string, barcode: string) => {
-  const finalProduct = await prisma.product.findUnique({
-    where: {
-      id: id,
-    },
-    include: {
-      barcodeRegister: {
-        where: {
-          barcode: barcode,
-        },
-        include: {
-          purchase: true,
-        },
+  let finalProduct = null;
+  if (barcode.length > 0) {
+    finalProduct = await prisma.product.findUnique({
+      where: {
+        id: id,
       },
-      category: true,
-      brand: true,
-      productImages: true,
-      type: true,
-    },
-  });
+      include: {
+        barcodeRegister: {
+          where: {
+            barcode: barcode,
+          },
+          include: {
+            purchase: true,
+          },
+        },
+        category: true,
+        brand: true,
+        productImages: true,
+        type: true,
+      },
+    });
+  } else {
+    finalProduct = await prisma.product.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
   return finalProduct;
 };
 

@@ -12,7 +12,13 @@ async function getByBarcode(barcode: string) {
   return response.data;
 }
 
+async function getByName(name: string) {
+  const response = await axios.get(`${apiPath}/${name}?name=${name}`);
+  return response.data;
+}
+
 export const Inventory = {
   list,
   getByBarcode,
+  getByName,
 };
