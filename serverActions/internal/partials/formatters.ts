@@ -14,6 +14,7 @@ export const getProduct = async (id: string, barcode: string) => {
           },
           include: {
             purchase: true,
+            inventory: true,
           },
         },
         category: true,

@@ -27,7 +27,11 @@ export async function GET(req: NextRequest) {
         },
       },
       include: {
-        barcodeRegister: true,
+        barcodeRegister: {
+          include: {
+            inventory: true,
+          },
+        },
       },
       orderBy: {
         name: "asc",
