@@ -108,32 +108,69 @@ const Row = (props: Props) => {
 
   return (
     <div
-      className={`py-2 grid grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr]  truncate justify-items-center ${
+      className={`py-2 text-sm min-w-[400px] grid grid-cols-[.0fr_2fr_2fr_1fr]  md:grid-cols-[.3fr_2fr_1fr_1fr_2fr] lg:grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr]  truncate justify-items-center place-items-center ${
         props.index === 1 ? "border-b" : "border-y"
       }`}
     >
       {<div className="opacity-50">{props.index} - </div>}
-      <div>
+      <div className="hidden lg:block">
         <Tag
           value={`${props.product.category.name}/${props.product.type.name}`}
           className="tracking-widest"
         />
       </div>
       <div title={props.product.name} className="flex gap-1 items-center">
-        <span>{props.product.name}</span>
-        <Tag value={props.product.brand.name.toLocaleUpperCase()} />
+        <div className="hidden md:block">{props.product.name}</div>
+        <div className="md:hidden flex flex-col text-center justify-center">
+          <div>{props.product.name}</div>
+          <div className="text-xs tracking-wide scale-90">
+            {props.product.brand.name.toLocaleUpperCase()} -{" "}
+            {props.product.category.name.toLocaleUpperCase()}
+          </div>
+        </div>
+        <div className="hidden md:block">
+          <Tag value={props.product.brand.name.toLocaleUpperCase()} />
+        </div>
       </div>
-      <div>{props.product.barcodeRegister[0].color}</div>
-      <div>{props.product.barcodeRegister[0].barcode}</div>
-      <div className="ml-auto">
-        {" "}
-        {formatCurrency(
-          parseInt(props.product.barcodeRegister[0].invoice),
-          "Rs"
-        )}
+      <div className="hidden md:block">
+        {props.product.barcodeRegister[0].color}
+      </div>
+      <div className="tracking-widest">
+        {props.product.barcodeRegister[0].barcode}
+        <div className="md:hidden text-xs tracking-wide scale-90 -ml-2">
+          {props.product.type.name.toLocaleUpperCase()} |{" "}
+          {props.product.barcodeRegister[0].color.toLocaleUpperCase()}
+        </div>
       </div>
       <div className="ml-auto">
-        {formatCurrency(parseInt(props.product.barcodeRegister[0].cost), "Rs")}
+        <div className="hidden lg:block">
+          {formatCurrency(
+            parseInt(props.product.barcodeRegister[0].invoice),
+            "Rs"
+          )}
+        </div>
+        <div className="lg:hidden flex flex-col text-sm tracking-widest gap-1">
+          <div className="border-b">
+            {formatCurrency(
+              parseInt(props.product.barcodeRegister[0].invoice),
+              "Rs"
+            )}
+          </div>
+          <div className="">
+            {formatCurrency(
+              parseInt(props.product.barcodeRegister[0].cost),
+              "Rs"
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="ml-auto">
+        <div className="hidden lg:block">
+          {formatCurrency(
+            parseInt(props.product.barcodeRegister[0].cost),
+            "Rs"
+          )}
+        </div>
       </div>
     </div>
   );
