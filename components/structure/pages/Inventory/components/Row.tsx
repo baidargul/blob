@@ -114,11 +114,15 @@ const Row = (props: Props) => {
 
   return (
     <div
-      className={`py-2 text-sm min-w-[440px] grid grid-cols-[.0fr_2fr_2fr_1fr_.2fr_.2fr]  md:grid-cols-[.3fr_2fr_1fr_1fr_2fr_.2fr_.2fr] lg:grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr_.2fr]  truncate justify-items-center place-items-center ${
+      className={`py-2 group cursor-pointer text-sm min-w-[440px] grid grid-cols-[.0fr_2fr_2fr_1fr_.2fr_.2fr]  md:grid-cols-[.3fr_2fr_1fr_1fr_2fr_.2fr_.2fr] lg:grid-cols-[.5fr_1fr_2fr_1fr_1fr_1fr_1fr_.2fr]  truncate justify-items-center place-items-center ${
         props.index === 1 ? "border-b" : "border-y"
       }`}
     >
-      {<div className="opacity-50">{props.index} - </div>}
+      {
+        <div className="opacity-50 group-hover:opacity-100 group-hover:font-bold group-hover:text-black/80">
+          {props.index} -{" "}
+        </div>
+      }
       <div className="hidden lg:block">
         <Tag
           value={`${props.product.category.name}/${props.product.type.name}`}
@@ -126,7 +130,9 @@ const Row = (props: Props) => {
         />
       </div>
       <div title={props.product.name} className="flex gap-1 items-center">
-        <div className="hidden md:block">{props.product.name}</div>
+        <div className="hidden md:block group-hover:font-bold group-hover:text-black/80">
+          {props.product.name}
+        </div>
         <div className="md:hidden flex flex-col text-center justify-center">
           <div>{props.product.name}</div>
           <div className="text-xs tracking-wide scale-90">

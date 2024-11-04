@@ -57,7 +57,7 @@ const InventoryManage = (props: Props) => {
       {filteredInventory && filteredInventory.length > 0 && (
         <div>
           {filteredInventory.map((item: any, index: number) => (
-            <div key={item.id} className="even:bg-white/80">
+            <div key={item.id} className=" even:bg-white/80">
               <Row product={item} index={index + 1} />
             </div>
           ))}
