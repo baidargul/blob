@@ -17,8 +17,16 @@ async function getByName(name: string) {
   return response.data;
 }
 
+async function getById(inventoryId: string) {
+  const response = await axios.get(
+    `${apiPath}/${inventoryId}?id=${inventoryId}`
+  );
+  return response.data;
+}
+
 export const Inventory = {
   list,
+  getById,
   getByBarcode,
   getByName,
 };
