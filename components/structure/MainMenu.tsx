@@ -129,12 +129,6 @@ const MainMenu = (props: Props) => {
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger>Reports</MenubarTrigger>
-        {/* <MenubarContent>
-          <MenubarItem>Account list</MenubarItem>
-          <MenubarItem>Create an account</MenubarItem>
-          <MenubarItem>Purchase list</MenubarItem>
-          <MenubarItem>Find...</MenubarItem>
-        </MenubarContent> */}
       </MenubarMenu>
     </Menubar>
   );
