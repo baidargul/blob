@@ -2,11 +2,14 @@ import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 import { serverActions } from "@/serverActions/serverActions";
 import { useEffect, useState } from "react";
 import Row from "./components/Row";
+import InputBox from "@/components/myui/InputBox";
 
 type Props = {};
 
 const InventoryManage = (props: Props) => {
+  const [searchText, setSearchText] = useState<string>("");
   const [inventory, setInventory] = useState([]);
+
   const fetchInventory = async () => {
     const items: SERVER_RESPONSE = await serverActions.Inventory.list();
     if (items.status === 200) {
@@ -18,17 +21,48 @@ const InventoryManage = (props: Props) => {
     fetchInventory();
   }, []);
 
+  const handleSearchChange = (value: string) => {
+    setSearchText(value);
+  };
+
+  const filteredInventory = inventory.filter((item: any) => {
+    if (searchText.length === 0) return true;
+
+    const lowerSearchText = searchText.toLowerCase();
+
+    return (
+      item.name.toLowerCase().includes(lowerSearchText) ||
+      item.category.name.toLowerCase().includes(lowerSearchText) ||
+      item.type.name.toLowerCase().includes(lowerSearchText) ||
+      item.brand.name.toLowerCase().includes(lowerSearchText) ||
+      item.barcodeRegister[0]?.barcode
+        ?.toLowerCase()
+        .includes(lowerSearchText) ||
+      item.barcodeRegister[0]?.color?.toLowerCase().includes(lowerSearchText) ||
+      String(item.barcodeRegister[0]?.cost).includes(lowerSearchText) ||
+      String(item.barcodeRegister[0]?.invoice).includes(lowerSearchText)
+    );
+  });
+
   return (
     <div className="">
-      <div>
-        {inventory.map((item: any, index: number) => {
-          return (
+      <div className="my-2">
+        <InputBox
+          setValue={handleSearchChange}
+          value={searchText}
+          label="Search"
+          placeholder="Barcode, Name, Company, Type, Category, Amount,"
+        />
+      </div>
+      {filteredInventory && filteredInventory.length > 0 && (
+        <div>
+          {filteredInventory.map((item: any, index: number) => (
             <div key={item.id} className="even:bg-white/80">
               <Row product={item} index={index + 1} />
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
