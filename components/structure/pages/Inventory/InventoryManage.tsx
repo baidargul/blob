@@ -3,6 +3,8 @@ import { serverActions } from "@/serverActions/serverActions";
 import { useEffect, useState } from "react";
 import Row from "./components/Row";
 import InputBox from "@/components/myui/InputBox";
+import DialogProvider from "@/components/myui/DialogProvider";
+import ProductViewer from "./components/ProductViewer";
 
 type Props = {};
 
@@ -58,7 +60,12 @@ const InventoryManage = (props: Props) => {
         <div>
           {filteredInventory.map((item: any, index: number) => (
             <div key={item.id} className=" even:bg-white/80">
-              <Row product={item} index={index + 1} />
+              <DialogProvider
+                title={item.name}
+                content={<ProductViewer product={item} index={index} />}
+              >
+                <Row product={item} index={index + 1} />
+              </DialogProvider>
             </div>
           ))}
         </div>
