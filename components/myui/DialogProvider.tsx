@@ -18,7 +18,7 @@ const DialogProvider = (props: Props) => {
   return (
     <Dialog>
       <DialogTrigger>{props.children}</DialogTrigger>
-      <DialogContent className="p-4">
+      <DialogContent className="p-4 w-full">
         <DialogHeader className="">
           <DialogTitle>{props.title}</DialogTitle>
           <DialogDescription className="hidden">
@@ -26,7 +26,7 @@ const DialogProvider = (props: Props) => {
             account and remove your data from our servers.
           </DialogDescription>
         </DialogHeader>
-        <div className="">{props.content}</div>
+        <div className="w-full">{props.content}</div>
       </DialogContent>
     </Dialog>
   );
