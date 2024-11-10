@@ -163,20 +163,6 @@ const ProductViewer = (props: Props) => {
 
             <div className="flex gap-1 items-center">
               <div className="flex gap-1 items-center opacity-60 font-semibold">
-                <ReceiptCent className="w-5 h-5" />:
-              </div>
-              <div
-                onClick={() =>
-                  handlePropertyClick(props.product.barcodeRegister[0].cost)
-                }
-                className="tracking-wider selection:bg-interface-hover cursor-pointer active:scale-90 transition-all duration-100"
-              >
-                {props.product.barcodeRegister[0].cost}
-              </div>
-            </div>
-
-            <div className="flex gap-1 items-center">
-              <div className="flex gap-1 items-center opacity-60 font-semibold">
                 <Receipt className="w-5 h-5" />:
               </div>
               <div
@@ -186,6 +172,20 @@ const ProductViewer = (props: Props) => {
                 className="tracking-wider selection:bg-interface-hover cursor-pointer active:scale-90 transition-all duration-100"
               >
                 {props.product.barcodeRegister[0].invoice}
+              </div>
+            </div>
+
+            <div className="flex gap-1 items-center">
+              <div className="flex gap-1 items-center opacity-60 font-semibold">
+                <ReceiptCent className="w-5 h-5" />:
+              </div>
+              <div
+                onClick={() =>
+                  handlePropertyClick(props.product.barcodeRegister[0].cost)
+                }
+                className="tracking-wider selection:bg-interface-hover cursor-pointer active:scale-90 transition-all duration-100"
+              >
+                {props.product.barcodeRegister[0].cost}
               </div>
             </div>
 

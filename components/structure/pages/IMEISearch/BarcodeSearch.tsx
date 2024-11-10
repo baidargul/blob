@@ -1,8 +1,11 @@
 "use client";
 import InputBox from "@/components/myui/InputBox";
 import Label from "@/components/myui/Label";
+import Tag from "@/components/myui/Tag";
+import { formatCurrency } from "@/lib/utils";
 import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 import { serverActions } from "@/serverActions/serverActions";
+import { Palette, Receipt, ReceiptCent } from "lucide-react";
 import React, { useState } from "react";
 
 // Define types for nested objects
@@ -147,7 +150,40 @@ const BarcodeSearch = (props: Props) => {
             />
           </div>
           <div className="">
-            <div className="text-2xl font-semibold ">{product.name}</div>
+            <div className="text-2xl font-semibold flex gap-1 items-center">
+              {" "}
+              <Tag
+                value={String(product.brand.name).toLocaleUpperCase()}
+              />{" "}
+              {product.name}
+            </div>
+            <div className="tracking-wider italic text-interface-text/70 text-sm">
+              {product.category.name} / {product.type.name}
+            </div>
+            <div className="my-4">
+              <div className="flex gap-1 items-center">
+                <div>
+                  <Palette className="w-5 h-5 text-interface-text/70" />
+                </div>
+                <div>{product.barcodeRegister[0].color}</div>
+              </div>
+              <div className="flex gap-1 items-center">
+                <div>
+                  <Receipt className="w-5 h-5 text-interface-text/70" />
+                </div>
+                <div>
+                  {formatCurrency(product.barcodeRegister[0].invoice, "Rs")}
+                </div>
+              </div>
+              <div className="flex gap-1 items-center">
+                <div>
+                  <ReceiptCent className="w-5 h-5 text-interface-text/70" />
+                </div>
+                <div>
+                  {formatCurrency(product.barcodeRegister[0].cost, "Rs")}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
