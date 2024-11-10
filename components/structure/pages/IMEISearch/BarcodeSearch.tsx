@@ -153,11 +153,8 @@ const BarcodeSearch = (props: Props) => {
           </div>
           <div className="">
             <div className="text-2xl font-semibold flex gap-1 items-center">
-              {" "}
-              <Tag
-                value={String(product.brand.name).toLocaleUpperCase()}
-              />{" "}
               {product.name}
+              <Tag value={String(product.brand.name).toLocaleUpperCase()} />
             </div>
             <div className="tracking-wider italic text-interface-text/70 text-sm">
               {product.category.name} / {product.type.name}
