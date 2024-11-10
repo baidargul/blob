@@ -137,6 +137,8 @@ const BarcodeSearch = (props: Props) => {
             setValue={setBarcode}
             value={barcode}
             onKeyDown={handleKeyDown}
+            className="font-sans tracking-widest h-10 font-semibold text-interface-text/80 text-xl"
+            maxLength={15}
           />
         </div>
       </div>
