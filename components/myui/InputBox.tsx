@@ -65,7 +65,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
           )}
         </div>
       )}
-      <div className="relative">
+      <div className="relative flex flex-col items-center justify-center">
         {props.icon && (
           <div className="absolute top-2 left-2">
             <props.icon className="w-4 h-4 text-interface-accent" />
@@ -91,7 +91,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         {String(props.value).length > 0 && !props.readonly && (
           <div
             onClick={handleClearValue}
-            className="absolute top-1 right-1 p-1 w-6 h-6 flex justify-center items-center text-center text-sm bg-interface-accent/80 rounded text-white cursor-pointer scale-[60%]"
+            className="absolute right-1 p-1 w-6 h-6 flex justify-center items-center text-center text-sm bg-interface-accent/80 rounded text-white cursor-pointer scale-[60%]"
           >
             x
           </div>
