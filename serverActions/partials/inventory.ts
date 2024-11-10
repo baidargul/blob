@@ -8,7 +8,7 @@ async function list() {
 }
 
 async function getByBarcode(barcode: string) {
-  const response = await axios.get(`${apiPath}/${barcode}?id=${barcode}`);
+  const response = await axios.get(`${apiPath}/barcode/?barcode=${barcode}`);
   return response.data;
 }
 

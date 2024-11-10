@@ -1,5 +1,6 @@
 import BrandList from "@/components/structure/pages/Brand/BrandList";
 import CategoryList from "@/components/structure/pages/Category/CategoryList";
+import BarcodeSearch from "@/components/structure/pages/IMEISearch/BarcodeSearch";
 import InventoryManage from "@/components/structure/pages/Inventory/InventoryManage";
 import ProductList from "@/components/structure/pages/Product/List";
 import PurchaseOrder from "@/components/structure/pages/Purchase/Order/PurchaseOrder";
@@ -22,7 +23,8 @@ export type PageName =
   | "TypeList"
   | "CategoryList"
   | "PurchaseOrder"
-  | "InventoryList";
+  | "InventoryList"
+  | "BarcodeSearch";
 
 type PageType = {
   page: PageState;
@@ -64,6 +66,11 @@ const pages: PageState[] = [
     name: "InventoryList",
     description: "Manage inventory",
     page: <InventoryManage />,
+  },
+  {
+    name: "BarcodeSearch",
+    description: "Search by barcode",
+    page: <BarcodeSearch />,
   },
 ];
 

@@ -54,7 +54,9 @@ const MainMenu = (props: Props) => {
           <MenubarSub>
             <MenubarSubTrigger>Find</MenubarSubTrigger>
             <MenubarSubContent>
-              <MenubarItem>IMEI Search</MenubarItem>
+              <MenubarItem onClick={() => handleChangePage("BarcodeSearch")}>
+                IMEI Search
+              </MenubarItem>
               <MenubarSeparator />
               <MenubarItem>Find...</MenubarItem>
             </MenubarSubContent>
