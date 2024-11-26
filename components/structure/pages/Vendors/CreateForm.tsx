@@ -1,3 +1,4 @@
+"use client";
 import { Combobox } from "@/components/myui/ComboBox";
 import InputBox from "@/components/myui/InputBox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,8 +12,10 @@ const VendorCreateForm = (props: Props) => {
     <div>
       <div className="flex flex-col gap-1">
         <div></div>
-        <div>
+        <div className="grid grid-cols-3 gap-1">
           <InputBox label="Vendor name" />
+          <InputBox label="Vendor code" />
+          <Combobox label="Account" placeholder="Expense account" />
         </div>
       </div>
       <div className="mt-4">
