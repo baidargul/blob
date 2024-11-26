@@ -6,6 +6,7 @@ import ProductList from "@/components/structure/pages/Product/List";
 import PurchaseOrder from "@/components/structure/pages/Purchase/Order/PurchaseOrder";
 import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
 import TypeList from "@/components/structure/pages/Type/TypeList";
+import VendorCreateForm from "@/components/structure/pages/Vendors/CreateForm";
 import { create } from "zustand";
 
 type PageState = {
@@ -24,7 +25,9 @@ export type PageName =
   | "CategoryList"
   | "PurchaseOrder"
   | "InventoryList"
-  | "BarcodeSearch";
+  | "BarcodeSearch"
+  | "VendorList"
+  | "VendorCreate";
 
 type PageType = {
   page: PageState;
@@ -71,6 +74,11 @@ const pages: PageState[] = [
     name: "BarcodeSearch",
     description: "Search by barcode",
     page: <BarcodeSearch />,
+  },
+  {
+    name: "VendorCreate",
+    description: "List of vendors",
+    page: <VendorCreateForm />,
   },
 ];
 
