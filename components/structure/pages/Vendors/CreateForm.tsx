@@ -18,6 +18,42 @@ const VendorCreateForm = (props: Props) => {
     setCode: (value: string) => {
       setVendor((prev: any) => ({ ...prev, code: value }));
     },
+
+    setPrimaryContact: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, primaryContact: value }));
+    },
+
+    setPrimaryPosition: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, primaryPosition: value }));
+    },
+
+    setPrimaryPhone: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, primaryPhone: value }));
+    },
+
+    setSecondContact: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, secondContact: value }));
+    },
+
+    setSecondPosition: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, secondPosition: value }));
+    },
+
+    setSecondPhone: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, secondPhone: value }));
+    },
+
+    setEmail1: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, email1: value }));
+    },
+
+    setEmail2: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, email2: value }));
+    },
+
+    setWebsite: (value: string) => {
+      setVendor((prev: any) => ({ ...prev, website: value }));
+    },
   };
 
   return (
@@ -47,7 +83,7 @@ const VendorCreateForm = (props: Props) => {
             <TabsTrigger value="purchase">Purchase Info</TabsTrigger>
           </TabsList>
           <TabsContent value="general">
-            <GeneralTab />
+            <GeneralTab actions={actions} vendor={vendor} />
           </TabsContent>
           <TabsContent value="address">Address</TabsContent>
         </Tabs>
