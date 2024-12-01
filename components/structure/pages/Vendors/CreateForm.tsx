@@ -2,7 +2,7 @@
 import { Combobox } from "@/components/myui/ComboBox";
 import InputBox from "@/components/myui/InputBox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GeneralTab from "./partials/create/GeneralTab";
 import { vendor } from "@prisma/client";
 
@@ -10,6 +10,10 @@ type Props = {};
 
 const VendorCreateForm = (props: Props) => {
   const [vendor, setVendor] = useState<vendor | null>(null);
+
+  useEffect(() => {
+    console.log(vendor);
+  }, [vendor]);
 
   const actions = {
     setName: (value: string) => {
