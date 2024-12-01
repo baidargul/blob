@@ -4,12 +4,14 @@ import { Inventory } from "./partials/inventory";
 import { Product } from "./partials/product";
 import { Purchase } from "./partials/purchase";
 import { Type } from "./partials/type";
+import { Vendor } from "./partials/vendor";
 
 export const serverActions = {
   Brand,
   Category,
   Type,
   Product,
+  Vendor,
   Purchase,
   Inventory,
 };
