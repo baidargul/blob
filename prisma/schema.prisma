@@ -59,7 +59,7 @@ model brand {
 model category {
   id          String    @id @default(uuid())
   name        String    @unique
-  description String? @default("")
+  description String?   @default("")
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @default(now())
   product     product[]
@@ -106,4 +106,12 @@ model inventory {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now())
   barcodeRegister   barcodeRegister @relation(fields: [barcodeRegisterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model vendor {
+  id        String    @id @default(uuid())
+  name      String
+  code      String?
+  accountId String?
+  createdAt DateTime? @db.Date @default(now())
 }
