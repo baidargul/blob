@@ -5,15 +5,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import GeneralTab from "./partials/create/GeneralTab";
 import { vendor } from "@prisma/client";
+import Button from "@/components/myui/Button";
+import { serverActions } from "@/serverActions/serverActions";
 
 type Props = {};
 
 const VendorCreateForm = (props: Props) => {
   const [vendor, setVendor] = useState<vendor | null>(null);
-
-  useEffect(() => {
-    console.log(vendor);
-  }, [vendor]);
 
   const actions = {
     setName: (value: string) => {
@@ -60,11 +58,22 @@ const VendorCreateForm = (props: Props) => {
     },
   };
 
+  const handleSave = async () => {
+    if (!vendor) return;
+    const response = await serverActions.Vendor.create(vendor);
+    if (response?.status === 200) clearForm();
+    console.log(response);
+  };
+
+  const clearForm = () => {
+    setVendor(null);
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-1">
         <div></div>
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
           <InputBox
             label="Vendor name"
             value={vendor ? vendor.name : ""}
@@ -80,7 +89,7 @@ const VendorCreateForm = (props: Props) => {
       </div>
       <div className="mt-4">
         <Tabs defaultValue="general" className="">
-          <TabsList className="px-0">
+          <TabsList className="px-0 mb-10 md:my-0 grid grid-cols-2 md:grid-cols-4">
             <TabsTrigger value="general">General</TabsTrigger>
             <TabsTrigger value="address">Address</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
@@ -91,6 +100,11 @@ const VendorCreateForm = (props: Props) => {
           </TabsContent>
           <TabsContent value="address">Address</TabsContent>
         </Tabs>
+      </div>
+      <div className="mt-4 flex justify-end items-end">
+        <div className="">
+          <Button onClick={handleSave}>Save</Button>
+        </div>
       </div>
     </div>
   );

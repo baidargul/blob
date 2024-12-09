@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { vendor } from "@prisma/client";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const response = {
     status: 500,
     message: "Internal Server Error",
@@ -13,6 +13,9 @@ export async function GET(req: NextRequest) {
     const data: any = await req.json();
 
     const { vendor } = data;
+
+    console.log(`NEW VENDOR REQUEST`);
+    console.log(`${vendor.name} - ${vendor.code}`);
 
     let isExists: any = await prisma.vendor.findUnique({
       where: {
@@ -33,7 +36,7 @@ export async function GET(req: NextRequest) {
         },
       });
 
-      if (isExists) {
+      if (isExists.length > 0) {
         response.status = 400;
         response.message = `Vendor with this '${vendor.code}' already exists and Named as: ${isExists.name}`;
         return new Response(JSON.stringify(response));
@@ -42,8 +45,7 @@ export async function GET(req: NextRequest) {
 
     const newVendor = await prisma.vendor.create({
       data: {
-        name: vendor.name,
-        code: vendor.code ? vendor.code : null,
+        ...vendor,
       },
     });
 

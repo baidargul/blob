@@ -1,3 +1,4 @@
+import Button from "@/components/myui/Button";
 import InputBox from "@/components/myui/InputBox";
 import { vendor } from "@prisma/client";
 import React from "react";
@@ -10,7 +11,7 @@ type Props = {
 const GeneralTab = (props: Props) => {
   return (
     <div>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
         <InputBox
           label="Primary Contact"
           placeholder="Name of the manager or owner to deal with"
