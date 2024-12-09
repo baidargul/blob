@@ -55,6 +55,7 @@ type Props = {
   setValue?: (value: ComboBoxOptions) => void;
   placeholder?: string;
   label?: string;
+  value?: string | null;
 };
 
 export const ComboBox_ADD_VALUE_TO_EACH_OPTION = (
@@ -72,6 +73,14 @@ export const ComboBox_ADD_VALUE_TO_EACH_OPTION = (
 export function Combobox(props: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+
+  React.useEffect(() => {
+    if (props.value) {
+      if (props.value.length > 0) {
+        setValue(props.value);
+      }
+    }
+  }, [props.value]);
 
   const handleValueChange = (value: ComboBoxOptions) => {
     setValue(value.value);

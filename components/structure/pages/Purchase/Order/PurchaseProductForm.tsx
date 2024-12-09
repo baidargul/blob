@@ -6,7 +6,7 @@ import {
 import InputBox from "@/components/myui/InputBox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { serverActions } from "@/serverActions/serverActions";
-import { product, purchase } from "@prisma/client";
+import { product, purchase, vendor } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -14,6 +14,9 @@ type Props = {
   productList: product[] | null;
   setProductList: any;
   handleAddToCart: any;
+  vendorList: vendor[];
+  setSelectedVendor: any;
+  selectedVendor: vendor | null;
 };
 
 const PurchaseProductForm = (props: Props) => {
@@ -128,9 +131,10 @@ const PurchaseProductForm = (props: Props) => {
           />
         </div>
         <Combobox
-          options={productList}
+          options={props.vendorList}
           label="Select Vendor"
-          setValue={handleProductSelect}
+          setValue={props.setSelectedVendor}
+          value={props.selectedVendor ? props.selectedVendor.name : null}
         />
       </div>
       <div>

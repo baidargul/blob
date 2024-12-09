@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
       purchase = await prisma.purchase.findFirst({
         orderBy: { createdAt: "desc" },
         include: {
+          vendor: true,
           barcodeRegister: {
             include: {
               product: {

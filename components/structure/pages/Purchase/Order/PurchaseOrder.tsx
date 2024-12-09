@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useEffect, useState } from "react";
 import PurchaseProductForm from "./PurchaseProductForm";
 import Button from "@/components/myui/Button";
-import { product, purchase } from "@prisma/client";
+import { product, purchase, vendor } from "@prisma/client";
 import { serverActions } from "@/serverActions/serverActions";
 import ProductOrderRow from "./ProductOrderRow";
 import { SERVER_RESPONSE } from "@/serverActions/internal/server";
@@ -21,18 +21,56 @@ import {
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import InputBox from "@/components/myui/InputBox";
+import { ComboBox_ADD_VALUE_TO_EACH_OPTION } from "@/components/myui/ComboBox";
+import { toast } from "sonner";
 
 type Props = {};
 
 const PurchaseOrder = (props: Props) => {
   const [purchaseOrder, setPurchaseOrder] = useState<purchase | null>(null);
   const [productList, setProductList] = useState<product[] | any | null>(null);
+  const [vendorList, setVendorList] = useState([]);
+  const [selectedVendor, setSelectedVendor] = useState<vendor | null>(null);
   const [searchText, setSearchText] = useState<string>("");
+
+  const fetchVendors = async () => {
+    const response = await serverActions.Vendor.listAll();
+    response.data = ComboBox_ADD_VALUE_TO_EACH_OPTION(response.data);
+    setVendorList((prev: any) => response.data);
+  };
+
+  useEffect(() => {
+    fetchVendors();
+  }, []);
 
   const handleCreateNewPurchaseOrder = async () => {
     const purchase = await serverActions.Purchase.create();
     if (purchase.status === 200) {
       setPurchaseOrder(purchase.data);
+    }
+  };
+
+  const handleVendorSelect = async (vendor: vendor | null) => {
+    if (purchaseOrder) {
+      if (vendor) {
+        const response = await serverActions.Vendor.assignToPurchase(
+          vendor,
+          purchaseOrder.id
+        );
+
+        if (response.status === 200) {
+          setSelectedVendor(vendor);
+          toast.message(
+            `${vendor.name.toLocaleUpperCase()} is assigned to this purchase order`
+          );
+        } else {
+          if (response.status === 400) {
+            toast.warning(response.message);
+          } else {
+            toast.error(response.message);
+          }
+        }
+      }
     }
   };
 
@@ -179,16 +217,17 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
+      setSelectedVendor(order.data.vendor);
     }
   };
   const handlePreviousOrder = async () => {
     const order = await serverActions.Purchase.get.previous(
       purchaseOrder && purchaseOrder.id ? purchaseOrder.id : ""
     );
-
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
+      setSelectedVendor(order.data.vendor);
     }
   };
   const handleFirstOrder = async () => {
@@ -196,6 +235,7 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
+      setSelectedVendor(order.data.vendor);
     }
   };
   const handleLastOrder = async () => {
@@ -204,6 +244,7 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
+      setSelectedVendor(order.data.vendor);
     }
   };
 
@@ -214,6 +255,7 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
+      setSelectedVendor(order.data.vendor);
     }
   };
 
@@ -274,7 +316,7 @@ const PurchaseOrder = (props: Props) => {
               </div>
             </div>
             <div className="flex gap-2 items-center ">
-              {!purchaseOrder && (
+              {!purchaseOrder?.orderNo && (
                 <Button onClick={handleCreateNewPurchaseOrder}>Create</Button>
               )}
               {purchaseOrder && purchaseOrder.closed === false && (
@@ -300,6 +342,9 @@ const PurchaseOrder = (props: Props) => {
                       productList={productList}
                       setProductList={setProductList}
                       handleAddToCart={handleAddToCart}
+                      vendorList={vendorList}
+                      setSelectedVendor={handleVendorSelect}
+                      selectedVendor={selectedVendor}
                     />
                   )}
                 </div>

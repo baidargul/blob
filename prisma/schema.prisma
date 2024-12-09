@@ -98,6 +98,7 @@ model purchase {
   closed          Boolean?          @default(false)
   purchaseDate    DateTime?         @default(now())
   barcodeRegister barcodeRegister[]
+  vendor          vendor?           @relation(fields: [vendorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model inventory {
@@ -109,11 +110,11 @@ model inventory {
 }
 
 model vendor {
-  id              String    @id @default(uuid())
-  name            String    @unique
+  id              String     @id @default(uuid())
+  name            String     @unique
   code            String?
   accountId       String?
-  createdAt       DateTime? @default(now()) @db.Date
+  createdAt       DateTime?  @default(now()) @db.Date
   primaryContact  String?
   primaryPosition String?
   primaryPhone    String?
@@ -123,4 +124,5 @@ model vendor {
   email1          String?
   email2          String?
   website         String?
+  purchase        purchase[]
 }

@@ -13,10 +13,27 @@ async function create(newVendor: vendor) {
   return response.data;
 }
 
+async function assignToPurchase(vendor: vendor, purchaseId: string) {
+  const data = {
+    vendor,
+    purchaseId,
+  };
+  const response: SERVER_RESPONSE = await axios.post(
+    `${APIPATH}/assignToPurchase`,
+    { vendor, purchaseId }
+  );
+  return response.data;
+}
+
 async function list(id: string) {}
 
-async function listAll() {}
+async function listAll() {
+  const response: SERVER_RESPONSE = await axios.get(APIPATH);
+  return response.data;
+}
 
 export const Vendor = {
   create,
+  listAll,
+  assignToPurchase,
 };

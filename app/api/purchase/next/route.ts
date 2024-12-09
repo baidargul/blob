@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
         createdAt: "asc",
       },
       include: {
+        vendor: true,
         barcodeRegister: {
           include: {
             product: {
