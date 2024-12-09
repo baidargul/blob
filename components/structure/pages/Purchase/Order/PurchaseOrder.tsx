@@ -390,6 +390,7 @@ const PurchaseOrder = (props: Props) => {
             placeholder="Search Product"
             setValue={handleSearchProduct}
             value={searchText}
+            className="pointer-events-auto opacity-100"
           />
         </div>
         <ScrollArea className="h-[88dvh] pl-2">
@@ -432,6 +433,14 @@ const PurchaseOrder = (props: Props) => {
 
                   if (
                     item.barcodeRegister[0].barcode
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                  ) {
+                    isExists = true;
+                  }
+
+                  if (
+                    item.barcodeRegister[0].color
                       .toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
