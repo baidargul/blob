@@ -217,34 +217,45 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      setSelectedVendor(order.data.vendor);
+      if (order.data.vendorId !== null) {
+        setSelectedVendor((prev: any) => order.data.vendor);
+      }
     }
   };
   const handlePreviousOrder = async () => {
+    setSelectedVendor((prev: any) => null);
     const order = await serverActions.Purchase.get.previous(
       purchaseOrder && purchaseOrder.id ? purchaseOrder.id : ""
     );
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      setSelectedVendor(order.data.vendor);
+      if (order.data.vendorId !== null) {
+        setSelectedVendor((prev: any) => order.data.vendor);
+      }
     }
   };
   const handleFirstOrder = async () => {
+    setSelectedVendor(null);
     const order = await serverActions.Purchase.get.first();
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      setSelectedVendor(order.data.vendor);
+      if (order.data.vendorId !== null) {
+        setSelectedVendor((prev: any) => order.data.vendor);
+      }
     }
   };
   const handleLastOrder = async () => {
+    setSelectedVendor(null);
     const order = await serverActions.Purchase.get.last();
 
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      setSelectedVendor(order.data.vendor);
+      if (order.data.vendorId !== null) {
+        setSelectedVendor((prev: any) => order.data.vendor);
+      }
     }
   };
 
@@ -256,6 +267,9 @@ const PurchaseOrder = (props: Props) => {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
       setSelectedVendor(order.data.vendor);
+      if (order.data.vendorId !== null) {
+        setSelectedVendor((prev: any) => order.data.vendor);
+      }
     }
   };
 

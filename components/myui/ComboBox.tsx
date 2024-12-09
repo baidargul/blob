@@ -79,6 +79,8 @@ export function Combobox(props: Props) {
       if (props.value.length > 0) {
         setValue(props.value);
       }
+    } else {
+      setValue("");
     }
   }, [props.value]);
 
