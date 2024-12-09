@@ -27,6 +27,7 @@ import { toast } from "sonner";
 type Props = {};
 
 const PurchaseOrder = (props: Props) => {
+  const [isWorking, setIsWorking] = useState(false);
   const [purchaseOrder, setPurchaseOrder] = useState<purchase | null>(null);
   const [productList, setProductList] = useState<product[] | any | null>(null);
   const [vendorList, setVendorList] = useState([]);
@@ -34,9 +35,11 @@ const PurchaseOrder = (props: Props) => {
   const [searchText, setSearchText] = useState<string>("");
 
   const fetchVendors = async () => {
+    setIsWorking(true);
     const response = await serverActions.Vendor.listAll();
     response.data = ComboBox_ADD_VALUE_TO_EACH_OPTION(response.data);
     setVendorList((prev: any) => response.data);
+    setIsWorking(false);
   };
 
   useEffect(() => {
@@ -44,13 +47,16 @@ const PurchaseOrder = (props: Props) => {
   }, []);
 
   const handleCreateNewPurchaseOrder = async () => {
+    setIsWorking(true);
     const purchase = await serverActions.Purchase.create();
     if (purchase.status === 200) {
       setPurchaseOrder(purchase.data);
     }
+    setIsWorking(false);
   };
 
   const handleVendorSelect = async (vendor: vendor | null) => {
+    setIsWorking(true);
     if (purchaseOrder) {
       if (vendor) {
         const response = await serverActions.Vendor.assignToPurchase(
@@ -72,6 +78,7 @@ const PurchaseOrder = (props: Props) => {
         }
       }
     }
+    setIsWorking(false);
   };
 
   const handleAddToCart = async (
@@ -109,6 +116,7 @@ const PurchaseOrder = (props: Props) => {
     invoice?: number,
     setWait?: any
   ) => {
+    setIsWorking(true);
     if (setWait) {
       setWait(true);
     }
@@ -208,9 +216,12 @@ const PurchaseOrder = (props: Props) => {
     if (setWait) {
       setWait(false);
     }
+
+    setIsWorking(false);
   };
 
   const handleNextOrder = async () => {
+    setIsWorking(true);
     if (!purchaseOrder) return null;
     const order = await serverActions.Purchase.get.next(purchaseOrder.id);
 
@@ -221,9 +232,10 @@ const PurchaseOrder = (props: Props) => {
         setSelectedVendor((prev: any) => order.data.vendor);
       }
     }
+    setIsWorking(false);
   };
   const handlePreviousOrder = async () => {
-    setSelectedVendor((prev: any) => null);
+    setIsWorking(true);
     const order = await serverActions.Purchase.get.previous(
       purchaseOrder && purchaseOrder.id ? purchaseOrder.id : ""
     );
@@ -234,9 +246,10 @@ const PurchaseOrder = (props: Props) => {
         setSelectedVendor((prev: any) => order.data.vendor);
       }
     }
+    setIsWorking(false);
   };
   const handleFirstOrder = async () => {
-    setSelectedVendor(null);
+    setIsWorking(true);
     const order = await serverActions.Purchase.get.first();
     if (order.status === 200) {
       setPurchaseOrder(order.data);
@@ -245,9 +258,10 @@ const PurchaseOrder = (props: Props) => {
         setSelectedVendor((prev: any) => order.data.vendor);
       }
     }
+    setIsWorking(false);
   };
   const handleLastOrder = async () => {
-    setSelectedVendor(null);
+    setIsWorking(true);
     const order = await serverActions.Purchase.get.last();
 
     if (order.status === 200) {
@@ -257,12 +271,15 @@ const PurchaseOrder = (props: Props) => {
         setSelectedVendor((prev: any) => order.data.vendor);
       }
     }
+    setIsWorking(false);
   };
 
   const handleCloseInvoice = async () => {
+    setIsWorking(true);
     if (!purchaseOrder) return null;
     const order = await serverActions.Purchase.toggleClose(purchaseOrder.id);
 
+    setIsWorking(false);
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
@@ -294,7 +311,7 @@ const PurchaseOrder = (props: Props) => {
   };
 
   return (
-    <ResizablePanelGroup direction="horizontal">
+    <ResizablePanelGroup direction="horizontal" className="relative">
       <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
         <div className="relative h-full">
           <div>
@@ -493,6 +510,9 @@ const PurchaseOrder = (props: Props) => {
           </div>
         </ScrollArea>
       </ResizablePanel>
+      {isWorking && (
+        <div className="w-full h-full inset-0 bg-interface-hover opacity-80 blur-lg absolute flex justify-center items-center text-center"></div>
+      )}
     </ResizablePanelGroup>
   );
 };
