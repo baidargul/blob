@@ -7,6 +7,7 @@ import GeneralTab from "./partials/create/GeneralTab";
 import { vendor } from "@prisma/client";
 import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -61,8 +62,16 @@ const VendorCreateForm = (props: Props) => {
   const handleSave = async () => {
     if (!vendor) return;
     const response = await serverActions.Vendor.create(vendor);
-    if (response?.status === 200) clearForm();
-    console.log(response);
+    if (response?.status === 200) {
+      toast.message(response.message);
+      clearForm();
+    } else {
+      if (response.status === 400) {
+        toast.warning(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    }
   };
 
   const clearForm = () => {
