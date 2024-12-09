@@ -102,6 +102,8 @@ const PurchaseProductForm = (props: Props) => {
       //Get first 15 characters
       temp = temp.slice(0, 15);
       setBarcode(String(temp).toLocaleUpperCase());
+    } else if (e.key === "Enter") {
+      handleAddToCart();
     }
   };
 
