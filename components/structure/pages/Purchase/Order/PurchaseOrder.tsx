@@ -270,6 +270,12 @@ const PurchaseOrder = (props: Props) => {
       if (order.data.vendorId !== null) {
         setSelectedVendor((prev: any) => order.data.vendor);
       }
+    } else if (order.status === 201) {
+      toast.message(order.message);
+    } else if (order.status === 400) {
+      toast.warning(order.message);
+    } else {
+      toast.error(order.message);
     }
   };
 

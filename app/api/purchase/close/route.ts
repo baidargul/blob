@@ -36,6 +36,19 @@ export async function PATCH(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
+    if (purchase.barcodeRegister.length === 0) {
+      await prisma.purchase.delete({
+        where: {
+          id: data.id,
+        },
+      });
+
+      response.status = 201;
+      response.message = "Purchase scrapped as no products were found";
+      response.data = null;
+      return new Response(JSON.stringify(response));
+    }
+
     for (const item of purchase.barcodeRegister) {
       await prisma.inventory.create({
         data: {
