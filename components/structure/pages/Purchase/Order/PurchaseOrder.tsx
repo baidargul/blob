@@ -302,7 +302,7 @@ const PurchaseOrder = (props: Props) => {
               <div
                 className={`transition-all duration-800 ${
                   purchaseOrder && purchaseOrder.closed === true
-                    ? "bg-interface-primary group p-1 scale-75 flex gap-1 items-center -ml-4 lg:ml-0 -mr-5 lg:mr-0 mb-1 lg:mb-0 px-4 rounded-md ring-2 ring-interface-primary ring-offset-2"
+                    ? "bg-interface-primary group p-1 scale-75 flex gap-1 items-center -ml-4 lg:-ml-4 -mr-5 lg:mr-0 mb-1 lg:mb-0 px-4 rounded-md ring-2 ring-interface-primary ring-offset-2"
                     : "bg-transparent"
                 }`}
               >
