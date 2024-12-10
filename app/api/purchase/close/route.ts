@@ -36,13 +36,6 @@ export async function PATCH(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
-    if (!purchase.vendorId || purchase.vendorId.length === 0) {
-      response.status = 400;
-      response.message =
-        "No vendor is assigned to this purchase yet! Please assign before closing this purchase order.";
-      return new Response(JSON.stringify(response));
-    }
-
     if (purchase.barcodeRegister.length === 0) {
       await prisma.purchase.delete({
         where: {
@@ -53,6 +46,13 @@ export async function PATCH(req: NextRequest) {
       response.status = 201;
       response.message = "Purchase scrapped as no products were found";
       response.data = null;
+      return new Response(JSON.stringify(response));
+    }
+
+    if (!purchase.vendorId || purchase.vendorId.length === 0) {
+      response.status = 400;
+      response.message =
+        "No vendor is assigned to this purchase yet! Please assign before closing this purchase order.";
       return new Response(JSON.stringify(response));
     }
 
