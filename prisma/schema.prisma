@@ -85,7 +85,7 @@ model barcodeRegister {
   updatedAt  DateTime    @default(now())
   purchaseId String
   product    product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  purchase   purchase    @relation(fields: [purchaseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  purchase   purchase    @relation(fields: [purchaseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   inventory  inventory[]
 }
 
@@ -98,7 +98,7 @@ model purchase {
   closed          Boolean?          @default(false)
   purchaseDate    DateTime?         @default(now())
   barcodeRegister barcodeRegister[]
-  vendor          vendor?           @relation(fields: [vendorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  vendor          vendor?           @relation(fields: [vendorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model inventory {
@@ -106,7 +106,7 @@ model inventory {
   barcodeRegisterId String
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now())
-  barcodeRegister   barcodeRegister @relation(fields: [barcodeRegisterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  barcodeRegister   barcodeRegister @relation(fields: [barcodeRegisterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model vendor {
