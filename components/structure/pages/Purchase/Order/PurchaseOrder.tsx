@@ -30,7 +30,9 @@ type Props = {};
 
 const PurchaseOrder = (props: Props) => {
   const [isWorking, setIsWorking] = useState(false);
-  const [purchaseOrder, setPurchaseOrder] = useState<purchase | null>(null);
+  const [purchaseOrder, setPurchaseOrder] = useState<purchase | any | null>(
+    null
+  );
   const [productList, setProductList] = useState<product[] | any | null>(null);
   const [vendorList, setVendorList] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState<vendor | null>(null);
@@ -47,6 +49,12 @@ const PurchaseOrder = (props: Props) => {
   useEffect(() => {
     fetchVendors();
   }, []);
+
+  useEffect(() => {
+    if (purchaseOrder) {
+      setSelectedVendor(purchaseOrder?.vendor);
+    }
+  }, [purchaseOrder]);
 
   const handleCreateNewPurchaseOrder = async () => {
     setIsWorking(true);
