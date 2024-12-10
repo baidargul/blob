@@ -23,6 +23,8 @@ import { formatCurrency } from "@/lib/utils";
 import InputBox from "@/components/myui/InputBox";
 import { ComboBox_ADD_VALUE_TO_EACH_OPTION } from "@/components/myui/ComboBox";
 import { toast } from "sonner";
+import Spinner from "@/components/myui/Spinner";
+import Loader from "@/components/myui/Loader";
 
 type Props = {};
 
@@ -510,9 +512,7 @@ const PurchaseOrder = (props: Props) => {
           </div>
         </ScrollArea>
       </ResizablePanel>
-      {isWorking && (
-        <div className="w-full h-full inset-0 bg-interface-hover opacity-80 blur-lg absolute flex justify-center items-center text-center"></div>
-      )}
+      {isWorking && <Loader />}
     </ResizablePanelGroup>
   );
 };
