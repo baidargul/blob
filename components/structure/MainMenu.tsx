@@ -102,7 +102,9 @@ const MainMenu = (props: Props) => {
         <MenubarTrigger>Sales</MenubarTrigger>
         <MenubarContent>
           <MenubarItem>Create quotation</MenubarItem>
-          <MenubarItem>Create Invoice</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("SaleOrder")}>
+            Create Invoice
+          </MenubarItem>
           <MenubarSeparator />
           <MenubarItem>Invoice list</MenubarItem>
           <MenubarItem>Find...</MenubarItem>

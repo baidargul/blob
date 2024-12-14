@@ -5,6 +5,7 @@ import InventoryManage from "@/components/structure/pages/Inventory/InventoryMan
 import ProductList from "@/components/structure/pages/Product/List";
 import PurchaseOrder from "@/components/structure/pages/Purchase/Order/PurchaseOrder";
 import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
+import SaleOrder from "@/components/structure/pages/Sale/Order/SaleOrder";
 import TypeList from "@/components/structure/pages/Type/TypeList";
 import VendorCreateForm from "@/components/structure/pages/Vendors/CreateForm";
 import { create } from "zustand";
@@ -27,7 +28,8 @@ export type PageName =
   | "InventoryList"
   | "BarcodeSearch"
   | "VendorList"
-  | "VendorCreate";
+  | "VendorCreate"
+  | "SaleOrder";
 
 type PageType = {
   page: PageState;
@@ -79,6 +81,11 @@ const pages: PageState[] = [
     name: "VendorCreate",
     description: "List of vendors",
     page: <VendorCreateForm />,
+  },
+  {
+    name: "SaleOrder",
+    description: "Create sale order",
+    page: <SaleOrder />,
   },
 ];
 
