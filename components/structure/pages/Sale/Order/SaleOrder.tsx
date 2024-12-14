@@ -5,6 +5,7 @@ import {
   ComboBox_ADD_VALUE_TO_EACH_OPTION,
 } from "@/components/myui/ComboBox";
 import InputBox from "@/components/myui/InputBox";
+import InputBoxSearch from "@/components/myui/InputBoxSearch";
 import Label from "@/components/myui/Label";
 import Loader from "@/components/myui/Loader";
 import {
@@ -31,7 +32,6 @@ const SaleOrder = (props: Props) => {
   const [saleOrder, setSaleOrder] = useState<sale | null>(null);
   const [searchText, setSearchText] = useState<string>("");
   const [isWorking, setIsWorking] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<product | null>(null);
   const [productList, setProductList] = useState<product[]>([]);
 
   const handleFirstOrder = async () => {};
@@ -41,9 +41,6 @@ const SaleOrder = (props: Props) => {
   const handleCreateNewSaleOrder = async () => {};
   const handleCloseInvoice = async () => {};
   const handleSearchProduct = (value: string) => {};
-  const handleProductSelect = (product: product) => {
-    setSelectedProduct(product);
-  };
 
   useEffect(() => {
     fetchProducts();
@@ -115,12 +112,17 @@ const SaleOrder = (props: Props) => {
             <div>
               <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
                 <div>
-                  <InputBox label="Search Product" />
-                  <Combobox
+                  <InputBoxSearch
+                    options={productList}
+                    label="Search Product"
+                    value={searchText}
+                    setValue={setSearchText}
+                  />
+                  {/* <Combobox
                     options={productList}
                     label="Select Product"
                     setValue={handleProductSelect}
-                  />
+                  /> */}
                 </div>
                 <div
                   className={
