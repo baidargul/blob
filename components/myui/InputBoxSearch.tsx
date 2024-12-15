@@ -11,6 +11,7 @@ type Props = {
   label?: string;
   subLabel?: string;
   setValue?: any;
+  setItem?: any;
   value?: string | number;
   readonly?: boolean;
   icon?: any;
@@ -27,6 +28,11 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>(
     const textRef = ref || useRef(null);
     const [hasProduct, setHasProduct] = useState(false);
     const [filteredProducts, setFilteredProducts] = useState<product[]>([]);
+    const [selected, setSelected] = useState<{
+      id: string;
+      index: number;
+      max?: number;
+    } | null>(null);
 
     useEffect(() => {
       setFilteredProducts(props.options);
@@ -45,8 +51,59 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>(
         handleClearValue();
       }
 
+      if (e.key === "Enter") {
+        if (selected) {
+          if (props.setValue) {
+            props.setValue(filteredProducts[selected.index].name);
+          }
+
+          if (props.setItem) {
+            props.setItem(filteredProducts[selected.index]);
+          }
+          setHasProduct(false);
+        }
+      }
+
       if (props.onKeyDown) {
         props.onKeyDown(e);
+      }
+
+      if (e.key === "ArrowUp") {
+        if (!selected) {
+          setSelected({
+            id: filteredProducts[0].id,
+            index: 0,
+          });
+        } else {
+          if (selected.index === 0) {
+            setSelected((prev: any) => ({ ...prev, index: prev.max }));
+          } else {
+            setSelected((prev: any) => ({
+              ...prev,
+              id: filteredProducts[selected.index - 1].id,
+              index: selected.index - 1,
+            }));
+          }
+        }
+      }
+
+      if (e.key === "ArrowDown") {
+        if (!selected) {
+          setSelected({
+            id: filteredProducts[0].id,
+            index: 0,
+          });
+        } else {
+          if (selected.index === filteredProducts.length - 1) {
+            setSelected((prev: any) => ({ ...prev, index: 0 }));
+          } else {
+            setSelected((prev: any) => ({
+              ...prev,
+              id: filteredProducts[selected.index + 1].id,
+              index: selected.index + 1,
+            }));
+          }
+        }
       }
     };
 
@@ -125,6 +182,8 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>(
           options={filteredProducts}
           value={String(props.value)}
           toggle={hasProduct && String(props.value).length > 0}
+          selected={selected}
+          setSelected={setSelected}
         />
       </div>
     );
@@ -136,29 +195,30 @@ export default InputBoxSearch;
 type SearchProps = {
   product: any;
   index: number;
-  selected: { id: string; index: number } | null;
+  selected: { id: string; index: number; max?: number } | null;
 };
 
 type SearchWindowProps = {
   toggle: boolean;
   value: string;
   options: ComboBoxOptions[];
+  selected: { id: string; index: number; max?: number } | null;
+  setSelected: any;
 };
 
 const SearchWindow = (props: SearchWindowProps) => {
-  const [selected, setSelected] = useState<{
-    id: string;
-    index: number;
-  } | null>(null);
-
   let filteredOptions: any[] = [];
 
   useEffect(() => {
     if (filteredOptions.length === 0) {
-      setSelected(null);
+      props.setSelected(null);
     } else {
-      if (!selected) {
-        setSelected({ id: filteredOptions[0].id, index: 0 });
+      if (!props.selected) {
+        props.setSelected({
+          id: filteredOptions[0].id,
+          index: 0,
+          max: filteredOptions.length - 1,
+        });
       }
     }
   }, [filteredOptions]);
@@ -197,7 +257,7 @@ const SearchWindow = (props: SearchWindowProps) => {
               <SearchRow
                 product={product}
                 index={index + 1}
-                selected={selected}
+                selected={props.selected}
               />
             </div>
           ))}
@@ -214,7 +274,7 @@ const SearchRow = (props: SearchProps) => {
         props.selected && props.selected.index === props.index - 1
           ? "bg-interface-hover/50"
           : "bg-white"
-      } p-1`}
+      } p-1 transition-all duration-200`}
     >
       <div>{/* <Image src={product.} /> */}</div>
       <div className="flex gap-2 items-center">
