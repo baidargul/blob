@@ -5,6 +5,7 @@ import Label from "./Label";
 import { ComboBoxOptions } from "./ComboBox";
 import { product } from "@prisma/client";
 import Image from "next/image";
+import { formalizeText } from "@/lib/utils";
 
 type Props = {
   label?: string;
@@ -120,32 +121,11 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>(
             </div>
           )}
         </div>
-        {hasProduct && (
-          <div className="absolute w-full h-[400px] left-0 top-16 rounded z-50 bg-white shadow-lg border p-2">
-            <div className="">
-              <div className="mb-2">Results</div>
-              <div>
-                {filteredProducts.map((product: product, index: number) => {
-                  if (props.value) {
-                    if (
-                      !product.name
-                        .toLowerCase()
-                        .includes(String(props.value).toLowerCase())
-                    ) {
-                      return null;
-                    }
-                  }
-
-                  return (
-                    <div key={product.id}>
-                      <SearchRow product={product} index={index + 1} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
+        <SearchWindow
+          options={filteredProducts}
+          value={String(props.value)}
+          toggle={hasProduct && String(props.value).length > 0}
+        />
       </div>
     );
   }
@@ -154,18 +134,107 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>(
 export default InputBoxSearch;
 
 type SearchProps = {
-  product: product;
+  product: any;
   index: number;
+  selected: { id: string; index: number } | null;
+};
+
+type SearchWindowProps = {
+  toggle: boolean;
+  value: string;
+  options: ComboBoxOptions[];
+};
+
+const SearchWindow = (props: SearchWindowProps) => {
+  const [selected, setSelected] = useState<{
+    id: string;
+    index: number;
+  } | null>(null);
+
+  let filteredOptions: any[] = [];
+
+  useEffect(() => {
+    if (filteredOptions.length === 0) {
+      setSelected(null);
+    } else {
+      if (!selected) {
+        setSelected({ id: filteredOptions[0].id, index: 0 });
+      }
+    }
+  }, [filteredOptions]);
+
+  if (!props.toggle) {
+    return null;
+  }
+
+  filteredOptions = props.options.filter((product: any) => {
+    if (!props.value) {
+      return true; // If no value is provided, include all products
+    }
+
+    const searchValue = String(props.value).toLowerCase();
+
+    const matchesName = product.name.toLowerCase().includes(searchValue);
+    const matchesBarcode = product.barcodeRegister.some((barcodeEntry: any) =>
+      barcodeEntry.barcode.toLowerCase().includes(searchValue)
+    );
+    const matchesBrand = product.brand.name.toLowerCase().includes(searchValue);
+
+    // Include the product if it matches name, barcode, or brand
+    return matchesName || matchesBarcode || matchesBrand;
+  });
+
+  //distinct only
+  filteredOptions = Array.from(new Set(filteredOptions));
+
+  return (
+    <div className="absolute w-full h-[400px] left-0 top-16 rounded z-50 bg-white shadow-lg border p-2">
+      <div>
+        <div className="mb-2">Results</div>
+        <div>
+          {filteredOptions.map((product: any, index: number) => (
+            <div key={`${product.id} ${index}`}>
+              <SearchRow
+                product={product}
+                index={index + 1}
+                selected={selected}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const SearchRow = (props: SearchProps) => {
   return (
-    <div className="border-y">
+    <div
+      className={`${
+        props.selected && props.selected.index === props.index - 1
+          ? "bg-interface-hover/50"
+          : "bg-white"
+      } p-1`}
+    >
       <div>{/* <Image src={product.} /> */}</div>
       <div className="flex gap-2 items-center">
-        <div className="opacity-50 ">{props.index}-</div>
-        <div className="font-semibold tracking-tight text-lg">
-          {props.product.name}
+        <div className="opacity-50">{props.index}-</div>
+        <div className="grid grid-cols-3 place-items-center w-full">
+          <div className="font-semibold tracking-tight text-md">
+            {props.product.name}
+          </div>
+          <div className="text-xs p-1 bg-interface-hover rounded">
+            {props.product.barcodeRegister[0].barcode}
+          </div>
+          <div className="grid grid-cols-2 place-items-center w-full">
+            <div
+              className="w-2 h-2 rounded-full ml-auto"
+              style={{
+                backgroundColor: props.product.barcodeRegister[0].color,
+              }}
+            ></div>
+            {formalizeText(props.product.barcodeRegister[0].color)}
+          </div>
         </div>
       </div>
     </div>

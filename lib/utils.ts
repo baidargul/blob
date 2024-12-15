@@ -16,3 +16,7 @@ export function formatCurrency(value: number, currency: "Rs" | "$"): string {
     return `$ ${formattedValue}`;
   }
 }
+
+export function formalizeText(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}

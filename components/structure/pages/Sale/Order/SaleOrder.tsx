@@ -47,7 +47,7 @@ const SaleOrder = (props: Props) => {
   }, []);
 
   const fetchProducts = async () => {
-    const response = await serverActions.Product.listAll();
+    const response = await serverActions.Inventory.list();
     response.data = ComboBox_ADD_VALUE_TO_EACH_OPTION(response.data);
     setProductList((prev: any) => response.data);
   };
