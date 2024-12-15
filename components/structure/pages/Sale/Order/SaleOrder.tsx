@@ -25,6 +25,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import ProductOrderRow from "./ProductOrderRow";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -33,6 +35,7 @@ const SaleOrder = (props: Props) => {
   const [searchText, setSearchText] = useState<string>("");
   const [isWorking, setIsWorking] = useState(false);
   const [productList, setProductList] = useState<product[]>([]);
+  const [cartItems, setCartItems] = useState<product[]>([]);
 
   const handleFirstOrder = async () => {};
   const handlePreviousOrder = async () => {};
@@ -55,6 +58,18 @@ const SaleOrder = (props: Props) => {
   function sumTotal() {
     return 0;
   }
+
+  const handleAddProductToCart = (product: any) => {
+    console.log(product);
+    if (cartItems.includes(product)) {
+      toast.message(
+        `${product.name} with barcode ${product.barcodeRegister[0].barcode} is already in the cart.`
+      );
+      return;
+    }
+    setSearchText("");
+    setCartItems((prev: any) => [...prev, product]);
+  };
 
   return (
     <ResizablePanelGroup direction="horizontal" className="relative">
@@ -117,6 +132,7 @@ const SaleOrder = (props: Props) => {
                     label="Search Product"
                     value={searchText}
                     setValue={setSearchText}
+                    setItem={handleAddProductToCart}
                   />
                   {/* <Combobox
                     options={productList}
@@ -171,10 +187,10 @@ const SaleOrder = (props: Props) => {
         </div>
         <ScrollArea className="h-[88dvh] pl-2">
           <div>
-            {/* <div className="flex flex-col gap-2">
-              {productList &&
-                productList.length > 0 &&
-                productList.map((item: any, index: number) => {
+            <div className="flex flex-col gap-2">
+              {cartItems &&
+                cartItems.length > 0 &&
+                cartItems.map((item: any, index: number) => {
                   let isExists = false;
 
                   if (
@@ -261,11 +277,11 @@ const SaleOrder = (props: Props) => {
                       item={item}
                       index={index + 1}
                       key={`${item.id}-${index}`}
-                      updateProducts={updateProducts}
+                      // updateProducts={updateProducts}
                     />
                   );
                 })}
-            </div> */}
+            </div>
           </div>
         </ScrollArea>
       </ResizablePanel>
