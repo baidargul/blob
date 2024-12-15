@@ -14,7 +14,7 @@ const ProductOrderRow = (props: Props) => {
   return (
     <div
       key={props.key}
-      className={`bg-white hover:bg-gradient-to-r hover:from-white hover:to-interface-hover/30 hover:rounded transition-all duration-500`}
+      className={`bg-white hover:drop-shadow-lg hover:bg-gradient-to-r hover:from-white hover:to-interface-hover/30 hover:rounded transition-all duration-500`}
     >
       <div className="p-2 grid grid-cols-[auto_1fr] w-full">
         <div>

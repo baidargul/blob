@@ -36,6 +36,7 @@ const SaleOrder = (props: Props) => {
   const [isWorking, setIsWorking] = useState(false);
   const [productList, setProductList] = useState<product[]>([]);
   const [cartItems, setCartItems] = useState<product[]>([]);
+  const [cartSearchText, setCartSearchText] = useState<string>("");
 
   const handleFirstOrder = async () => {};
   const handlePreviousOrder = async () => {};
@@ -43,7 +44,9 @@ const SaleOrder = (props: Props) => {
   const handleLastOrder = async () => {};
   const handleCreateNewSaleOrder = async () => {};
   const handleCloseInvoice = async () => {};
-  const handleSearchProduct = (value: string) => {};
+  const handleSearchProduct = (value: string) => {
+    setSearchText(value);
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -180,8 +183,8 @@ const SaleOrder = (props: Props) => {
           <InputBox
             label="Search"
             placeholder="Search Product"
-            setValue={handleSearchProduct}
-            value={searchText}
+            setValue={setCartSearchText}
+            value={cartSearchText}
             className="pointer-events-auto opacity-100"
           />
         </div>
@@ -194,7 +197,9 @@ const SaleOrder = (props: Props) => {
                   let isExists = false;
 
                   if (
-                    item.name.toLowerCase().includes(searchText.toLowerCase())
+                    item.name
+                      .toLowerCase()
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -202,7 +207,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.type.name
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -210,7 +215,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.brand.name
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -218,7 +223,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.brand.description
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -226,7 +231,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.barcodeRegister[0].barcode
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -234,7 +239,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.barcodeRegister[0].color
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -242,7 +247,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.category.name
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
@@ -251,19 +256,23 @@ const SaleOrder = (props: Props) => {
                     item.category.description &&
                     item.category.description
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
 
                   if (
-                    item.price.toLowerCase().includes(searchText.toLowerCase())
+                    item.price
+                      .toLowerCase()
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
 
                   if (
-                    item.cost.toLowerCase().includes(searchText.toLowerCase())
+                    item.cost
+                      .toLowerCase()
+                      .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
