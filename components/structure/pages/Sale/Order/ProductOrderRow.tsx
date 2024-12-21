@@ -7,6 +7,7 @@ import React from "react";
 type Props = {
   item: any;
   index: number;
+  removeRow: (barcode: string) => void;
 };
 
 const ProductOrderRow = (props: Props) => {
@@ -14,7 +15,11 @@ const ProductOrderRow = (props: Props) => {
     <div
       className={`relative bg-white hover:drop-shadow-lg hover:bg-gradient-to-r hover:from-white hover:to-interface-hover/30 hover:rounded transition-all duration-500`}
     >
-      <div className="p-1 group w-6 h-6 text-center flex justify-center items-center bg-interface-primary/10 hover:bg-red-50 border border-transparent hover:border-red-100 rounded absolute top-2 right-2">
+      <div
+        title="Remove product"
+        onClick={() => props.removeRow(props.item.barcodeRegister[0].barcode)}
+        className="p-1 group w-6 h-6 text-center flex justify-center items-center bg-interface-primary/10 hover:bg-red-50 border border-transparent hover:border-red-100 rounded absolute top-2 right-2"
+      >
         <Trash size={20} className="group-hover:text-red-500 cursor-pointer" />
       </div>
       <div className="p-2 grid grid-cols-[auto_1fr] w-full">

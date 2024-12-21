@@ -292,15 +292,11 @@ const SaleOrder = (props: Props) => {
                   }
 
                   return (
-                    <div
-                      key={`${item.id}-${index}`}
-                      onClick={() =>
-                        removeProductFromCart(item.barcodeRegister[0].barcode)
-                      }
-                    >
+                    <div key={`${item.id}-${index}`}>
                       <ProductOrderRow
                         item={item}
                         index={index + 1}
+                        removeRow={removeProductFromCart}
                         // updateProducts={updateProducts}
                       />
                     </div>
