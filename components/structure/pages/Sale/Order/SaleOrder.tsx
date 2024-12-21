@@ -48,6 +48,17 @@ const SaleOrder = (props: Props) => {
     setSearchText(value);
   };
 
+  const removeProductFromCart = (barcode: string) => {
+    let newCartItems: any = [];
+    cartItems.forEach((item: any) => {
+      if (item.barcodeRegister[0].barcode !== barcode) {
+        newCartItems.push(item);
+      }
+    });
+
+    setCartItems(newCartItems);
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -281,7 +292,12 @@ const SaleOrder = (props: Props) => {
                   }
 
                   return (
-                    <div key={`${item.id}-${index}`}>
+                    <div
+                      key={`${item.id}-${index}`}
+                      onClick={() =>
+                        removeProductFromCart(item.barcodeRegister[0].barcode)
+                      }
+                    >
                       <ProductOrderRow
                         item={item}
                         index={index + 1}

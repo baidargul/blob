@@ -1,5 +1,6 @@
 import Tag from "@/components/myui/Tag";
 import { formalizeText } from "@/lib/utils";
+import { Trash } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
@@ -11,8 +12,11 @@ type Props = {
 const ProductOrderRow = (props: Props) => {
   return (
     <div
-      className={`bg-white hover:drop-shadow-lg hover:bg-gradient-to-r hover:from-white hover:to-interface-hover/30 hover:rounded transition-all duration-500`}
+      className={`relative bg-white hover:drop-shadow-lg hover:bg-gradient-to-r hover:from-white hover:to-interface-hover/30 hover:rounded transition-all duration-500`}
     >
+      <div className="p-1 group w-6 h-6 text-center flex justify-center items-center bg-interface-primary/10 hover:bg-red-50 border border-transparent hover:border-red-100 rounded absolute top-2 right-2">
+        <Trash size={20} className="group-hover:text-red-500 cursor-pointer" />
+      </div>
       <div className="p-2 grid grid-cols-[auto_1fr] w-full">
         <div>
           <Image
