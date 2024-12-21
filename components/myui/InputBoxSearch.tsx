@@ -33,13 +33,19 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
     return (
       product.name.toLowerCase().includes(normalizedTarget) ||
+      product.type.name.toLowerCase().includes(normalizedTarget) ||
+      product.brand.name.toLowerCase().includes(normalizedTarget) ||
+      product.brand.description?.toLowerCase().includes(normalizedTarget) ||
       product.barcodeRegister.some((barcodeEntry: any) =>
         barcodeEntry.barcode.toLowerCase().includes(normalizedTarget)
       ) ||
       product.barcodeRegister.some((barcodeEntry: any) =>
         barcodeEntry.color.toLowerCase().includes(normalizedTarget)
       ) ||
-      product.brand.name.toLowerCase().includes(normalizedTarget)
+      product.category.name.toLowerCase().includes(normalizedTarget) ||
+      product.category.description?.toLowerCase().includes(normalizedTarget) ||
+      product.price.toString().toLowerCase().includes(normalizedTarget) ||
+      product.cost.toString().toLowerCase().includes(normalizedTarget)
     );
   };
 
@@ -106,7 +112,7 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
         <ul className="absolute w-full bg-white border mt-1 max-h-60 overflow-auto z-10">
           {filteredOptions.map((option, index) => (
             <li
-              key={option.id}
+              key={`${option.id}-${index}`}
               onClick={() => {
                 props.setValue?.(option.name);
                 props.setItem?.(option);

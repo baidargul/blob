@@ -281,12 +281,13 @@ const SaleOrder = (props: Props) => {
                   }
 
                   return (
-                    <ProductOrderRow
-                      item={item}
-                      index={index + 1}
-                      key={`${item.id}-${index}`}
-                      // updateProducts={updateProducts}
-                    />
+                    <div key={`${item.id}-${index}`}>
+                      <ProductOrderRow
+                        item={item}
+                        index={index + 1}
+                        // updateProducts={updateProducts}
+                      />
+                    </div>
                   );
                 })}
             </div>
