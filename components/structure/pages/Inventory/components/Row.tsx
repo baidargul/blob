@@ -104,8 +104,6 @@ type Props = {
 };
 
 const Row = (props: Props) => {
-  console.log(props.product);
-
   const ItemAge = calculateStockAge(
     new Date(
       props.product.barcodeRegister[0].inventory[0].createdAt.toLocaleLowerCase()

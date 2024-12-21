@@ -10,7 +10,6 @@ type Props = {
 };
 
 const ProductOrderRow = (props: Props) => {
-  console.log(props.item);
   return (
     <div
       key={props.key}

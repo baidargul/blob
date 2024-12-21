@@ -63,7 +63,6 @@ const SaleOrder = (props: Props) => {
   }
 
   const handleAddProductToCart = (product: any) => {
-    console.log(product);
     if (cartItems.includes(product)) {
       toast.message(
         `${product.name} with barcode ${product.barcodeRegister[0].barcode} is already in the cart.`
