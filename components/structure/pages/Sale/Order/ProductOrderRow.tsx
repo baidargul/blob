@@ -60,7 +60,7 @@ const ProductOrderRow = (props: Props) => {
           <InputBox
             label="Amount"
             setValue={handleAmountChange}
-            value={props.item.amount}
+            value={props.item.amount | 0}
           />
         </div>
       </div>

@@ -70,7 +70,12 @@ const SaleOrder = (props: Props) => {
   };
 
   function sumTotal() {
-    return 0;
+    let total = 0;
+    cartItems.forEach((item: any) => {
+      if (!item.amount) return;
+      total += Number(item.amount || 0);
+    });
+    return total;
   }
 
   const handleAddProductToCart = (product: any) => {
