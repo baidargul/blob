@@ -1,3 +1,4 @@
+import InputBox from "@/components/myui/InputBox";
 import Tag from "@/components/myui/Tag";
 import { formalizeText } from "@/lib/utils";
 import { Trash } from "lucide-react";
@@ -8,9 +9,14 @@ type Props = {
   item: any;
   index: number;
   removeRow: (barcode: string) => void;
+  changeAmount: (barcode: string, amount: number) => void;
 };
 
 const ProductOrderRow = (props: Props) => {
+  const handleAmountChange = (value: string) => {
+    props.changeAmount(props.item.barcodeRegister[0].barcode, parseInt(value));
+  };
+
   return (
     <div
       className={`relative bg-white hover:drop-shadow-lg hover:bg-gradient-to-r hover:from-white hover:to-interface-hover/30 hover:rounded transition-all duration-500`}
@@ -22,7 +28,7 @@ const ProductOrderRow = (props: Props) => {
       >
         <Trash size={20} className="group-hover:text-red-500 cursor-pointer" />
       </div>
-      <div className="p-2 grid grid-cols-[auto_1fr] w-full">
+      <div className="p-2 grid grid-cols-[auto_1fr_1fr] w-full">
         <div>
           <Image
             src={props.item.productImages[0].images.url}
@@ -49,6 +55,13 @@ const ProductOrderRow = (props: Props) => {
             ></div>
             {formalizeText(props.item.barcodeRegister[0].color)}
           </div>
+        </div>
+        <div className="h-full flex flex-col justify-center">
+          <InputBox
+            label="Amount"
+            setValue={handleAmountChange}
+            value={props.item.amount}
+          />
         </div>
       </div>
     </div>

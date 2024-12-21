@@ -81,7 +81,20 @@ const SaleOrder = (props: Props) => {
       return;
     }
     setSearchText("");
-    setCartItems((prev: any) => [...prev, product]);
+    const newItem = { ...product, amount: 0 };
+    setCartItems((prev: any) => [...prev, newItem]);
+  };
+
+  const changeAmount = (barcode: string, amount: number) => {
+    let newCartItems: any = [];
+    cartItems.forEach((item: any) => {
+      if (item.barcodeRegister[0].barcode === barcode) {
+        item.amount = amount;
+      }
+      newCartItems.push(item);
+    });
+
+    setCartItems(newCartItems);
   };
 
   return (
@@ -297,6 +310,7 @@ const SaleOrder = (props: Props) => {
                         item={item}
                         index={index + 1}
                         removeRow={removeProductFromCart}
+                        changeAmount={changeAmount}
                         // updateProducts={updateProducts}
                       />
                     </div>
