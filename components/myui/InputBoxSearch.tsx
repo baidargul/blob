@@ -8,12 +8,40 @@ import { product } from "@prisma/client";
 import { formalizeText } from "@/lib/utils";
 import InputBox from "./InputBox";
 
+// Type Definitions
+type Props = {
+  label?: string;
+  setValue?: (value: string) => void;
+  setItem?: (item: ComboBoxOptions) => void;
+  value?: string;
+  readonly?: boolean;
+  icon?: React.ComponentType | any;
+  type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
+  placeholder?: string;
+  options: ComboBoxOptions[];
+};
+
 const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const inputRef: any = ref || useRef<HTMLInputElement>(null);
   const [filteredOptions, setFilteredOptions] = useState<ComboBoxOptions[]>(
     props.options
   );
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const isTargetProduct = (targetText: string, product: any) => {
+    const normalizedTarget = targetText.toLowerCase(); // Convert targetText to lowercase once
+
+    return (
+      product.name.toLowerCase().includes(normalizedTarget) ||
+      product.barcodeRegister.some((barcodeEntry: any) =>
+        barcodeEntry.barcode.toLowerCase().includes(normalizedTarget)
+      ) ||
+      product.barcodeRegister.some((barcodeEntry: any) =>
+        barcodeEntry.color.toLowerCase().includes(normalizedTarget)
+      ) ||
+      product.brand.name.toLowerCase().includes(normalizedTarget)
+    );
+  };
 
   useEffect(() => {
     setFilteredOptions(props.options);
@@ -28,8 +56,9 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
     }
 
     const filtered = props.options.filter((option) =>
-      option.name.toLowerCase().includes(value.toLowerCase())
+      isTargetProduct(value, option)
     );
+
     setFilteredOptions(filtered);
     setSelectedIndex(filtered.length > 0 ? 0 : null);
   };
@@ -116,16 +145,3 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
 });
 
 export default InputBoxSearch;
-
-// Type Definitions
-type Props = {
-  label?: string;
-  setValue?: (value: string) => void;
-  setItem?: (item: ComboBoxOptions) => void;
-  value?: string;
-  readonly?: boolean;
-  icon?: React.ComponentType | any;
-  type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
-  placeholder?: string;
-  options: ComboBoxOptions[];
-};
