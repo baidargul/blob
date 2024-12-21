@@ -29,7 +29,7 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const isTargetProduct = (targetText: string, product: any) => {
-    const normalizedTarget = targetText.toLowerCase(); // Convert targetText to lowercase once
+    const normalizedTarget = targetText.toLowerCase();
 
     return (
       product.name.toLowerCase().includes(normalizedTarget) ||
