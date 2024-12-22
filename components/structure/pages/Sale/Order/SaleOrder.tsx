@@ -37,6 +37,8 @@ const SaleOrder = (props: Props) => {
   const [productList, setProductList] = useState<product[]>([]);
   const [cartItems, setCartItems] = useState<product[]>([]);
   const [cartSearchText, setCartSearchText] = useState<string>("");
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<any | null>(null);
 
   const handleFirstOrder = async () => {};
   const handlePreviousOrder = async () => {};
@@ -61,7 +63,16 @@ const SaleOrder = (props: Props) => {
 
   useEffect(() => {
     fetchProducts();
+    fetchCustomers();
   }, []);
+
+  const fetchCustomers = async () => {
+    setIsWorking(true);
+    const response = await serverActions.Customer.listAll();
+    response.data = ComboBox_ADD_VALUE_TO_EACH_OPTION(response.data);
+    setCustomers((prev: any) => response.data);
+    setIsWorking(false);
+  };
 
   const fetchProducts = async () => {
     const response = await serverActions.Inventory.list();
@@ -157,6 +168,14 @@ const SaleOrder = (props: Props) => {
             </div>
             <div>
               <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
+                <div>
+                  <Combobox
+                    options={customers}
+                    label="Select Customer"
+                    setValue={setSelectedCustomer}
+                    value={selectedCustomer ? selectedCustomer.name : null}
+                  />
+                </div>
                 <div>
                   <InputBoxSearch
                     options={productList}
