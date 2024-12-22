@@ -29,6 +29,18 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
+    isExists = await prisma.account.findFirst({
+      where: {
+        title: vendor.name,
+      },
+    });
+
+    if (isExists) {
+      response.status = 400;
+      response.message = `Account with title ${vendor.name} already exists`;
+      return new Response(JSON.stringify(response));
+    }
+
     if (vendor.code?.length > 0) {
       isExists = await prisma.vendor.findMany({
         where: {
