@@ -195,7 +195,7 @@ const SaleOrder = (props: Props) => {
             </div>
           </div>
           <div className="bg-interface-primary w-[98.8%] py-1 rounded pl-2 bottom-0 absolute text-white ">
-            {formatCurrency(sumTotal(), "Rs")}
+            {formatCurrency(sumTotal(), "Rs")} | {cartItems.length} Items.
           </div>
         </div>
       </ResizablePanel>
