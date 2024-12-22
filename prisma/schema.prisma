@@ -125,14 +125,61 @@ model vendor {
   email2          String?
   website         String?
   purchase        purchase[]
+  account         account?   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model sale {
   id        String    @id @default(uuid())
-  accountId String?   
   orderNo   Decimal?  @db.Decimal
   closed    Boolean?
-  saleDate  DateTime? @db.Date @default(now())
-  createdAt DateTime? @db.Date @default(now())
-  updatedAt DateTime? @db.Date @default(now())
+  saleDate  DateTime? @default(now()) @db.Date
+  createdAt DateTime? @default(now()) @db.Date
+  updatedAt DateTime? @default(now()) @db.Date
+  accountId String?
+}
+
+model account {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  type        accountType?
+  balance     Decimal?     @default(0) @db.Decimal
+  createdAt   DateTime?    @default(now()) @db.Date
+  updatedAt   DateTime?    @default(now()) @db.Date
+  vendor      vendor[]
+}
+
+enum accountType {
+  vendor
+  customer
+  owner
+  employee
+  bank
+  cash
+  expenses
+  income
+}
+
+model transactions {
+  id                    String              @id @default(uuid())
+  accountId             String // Foreign key for account
+  type                  transactionType
+  category              transactionCategory @relation(fields: [transactionCategoryId], references: [id])
+  amount                Decimal             @db.Decimal
+  createdAt             DateTime            @default(now())
+  transactionCategoryId String
+}
+
+model transactionCategory {
+  id           String         @id @default(uuid())
+  name         String         @unique
+  description  String?
+  createdAt    DateTime?      @default(now())
+  updatedAt    DateTime?      @default(now())
+  transactions transactions[]
+}
+
+enum transactionType {
+  debit // Money going out
+  credit // Money coming in
 }
