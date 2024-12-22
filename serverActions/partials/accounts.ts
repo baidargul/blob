@@ -24,8 +24,8 @@ async function listAll() {
   return response.data;
 }
 
-async function list(title: string) {
-  const response = await axios.get(`${APIPATH}?title=${title}`);
+async function list(value: string, type: "title" | "id") {
+  const response = await axios.get(`${APIPATH}?${type}=${value}`);
   return response.data;
 }
 
