@@ -34,6 +34,7 @@ async function listAll() {
 
 export const Vendor = {
   create,
+  list,
   listAll,
   assignToPurchase,
 };

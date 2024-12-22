@@ -55,9 +55,17 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const account = await prisma.account.create({
+      data: {
+        title: vendor.name,
+        type: "vendor",
+      },
+    });
+
     const newVendor = await prisma.vendor.create({
       data: {
         ...vendor,
+        accountId: account.id,
       },
     });
 
@@ -82,9 +90,33 @@ export async function GET(req: NextRequest) {
   };
 
   try {
+    const query = new URL(req.url).searchParams;
+    const id = query.get("id");
+
+    if (id) {
+      const vendor = await prisma.vendor.findUnique({
+        where: {
+          id: id,
+        },
+        include: {
+          account: true,
+        },
+      });
+
+      response.status = 200;
+      response.message = vendor
+        ? "Vendor found successfully"
+        : "Vendor not found";
+      response.data = vendor;
+      return new Response(JSON.stringify(response));
+    }
+
     const vendors = await prisma.vendor.findMany({
       orderBy: {
         name: "asc",
+      },
+      include: {
+        account: true,
       },
     });
 
