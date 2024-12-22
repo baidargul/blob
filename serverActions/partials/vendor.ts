@@ -2,14 +2,14 @@ import { vendor } from "@prisma/client";
 import { SERVER_RESPONSE } from "../internal/server";
 import axios from "axios";
 
-const APIPATH = `/api/vendor/`;
+const APIPATH = `/api/vendor`;
 
 async function create(newVendor: vendor) {
   if (!newVendor.name) return;
   const data = {
     vendor: newVendor,
   };
-  const response: SERVER_RESPONSE = await axios.post(APIPATH, data);
+  const response: SERVER_RESPONSE = await axios.post(`${APIPATH}/`, data);
   return response.data;
 }
 
@@ -25,10 +25,15 @@ async function assignToPurchase(vendor: vendor, purchaseId: string) {
   return response.data;
 }
 
-async function list(id: string) {}
+async function list(value: string, type: "name" | "code" | "id") {
+  const response: SERVER_RESPONSE = await axios.get(
+    `${APIPATH}?${type}=${value}`
+  );
+  return response.data;
+}
 
 async function listAll() {
-  const response: SERVER_RESPONSE = await axios.get(APIPATH);
+  const response: SERVER_RESPONSE = await axios.get(`${APIPATH}/`);
   return response.data;
 }
 

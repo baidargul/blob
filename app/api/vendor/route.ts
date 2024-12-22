@@ -91,7 +91,51 @@ export async function GET(req: NextRequest) {
 
   try {
     const query = new URL(req.url).searchParams;
+    const name = query.get("name");
+    const code = query.get("code");
     const id = query.get("id");
+
+    if (name) {
+      const vendor = await prisma.vendor.findFirst({
+        where: {
+          name: {
+            equals: name,
+            mode: "insensitive",
+          },
+        },
+        include: {
+          account: true,
+        },
+      });
+
+      response.status = 200;
+      response.message = vendor
+        ? "Vendor found successfully"
+        : "Vendor not found";
+      response.data = vendor;
+      return new Response(JSON.stringify(response));
+    }
+
+    if (code) {
+      const vendor = await prisma.vendor.findFirst({
+        where: {
+          code: {
+            equals: code,
+            mode: "insensitive",
+          },
+        },
+        include: {
+          account: true,
+        },
+      });
+
+      response.status = 200;
+      response.message = vendor
+        ? "Vendor found successfully"
+        : "Vendor not found";
+      response.data = vendor;
+      return new Response(JSON.stringify(response));
+    }
 
     if (id) {
       const vendor = await prisma.vendor.findUnique({

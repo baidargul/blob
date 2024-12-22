@@ -69,6 +69,7 @@ export async function GET(req: NextRequest) {
   try {
     const query = new URL(req.url).searchParams;
     const title = query.get("title");
+    const id = query.get("id");
 
     if (title) {
       const accounts = await prisma.account.findFirst({
@@ -85,6 +86,21 @@ export async function GET(req: NextRequest) {
         ? "Account found successfully"
         : "Account not found";
       response.data = accounts;
+      return new Response(JSON.stringify(response));
+    }
+
+    if (id) {
+      const account = await prisma.account.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      response.status = 200;
+      response.message = account
+        ? "Account found successfully"
+        : "Account not found";
+      response.data = account;
       return new Response(JSON.stringify(response));
     }
 
