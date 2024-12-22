@@ -29,7 +29,7 @@ async function assignToSale(customer: customer, saleId: string) {
     saleId,
   };
   const response: SERVER_RESPONSE = await axios.post(
-    `${APIPATH}/assignToPurchase`,
+    `${APIPATH}/assignToSale/`,
     { customer, saleId }
   );
   return response.data;

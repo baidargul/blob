@@ -44,7 +44,14 @@ const SaleOrder = (props: Props) => {
   const handlePreviousOrder = async () => {};
   const handleNextOrder = async () => {};
   const handleLastOrder = async () => {};
-  const handleCreateNewSaleOrder = async () => {};
+  const handleCreateNewSaleOrder = async () => {
+    setIsWorking(true);
+    const sale = await serverActions.Sale.create();
+    if (sale.status === 200) {
+      setSaleOrder(sale.data);
+    }
+    setIsWorking(false);
+  };
   const handleCloseInvoice = async () => {};
 
   const removeProductFromCart = (barcode: string) => {
@@ -110,7 +117,7 @@ const SaleOrder = (props: Props) => {
         if (response.status === 200) {
           setSelectedCustomer(customer);
           toast.message(
-            `${customer.name.toLocaleUpperCase()} is assigned to this purchase order`
+            `${customer.name.toLocaleUpperCase()} is assigned to this sale order`
           );
         } else {
           if (response.status === 400) {
@@ -190,50 +197,27 @@ const SaleOrder = (props: Props) => {
               )}
             </div>
             <div>
-              <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
-                <div>
-                  <Combobox
-                    options={customers}
-                    label="Select Customer"
-                    setValue={handleCustomerSelect}
-                    value={selectedCustomer ? selectedCustomer.name : null}
-                  />
+              {saleOrder && saleOrder.id && (
+                <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
+                  <div>
+                    <Combobox
+                      options={customers}
+                      label="Select Customer"
+                      setValue={handleCustomerSelect}
+                      value={selectedCustomer ? selectedCustomer.name : null}
+                    />
+                  </div>
+                  <div>
+                    <InputBoxSearch
+                      options={productList}
+                      label="Search Product"
+                      value={searchText}
+                      setValue={setSearchText}
+                      setItem={handleAddProductToCart}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <InputBoxSearch
-                    options={productList}
-                    label="Search Product"
-                    value={searchText}
-                    setValue={setSearchText}
-                    setItem={handleAddProductToCart}
-                  />
-                  {/* <Combobox
-                    options={productList}
-                    label="Select Product"
-                    setValue={handleProductSelect}
-                  /> */}
-                </div>
-                <div
-                  className={
-                    saleOrder && saleOrder.closed === true
-                      ? "opacity-50 pointer-events-none  cursor-not-allowed"
-                      : "opacity-100"
-                  }
-                >
-                  {saleOrder && saleOrder.id?.length > 0 && (
-                    <div></div>
-                    // <PurchaseProductForm
-                    //   saleOrder={saleOrder}
-                    //   productList={productList}
-                    //   setProductList={setProductList}
-                    //   handleAddToCart={handleAddToCart}
-                    //   vendorList={vendorList}
-                    //   setSelectedVendor={handleVendorSelect}
-                    //   selectedVendor={selectedVendor}
-                    // />
-                  )}
-                </div>
-              </div>
+              )}
             </div>
           </div>
           <div className="bg-interface-primary w-[98.8%] py-1 rounded pl-2 bottom-0 absolute text-white ">
