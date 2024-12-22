@@ -73,7 +73,10 @@ export async function GET(req: NextRequest) {
     if (title) {
       const accounts = await prisma.account.findFirst({
         where: {
-          title: title,
+          title: {
+            equals: title,
+            mode: "insensitive",
+          },
         },
       });
 
@@ -86,10 +89,12 @@ export async function GET(req: NextRequest) {
     }
 
     const accounts = await prisma.account.findMany({
-      orderBy: {
-        title: "asc",
-        createdAt: "desc",
-      },
+      orderBy: [
+        {
+          title: "asc",
+        },
+        { createdAt: "desc" },
+      ],
     });
 
     response.status = 200;
