@@ -1,3 +1,4 @@
+import { Account } from "./partials/accounts";
 import { Brand } from "./partials/brand";
 import { Category } from "./partials/category";
 import { Inventory } from "./partials/inventory";
@@ -11,6 +12,7 @@ export const serverActions = {
   Category,
   Type,
   Product,
+  Account,
   Vendor,
   Purchase,
   Inventory,
