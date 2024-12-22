@@ -4,19 +4,12 @@ import { SERVER_RESPONSE } from "../internal/server";
 
 const APIPATH = `/api/customer`;
 
-async function createAccount(
-  title: string,
-  type: accountType,
-  balance?: number,
-  description?: string
-) {
+async function create(newCustomer: customer) {
+  if (!newCustomer.name) return;
   const data = {
-    title,
-    type,
-    description,
-    balance,
+    customer: newCustomer,
   };
-  const response = await axios.post(`${APIPATH}`, data);
+  const response: SERVER_RESPONSE = await axios.post(`${APIPATH}/`, data);
   return response.data;
 }
 
@@ -43,7 +36,7 @@ async function assignToSale(customer: customer, saleId: string) {
 }
 
 export const Customer = {
-  createAccount,
+  create,
   listAll,
   list,
   assignToSale,

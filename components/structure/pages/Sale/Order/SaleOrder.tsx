@@ -16,7 +16,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/lib/utils";
 import { serverActions } from "@/serverActions/serverActions";
-import { product, sale } from "@prisma/client";
+import { customer, product, sale } from "@prisma/client";
 import {
   Check,
   ChevronFirst,
@@ -46,9 +46,6 @@ const SaleOrder = (props: Props) => {
   const handleLastOrder = async () => {};
   const handleCreateNewSaleOrder = async () => {};
   const handleCloseInvoice = async () => {};
-  const handleSearchProduct = (value: string) => {
-    setSearchText(value);
-  };
 
   const removeProductFromCart = (barcode: string) => {
     let newCartItems: any = [];
@@ -99,6 +96,32 @@ const SaleOrder = (props: Props) => {
     setSearchText("");
     const newItem = { ...product, amount: 0 };
     setCartItems((prev: any) => [...prev, newItem]);
+  };
+
+  const handleCustomerSelect = async (customer: customer | null) => {
+    setIsWorking(true);
+    if (saleOrder) {
+      if (customer) {
+        const response = await serverActions.Customer.assignToSale(
+          customer,
+          saleOrder.id
+        );
+
+        if (response.status === 200) {
+          setSelectedCustomer(customer);
+          toast.message(
+            `${customer.name.toLocaleUpperCase()} is assigned to this purchase order`
+          );
+        } else {
+          if (response.status === 400) {
+            toast.warning(response.message);
+          } else {
+            toast.error(response.message);
+          }
+        }
+      }
+    }
+    setIsWorking(false);
   };
 
   const changeAmount = (barcode: string, amount: number) => {
@@ -172,7 +195,7 @@ const SaleOrder = (props: Props) => {
                   <Combobox
                     options={customers}
                     label="Select Customer"
-                    setValue={setSelectedCustomer}
+                    setValue={handleCustomerSelect}
                     value={selectedCustomer ? selectedCustomer.name : null}
                   />
                 </div>
