@@ -35,7 +35,7 @@ const SaleOrder = (props: Props) => {
   const [searchProductText, setSearchProductText] = useState<string>("");
   const [searchCustomerText, setSearchCustomerText] = useState<string>("");
   const [isWorking, setIsWorking] = useState(false);
-  const [productList, setProductList] = useState<product[]>([]);
+  const [productList, setProductList] = useState<product[] | any[]>([]);
   const [cartItems, setCartItems] = useState<product[] | any[]>([]);
   const [cartSearchText, setCartSearchText] = useState<string>("");
   const [customers, setCustomers] = useState<any[]>([]);
@@ -44,7 +44,7 @@ const SaleOrder = (props: Props) => {
   const handleNextOrder = async () => {
     setIsWorking(true);
     if (!saleOrder) return null;
-    const order = await serverActions.Purchase.get.next(saleOrder.id);
+    const order = await serverActions.Sale.getNext(saleOrder.id);
 
     if (order.status === 200) {
       setSaleOrder(order.data);
@@ -57,7 +57,7 @@ const SaleOrder = (props: Props) => {
   };
   const handlePreviousOrder = async () => {
     setIsWorking(true);
-    const order = await serverActions.Purchase.get.previous(
+    const order = await serverActions.Sale.getPrevious(
       saleOrder && saleOrder.id ? saleOrder.id : ""
     );
     if (order.status === 200) {
@@ -71,7 +71,7 @@ const SaleOrder = (props: Props) => {
   };
   const handleFirstOrder = async () => {
     setIsWorking(true);
-    const order = await serverActions.Purchase.get.first();
+    const order = await serverActions.Sale.getFirst();
     if (order.status === 200) {
       setSaleOrder(order.data);
       setProductList(order.data.products);
@@ -83,7 +83,7 @@ const SaleOrder = (props: Props) => {
   };
   const handleLastOrder = async () => {
     setIsWorking(true);
-    const order = await serverActions.Purchase.get.last();
+    const order = await serverActions.Sale.getLast();
 
     if (order.status === 200) {
       setSaleOrder(order.data);
@@ -148,7 +148,7 @@ const SaleOrder = (props: Props) => {
   useEffect(() => {
     fetchProducts();
     fetchCustomers();
-  }, []);
+  }, [saleOrder]);
 
   const fetchCustomers = async () => {
     setIsWorking(true);
