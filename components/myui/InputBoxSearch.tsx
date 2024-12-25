@@ -19,6 +19,14 @@ type Props = {
   type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
   placeholder?: string;
   options: ComboBoxOptions[];
+  filterRow: (
+    option: any,
+    index: number,
+    selectedIndex: number | null,
+    setValue: any,
+    setItem: any,
+    setFilteredOptions: any
+  ) => any;
 };
 
 const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -118,30 +126,18 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
                 props.setItem?.(option);
                 setFilteredOptions([]); // Close the dropdown
               }}
-              className={`p-2 cursor-pointer ${
-                index === selectedIndex ? "bg-interface-primary/20" : ""
+              className={`cursor-pointer ${
+                index === selectedIndex ? "bg-interface-primary/5" : ""
               }`}
             >
-              <div className="flex gap-2 items-center">
-                <div className="opacity-50">{index + 1}-</div>
-                <div className="grid grid-cols-3 place-items-center w-full">
-                  <div className="font-semibold tracking-tight text-md">
-                    {option.name}
-                  </div>
-                  <div className="text-xs p-1 bg-interface-hover border border-b-white rounded">
-                    {option.barcodeRegister[0].barcode}
-                  </div>
-                  <div className="grid grid-cols-2 place-items-center w-full">
-                    <div
-                      className="w-2 h-2 rounded-full ml-auto"
-                      style={{
-                        backgroundColor: option.barcodeRegister[0].color,
-                      }}
-                    ></div>
-                    {formalizeText(option.barcodeRegister[0].color)}
-                  </div>
-                </div>
-              </div>
+              {props.filterRow(
+                option,
+                index,
+                selectedIndex,
+                props.setValue,
+                props.setItem,
+                setFilteredOptions
+              )}
             </li>
           ))}
         </ul>
@@ -151,3 +147,12 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
 });
 
 export default InputBoxSearch;
+
+export type filterRowType = {
+  option: any;
+  index: number;
+  selectedIndex: number | null;
+  setValue: any;
+  setItem: any;
+  setFilteredOptions: any;
+};
