@@ -36,7 +36,7 @@ const SaleOrder = (props: Props) => {
   const [searchCustomerText, setSearchCustomerText] = useState<string>("");
   const [isWorking, setIsWorking] = useState(false);
   const [productList, setProductList] = useState<product[]>([]);
-  const [cartItems, setCartItems] = useState<product[]>([]);
+  const [cartItems, setCartItems] = useState<product[] | any[]>([]);
   const [cartSearchText, setCartSearchText] = useState<string>("");
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any | null>(null);
@@ -125,7 +125,24 @@ const SaleOrder = (props: Props) => {
   }
 
   const handleAddProductToCart = (product: any) => {
-    if (cartItems.includes(product)) {
+    function isAlreadyExists(value: string) {
+      let isExists = false;
+
+      for (let i = 0; i < cartItems.length; i++) {
+        if (
+          cartItems[i].barcodeRegister[0].barcode
+            .toLowerCase()
+            .includes(value.toLocaleLowerCase())
+        ) {
+          isExists = true;
+          break;
+        }
+      }
+
+      return isExists;
+    }
+
+    if (isAlreadyExists(product.barcodeRegister[0].barcode) === true) {
       toast.message(
         `${product.name} with barcode ${product.barcodeRegister[0].barcode} is already in the cart.`
       );

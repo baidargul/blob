@@ -70,8 +70,10 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
       });
     } else if (e.key === "Enter" && selectedIndex !== null) {
       const selectedItem = filteredOptions[selectedIndex];
-      props.setValue?.(selectedItem.name);
-      props.setItem?.(selectedItem);
+      if (selectedItem) {
+        props.setValue?.(selectedItem?.name);
+        props.setItem?.(selectedItem);
+      }
       setFilteredOptions([]); // Close the dropdown
     } else if (e.key === "Escape") {
       setFilteredOptions([]); // Close the dropdown
