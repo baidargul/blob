@@ -84,8 +84,11 @@ model barcodeRegister {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now())
   purchaseId String
+  saleId     String?
+  soldAt     Decimal?    @db.Decimal
   product    product     @relation(fields: [productId], references: [id], onDelete: Cascade)
   purchase   purchase    @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  sale       sale?       @relation(fields: [saleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   inventory  inventory[]
 }
 
@@ -110,62 +113,69 @@ model inventory {
 }
 
 model vendor {
-  id              String     @id @default(uuid())
-  name            String     @unique
-  code            String?
-  accountId       String?
-  createdAt       DateTime?  @default(now()) @db.Date
-  primaryContact  String?
-  primaryPosition String?
-  primaryPhone    String?
-  secondContact   String?
-  secondPosition  String?
-  secondPhone     String?
-  email1          String?
-  email2          String?
-  website         String?
-  purchase        purchase[]
-  account         account?   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                         String     @id @default(uuid())
+  name                       String     @unique
+  code                       String?
+  accountId                  String?    @unique
+  createdAt                  DateTime?  @default(now()) @db.Date
+  primaryContact             String?
+  primaryPosition            String?
+  primaryPhone               String?
+  secondContact              String?
+  secondPosition             String?
+  secondPhone                String?
+  email1                     String?
+  email2                     String?
+  website                    String?
+  account_account_idTovendor account?   @relation("account_idTovendor")
+  purchase                   purchase[]
+  account                    account?   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model customer {
-  id              String    @id @default(uuid())
-  name            String    @unique
-  code            String?
-  accountId       String?
-  createdAt       DateTime? @default(now()) @db.Date
-  primaryContact  String?
-  primaryPosition String?
-  primaryPhone    String?
-  secondContact   String?
-  secondPosition  String?
-  secondPhone     String?
-  email1          String?
-  email2          String?
-  website         String?
-  account         account?  @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                           String    @id @default(uuid())
+  name                         String    @unique
+  code                         String?
+  accountId                    String?   @unique
+  createdAt                    DateTime? @default(now()) @db.Date
+  primaryContact               String?
+  primaryPosition              String?
+  primaryPhone                 String?
+  secondContact                String?
+  secondPosition               String?
+  secondPhone                  String?
+  email1                       String?
+  email2                       String?
+  website                      String?
+  account_account_idTocustomer account?  @relation("account_idTocustomer")
+  account                      account?  @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model sale {
-  id        String    @id @default(uuid())
-  orderNo   Decimal?  @db.Decimal
-  closed    Boolean?
-  saleDate  DateTime? @default(now()) @db.Date
-  createdAt DateTime? @default(now()) @db.Date
-  updatedAt DateTime? @default(now()) @db.Date
-  accountId String?
+  id              String            @id @default(uuid())
+  orderNo         Decimal?          @db.Decimal
+  closed          Boolean?
+  saleDate        DateTime?         @default(now()) @db.Date
+  createdAt       DateTime?         @default(now()) @db.Date
+  updatedAt       DateTime?         @default(now()) @db.Date
+  accountId       String?
+  barcodeRegister barcodeRegister[]
+  account         account?          @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model account {
-  id          String       @id @default(uuid())
-  title       String
-  balance     Decimal?     @default(0) @db.Decimal
-  createdAt   DateTime?    @default(now()) @db.Date
-  updatedAt   DateTime?    @default(now()) @db.Date
-  type        accountType?
-  description String?
-  customer    customer[]
-  vendor      vendor[]
+  id                            String       @id @default(uuid())
+  title                         String
+  balance                       Decimal?     @default(0) @db.Decimal
+  createdAt                     DateTime?    @default(now()) @db.Date
+  updatedAt                     DateTime?    @default(now()) @db.Date
+  type                          accountType?
+  description                   String?
+  customer_account_idTocustomer customer     @relation("account_idTocustomer", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction)
+  vendor_account_idTovendor     vendor       @relation("account_idTovendor", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "account_id_fkey1")
+  customer                      customer?
+  sale                          sale[]
+  vendor                        vendor?
 }
 
 model transactions {
