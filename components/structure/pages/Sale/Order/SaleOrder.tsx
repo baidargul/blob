@@ -146,6 +146,11 @@ const SaleOrder = (props: Props) => {
   };
 
   useEffect(() => {
+    setCartSearchText("");
+    setSearchProductText("");
+    setSearchCustomerText("");
+    setSelectedCustomer(null);
+    setCartItems([]);
     fetchProducts();
     fetchCustomers();
   }, [saleOrder]);
