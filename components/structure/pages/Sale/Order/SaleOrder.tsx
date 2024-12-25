@@ -32,7 +32,8 @@ type Props = {};
 
 const SaleOrder = (props: Props) => {
   const [saleOrder, setSaleOrder] = useState<sale | null>(null);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchProductText, setSearchProductText] = useState<string>("");
+  const [searchCustomerText, setSearchCustomerText] = useState<string>("");
   const [isWorking, setIsWorking] = useState(false);
   const [productList, setProductList] = useState<product[]>([]);
   const [cartItems, setCartItems] = useState<product[]>([]);
@@ -63,6 +64,36 @@ const SaleOrder = (props: Props) => {
     });
 
     setCartItems(newCartItems);
+  };
+
+  const isTargetProduct = (targetText: string, product: any) => {
+    const normalizedTarget = targetText.toLowerCase();
+
+    return (
+      product.name.toLowerCase().includes(normalizedTarget) ||
+      product.type.name.toLowerCase().includes(normalizedTarget) ||
+      product.brand.name.toLowerCase().includes(normalizedTarget) ||
+      product.brand.description?.toLowerCase().includes(normalizedTarget) ||
+      product.barcodeRegister.some((barcodeEntry: any) =>
+        barcodeEntry.barcode.toLowerCase().includes(normalizedTarget)
+      ) ||
+      product.barcodeRegister.some((barcodeEntry: any) =>
+        barcodeEntry.color.toLowerCase().includes(normalizedTarget)
+      ) ||
+      product.category.name.toLowerCase().includes(normalizedTarget) ||
+      product.category.description?.toLowerCase().includes(normalizedTarget) ||
+      product.price.toString().toLowerCase().includes(normalizedTarget) ||
+      product.cost.toString().toLowerCase().includes(normalizedTarget)
+    );
+  };
+  const isTargetCustomer = (targetText: string, product: any) => {
+    const normalizedTarget = targetText.toLowerCase();
+
+    return (
+      product.name.toLowerCase().includes(normalizedTarget) ||
+      product.code.toLowerCase().includes(normalizedTarget) ||
+      product?.primaryPhone?.toLowerCase().includes(normalizedTarget)
+    );
   };
 
   useEffect(() => {
@@ -100,7 +131,7 @@ const SaleOrder = (props: Props) => {
       );
       return;
     }
-    setSearchText("");
+    setSearchProductText("");
     const newItem = { ...product, amount: 0 };
     setCartItems((prev: any) => [...prev, newItem]);
   };
@@ -200,21 +231,25 @@ const SaleOrder = (props: Props) => {
               {saleOrder && saleOrder.id && (
                 <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
                   <div>
-                    <Combobox
+                    <InputBoxSearch
                       options={customers}
-                      label="Select Customer"
-                      setValue={handleCustomerSelect}
-                      value={selectedCustomer ? selectedCustomer.name : null}
+                      label="Search customer"
+                      value={searchCustomerText}
+                      setValue={setSearchCustomerText}
+                      setItem={handleCustomerSelect}
+                      filterRow={customerSearchFilterRow}
+                      filterFunction={isTargetCustomer}
                     />
                   </div>
                   <div>
                     <InputBoxSearch
                       options={productList}
                       label="Search Product"
-                      value={searchText}
-                      setValue={setSearchText}
+                      value={searchProductText}
+                      setValue={setSearchProductText}
                       setItem={handleAddProductToCart}
                       filterRow={productSearchFilterRow}
+                      filterFunction={isTargetProduct}
                     />
                   </div>
                 </div>
@@ -387,6 +422,36 @@ const productSearchFilterRow = (
               }}
             ></div>
             {formalizeText(option.barcodeRegister[0].color)}
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+const customerSearchFilterRow = (
+  option: any,
+  index: number,
+  selectedIndex: number | null
+) => {
+  return (
+    <li
+      className={`p-2 cursor-pointer ${
+        index === selectedIndex ? "bg-interface-primary/20" : ""
+      }`}
+    >
+      <div className="flex gap-2 items-center">
+        <div className="opacity-50">{index + 1}-</div>
+        <div className="grid grid-cols-3 place-items-center w-full">
+          <div className="font-semibold tracking-tight text-md">
+            {option.name}
+          </div>
+          <div className="text-xs p-1 bg-interface-hover border border-b-white rounded">
+            {option.code}
+          </div>
+          <div className="grid grid-cols-2 place-items-center w-full">
+            <div className="w-2 h-2 rounded-full ml-auto"></div>
+            {option.primaryPhone || "No phone"}
           </div>
         </div>
       </div>

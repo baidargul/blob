@@ -27,6 +27,7 @@ type Props = {
     setItem: any,
     setFilteredOptions: any
   ) => any;
+  filterFunction: (value: string, product: product) => boolean;
 };
 
 const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -35,27 +36,6 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
     props.options
   );
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const isTargetProduct = (targetText: string, product: any) => {
-    const normalizedTarget = targetText.toLowerCase();
-
-    return (
-      product.name.toLowerCase().includes(normalizedTarget) ||
-      product.type.name.toLowerCase().includes(normalizedTarget) ||
-      product.brand.name.toLowerCase().includes(normalizedTarget) ||
-      product.brand.description?.toLowerCase().includes(normalizedTarget) ||
-      product.barcodeRegister.some((barcodeEntry: any) =>
-        barcodeEntry.barcode.toLowerCase().includes(normalizedTarget)
-      ) ||
-      product.barcodeRegister.some((barcodeEntry: any) =>
-        barcodeEntry.color.toLowerCase().includes(normalizedTarget)
-      ) ||
-      product.category.name.toLowerCase().includes(normalizedTarget) ||
-      product.category.description?.toLowerCase().includes(normalizedTarget) ||
-      product.price.toString().toLowerCase().includes(normalizedTarget) ||
-      product.cost.toString().toLowerCase().includes(normalizedTarget)
-    );
-  };
 
   useEffect(() => {
     setFilteredOptions(props.options);
@@ -70,7 +50,7 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
     }
 
     const filtered = props.options.filter((option) =>
-      isTargetProduct(value, option)
+      props.filterFunction(value, option)
     );
 
     setFilteredOptions(filtered);
