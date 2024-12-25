@@ -362,10 +362,7 @@ export default SaleOrder;
 const productSearchFilterRow = (
   option: any,
   index: number,
-  selectedIndex: number | null,
-  setValue: any,
-  setItem: any,
-  setFilteredOptions: any
+  selectedIndex: number | null
 ) => {
   return (
     <li

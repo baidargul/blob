@@ -163,9 +163,6 @@ export type filterRowType = {
 //   option: any,
 //   index: number,
 //   selectedIndex: number | null,
-//   setValue: any,
-//   setItem: any,
-//   setFilteredOptions: any
 // ) => {
 //   return (
 //     <li
