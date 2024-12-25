@@ -41,10 +41,59 @@ const SaleOrder = (props: Props) => {
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any | null>(null);
 
-  const handleFirstOrder = async () => {};
-  const handlePreviousOrder = async () => {};
-  const handleNextOrder = async () => {};
-  const handleLastOrder = async () => {};
+  const handleNextOrder = async () => {
+    setIsWorking(true);
+    if (!saleOrder) return null;
+    const order = await serverActions.Purchase.get.next(saleOrder.id);
+
+    if (order.status === 200) {
+      setSaleOrder(order.data);
+      setProductList(order.data.products);
+      if (order.data.vendorId !== null) {
+        setSelectedCustomer((prev: any) => order.data.vendor);
+      }
+    }
+    setIsWorking(false);
+  };
+  const handlePreviousOrder = async () => {
+    setIsWorking(true);
+    const order = await serverActions.Purchase.get.previous(
+      saleOrder && saleOrder.id ? saleOrder.id : ""
+    );
+    if (order.status === 200) {
+      setSaleOrder(order.data);
+      setProductList(order.data.products);
+      if (order.data.vendorId !== null) {
+        setSelectedCustomer((prev: any) => order.data.vendor);
+      }
+    }
+    setIsWorking(false);
+  };
+  const handleFirstOrder = async () => {
+    setIsWorking(true);
+    const order = await serverActions.Purchase.get.first();
+    if (order.status === 200) {
+      setSaleOrder(order.data);
+      setProductList(order.data.products);
+      if (order.data.vendorId !== null) {
+        setSelectedCustomer((prev: any) => order.data.vendor);
+      }
+    }
+    setIsWorking(false);
+  };
+  const handleLastOrder = async () => {
+    setIsWorking(true);
+    const order = await serverActions.Purchase.get.last();
+
+    if (order.status === 200) {
+      setSaleOrder(order.data);
+      setProductList(order.data.products);
+      if (order.data.vendorId !== null) {
+        setSelectedCustomer((prev: any) => order.data.vendor);
+      }
+    }
+    setIsWorking(false);
+  };
   const handleCreateNewSaleOrder = async () => {
     setIsWorking(true);
     const sale = await serverActions.Sale.create();
@@ -200,7 +249,7 @@ const SaleOrder = (props: Props) => {
               <div
                 className={`transition-all duration-800 ${
                   saleOrder && saleOrder.closed === true
-                    ? "bg-interface-primary group p-1 scale-75 flex gap-1 items-center -ml-4 lg:-ml-4 -mr-5 lg:mr-0 mb-1 lg:mb-0 px-4 rounded-md ring-2 ring-interface-primary ring-offset-2"
+                    ? "bg-interface-primary group p-1 scale-75 flex gap-1 items-center -ml-4 lg:-ml-5 -mr-5 lg:mr-0 mb-1 lg:mb-0 px-4 rounded-md ring-2 ring-interface-primary ring-offset-2"
                     : "bg-transparent"
                 }`}
               >
@@ -208,7 +257,11 @@ const SaleOrder = (props: Props) => {
                   <Check className="w-6 h-6 text-white group-hover:-rotate-12 transition-all duration-200" />
                 )}
                 <Label
-                  label="New Sale Order"
+                  label={
+                    saleOrder && saleOrder.closed === true
+                      ? "Closed Invoice"
+                      : "New Invoice"
+                  }
                   size="text-lg"
                   className="text-start text-2xl my-2"
                   color={`${
