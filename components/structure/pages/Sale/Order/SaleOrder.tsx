@@ -49,8 +49,10 @@ const SaleOrder = (props: Props) => {
     if (order.status === 200) {
       setSaleOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedCustomer((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedCustomer((prev: any) => order.data?.account?.customer);
+      } else {
+        setSelectedCustomer((prev: any) => null);
       }
     }
     setIsWorking(false);
@@ -63,8 +65,10 @@ const SaleOrder = (props: Props) => {
     if (order.status === 200) {
       setSaleOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedCustomer((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedCustomer((prev: any) => order.data?.account?.customer);
+      } else {
+        setSelectedCustomer((prev: any) => null);
       }
     }
     setIsWorking(false);
@@ -75,8 +79,10 @@ const SaleOrder = (props: Props) => {
     if (order.status === 200) {
       setSaleOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedCustomer((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedCustomer((prev: any) => order.data?.account?.customer);
+      } else {
+        setSelectedCustomer((prev: any) => null);
       }
     }
     setIsWorking(false);
@@ -88,8 +94,10 @@ const SaleOrder = (props: Props) => {
     if (order.status === 200) {
       setSaleOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedCustomer((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedCustomer((prev: any) => order.data?.account?.customer);
+      } else {
+        setSelectedCustomer((prev: any) => null);
       }
     }
     setIsWorking(false);
@@ -149,7 +157,6 @@ const SaleOrder = (props: Props) => {
     setCartSearchText("");
     setSearchProductText("");
     setSearchCustomerText("");
-    setSelectedCustomer(null);
     setCartItems([]);
     fetchProducts();
     fetchCustomers();
@@ -310,6 +317,7 @@ const SaleOrder = (props: Props) => {
                       options={customers}
                       label="Search customer"
                       value={searchCustomerText}
+                      defaultItem={selectedCustomer}
                       setValue={setSearchCustomerText}
                       setItem={handleCustomerSelect}
                       filterRow={customerSearchFilterRow}

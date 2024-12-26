@@ -13,6 +13,7 @@ type Props = {
   label?: string;
   setValue?: (value: string) => void;
   setItem?: (item: ComboBoxOptions) => void;
+  defaultItem?: (item: any) => void;
   value?: string;
   readonly?: boolean;
   icon?: React.ComponentType | any;
@@ -90,7 +91,7 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
         <InputBox
           ref={inputRef}
           type={props.type || "text"}
-          value={props.value || ""}
+          value={props.defaultItem ? props.defaultItem.name : props.value || ""}
           setValue={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={props.placeholder}
