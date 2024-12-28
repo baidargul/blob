@@ -312,6 +312,22 @@ const SaleOrder = (props: Props) => {
             <div>
               {saleOrder && saleOrder.id && (
                 <div className="flex flex-col gap-2 px-0 pr-2 mt-4">
+                  <div className="grid grid-cols-2 gap-2">
+                    <InputBox
+                      label="Order #"
+                      readonly
+                      value={saleOrder ? `INV-${saleOrder.orderNo}` : ""}
+                    />
+                    <InputBox
+                      label="Date"
+                      readonly
+                      value={
+                        saleOrder && saleOrder.createdAt
+                          ? new Date(saleOrder.createdAt).toDateString()
+                          : ""
+                      }
+                    />
+                  </div>
                   <div>
                     <InputBoxSearch
                       options={customers}

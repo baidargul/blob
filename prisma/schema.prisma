@@ -153,12 +153,12 @@ model customer {
 
 model sale {
   id              String            @id @default(uuid())
-  orderNo         Decimal?          @db.Decimal
   closed          Boolean?
   saleDate        DateTime?         @default(now()) @db.Date
   createdAt       DateTime?         @default(now()) @db.Date
   updatedAt       DateTime?         @default(now()) @db.Date
   accountId       String?
+  orderNo         Int               @default(autoincrement())
   barcodeRegister barcodeRegister[]
   account         account?          @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -171,8 +171,8 @@ model account {
   updatedAt                     DateTime?    @default(now()) @db.Date
   type                          accountType?
   description                   String?
-  customer_account_idTocustomer customer     @relation("account_idTocustomer", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction)
-  vendor_account_idTovendor     vendor       @relation("account_idTovendor", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "account_id_fkey1")
+  customer_account_idTocustomer customer     @relation("account_idTocustomer", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "customerRelation")
+  vendor_account_idTovendor     vendor       @relation("account_idTovendor", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "vendorRelation")
   customer                      customer?
   sale                          sale[]
   vendor                        vendor?
