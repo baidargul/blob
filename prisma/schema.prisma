@@ -153,7 +153,7 @@ model customer {
 
 model sale {
   id              String            @id @default(uuid())
-  closed          Boolean?
+  closed          Boolean?          @default(false)
   saleDate        DateTime?         @default(now()) @db.Date
   createdAt       DateTime?         @default(now()) @db.Timestamptz(6)
   updatedAt       DateTime?         @default(now()) @db.Timestamptz(6)
