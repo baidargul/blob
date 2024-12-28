@@ -110,7 +110,23 @@ const SaleOrder = (props: Props) => {
     }
     setIsWorking(false);
   };
-  const handleCloseInvoice = async () => {};
+  const handleCloseInvoice = async () => {
+    if (saleOrder && saleOrder.id) {
+      const response = await serverActions.Sale.save(
+        saleOrder.id,
+        cartItems,
+        selectedCustomer?.id
+      );
+      if (response.status === 200) {
+        setSaleOrder(null);
+        setProductList([]);
+        setCartItems([]);
+        setSelectedCustomer(null);
+      } else {
+        toast.error(response.message);
+      }
+    }
+  };
 
   const removeProductFromCart = (barcode: string) => {
     let newCartItems: any = [];
@@ -301,9 +317,6 @@ const SaleOrder = (props: Props) => {
             <div className="flex gap-2 items-center ">
               {!saleOrder?.orderNo && (
                 <Button onClick={handleCreateNewSaleOrder}>Create</Button>
-              )}
-              {saleOrder && saleOrder.closed === false && (
-                <Button onClick={handleCreateNewSaleOrder}>Save</Button>
               )}
               {saleOrder && saleOrder.closed === false && (
                 <Button onClick={handleCloseInvoice}>Close order</Button>
