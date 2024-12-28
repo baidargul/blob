@@ -95,8 +95,8 @@ model barcodeRegister {
 model purchase {
   id              String            @id @default(uuid())
   vendorId        String?
-  createdAt       DateTime?         @default(now())
-  updatedAt       DateTime?         @default(now())
+  createdAt       DateTime?         @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime?         @default(now()) @db.Timestamptz(3)
   orderNo         Int               @default(autoincrement())
   closed          Boolean?          @default(false)
   purchaseDate    DateTime?         @default(now())
@@ -155,8 +155,8 @@ model sale {
   id              String            @id @default(uuid())
   closed          Boolean?
   saleDate        DateTime?         @default(now()) @db.Date
-  createdAt       DateTime?         @default(now()) @db.Date
-  updatedAt       DateTime?         @default(now()) @db.Date
+  createdAt       DateTime?         @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime?         @default(now()) @db.Timestamptz(6)
   accountId       String?
   orderNo         Int               @default(autoincrement())
   barcodeRegister barcodeRegister[]
@@ -164,18 +164,18 @@ model sale {
 }
 
 model account {
-  id                            String       @id @default(uuid())
-  title                         String
-  balance                       Decimal?     @default(0) @db.Decimal
-  createdAt                     DateTime?    @default(now()) @db.Date
-  updatedAt                     DateTime?    @default(now()) @db.Date
-  type                          accountType?
-  description                   String?
-  customer_account_idTocustomer customer     @relation("account_idTocustomer", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "customerRelation")
-  vendor_account_idTovendor     vendor       @relation("account_idTovendor", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "vendorRelation")
-  customer                      customer?
-  sale                          sale[]
-  vendor                        vendor?
+  id                          String       @id @default(uuid())
+  title                       String
+  balance                     Decimal?     @default(0) @db.Decimal
+  createdAt                   DateTime?    @default(now()) @db.Date
+  updatedAt                   DateTime?    @default(now()) @db.Date
+  type                        accountType?
+  description                 String?
+  vendor_account_idTocustomer customer     @relation("account_idTocustomer", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "customerRelation")
+  vendor_account_idTovendor   vendor       @relation("account_idTovendor", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "vendorRelation")
+  customer                    customer?
+  sale                        sale[]
+  vendor                      vendor?
 }
 
 model transactions {
