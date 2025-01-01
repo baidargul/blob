@@ -48,7 +48,7 @@ const SaleOrder = (props: Props) => {
 
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setProductList(order.data.products);
+      setCartItems(order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
@@ -64,7 +64,7 @@ const SaleOrder = (props: Props) => {
     );
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setProductList(order.data.products);
+      setCartItems(order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
@@ -78,7 +78,7 @@ const SaleOrder = (props: Props) => {
     const order = await serverActions.Sale.getFirst();
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setProductList(order.data.products);
+      setCartItems(order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
@@ -93,7 +93,7 @@ const SaleOrder = (props: Props) => {
 
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setProductList(order.data.products);
+      setCartItems(order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
