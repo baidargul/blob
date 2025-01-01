@@ -48,7 +48,7 @@ const SaleOrder = (props: Props) => {
 
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setCartItems(order.data.products);
+      setCartItems((prev: any) => order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
@@ -64,7 +64,7 @@ const SaleOrder = (props: Props) => {
     );
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setCartItems(order.data.products);
+      setCartItems((prev: any) => order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
@@ -93,7 +93,7 @@ const SaleOrder = (props: Props) => {
 
     if (order.status === 200) {
       setSaleOrder(order.data);
-      setCartItems(order.data.products);
+      setCartItems((prev: any) => order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
       } else {
@@ -173,7 +173,6 @@ const SaleOrder = (props: Props) => {
     setCartSearchText("");
     setSearchProductText("");
     setSearchCustomerText("");
-    setCartItems([]);
     fetchProducts();
     fetchCustomers();
   }, [saleOrder]);
@@ -483,12 +482,12 @@ const SaleOrder = (props: Props) => {
                     isExists = true;
                   }
 
-                  if (!isExists) {
+                  if (!isExists === true) {
                     return null;
                   }
 
                   return (
-                    <div key={`${item.id}-${index}`}>
+                    <div key={`${item.id}-${index}-${cartItems.length}`}>
                       <ProductOrderRow
                         item={item}
                         index={index + 1}
