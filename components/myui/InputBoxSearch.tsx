@@ -20,6 +20,7 @@ type Props = {
   type?: "number" | "text" | "email" | "password" | "url" | "date" | "time";
   placeholder?: string;
   options: ComboBoxOptions[];
+  disabled?: boolean;
   filterRow: (
     option: any,
     index: number,
@@ -97,34 +98,38 @@ const InputBoxSearch = forwardRef<HTMLInputElement, Props>((props, ref) => {
           placeholder={props.placeholder}
           readonly={props.readonly}
           className={`w-full border p-2 rounded ${props.icon ? "pl-8" : ""}`}
+          disabled={props.disabled}
         />
       </div>
-      {filteredOptions.length > 0 && props.value && props.value?.length > 0 && (
-        <ul className="absolute w-full bg-white border mt-1 max-h-60 overflow-auto z-10">
-          {filteredOptions.map((option, index) => (
-            <li
-              key={`${option.id}-${index}`}
-              onClick={() => {
-                props.setValue?.(option.name);
-                props.setItem?.(option);
-                setFilteredOptions([]); // Close the dropdown
-              }}
-              className={`cursor-pointer ${
-                index === selectedIndex ? "bg-interface-primary/5" : ""
-              }`}
-            >
-              {props.filterRow(
-                option,
-                index,
-                selectedIndex,
-                props.setValue,
-                props.setItem,
-                setFilteredOptions
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      {filteredOptions.length > 0 &&
+        props.value &&
+        props.value?.length > 0 &&
+        !props.disabled && (
+          <ul className="absolute w-full bg-white border mt-1 max-h-60 overflow-auto z-10">
+            {filteredOptions.map((option, index) => (
+              <li
+                key={`${option.id}-${index}`}
+                onClick={() => {
+                  props.setValue?.(option.name);
+                  props.setItem?.(option);
+                  setFilteredOptions([]); // Close the dropdown
+                }}
+                className={`cursor-pointer ${
+                  index === selectedIndex ? "bg-interface-primary/5" : ""
+                }`}
+              >
+                {props.filterRow(
+                  option,
+                  index,
+                  selectedIndex,
+                  props.setValue,
+                  props.setItem,
+                  setFilteredOptions
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
     </div>
   );
 });

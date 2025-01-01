@@ -15,6 +15,7 @@ type Props = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   maxLength?: number;
   className?: string;
+  disabled?: boolean;
 };
 
 const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
@@ -27,6 +28,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (props.disabled) return;
     if (e.key === "Escape") {
       handleClearValue();
     }
@@ -37,10 +39,12 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   };
 
   const handleClearValue = () => {
-    if (props.setValue) {
-      props.setValue("");
-      if (textRef && typeof textRef !== "function") {
-        textRef.current?.select();
+    if (!props.disabled) {
+      if (props.setValue) {
+        props.setValue("");
+        if (textRef && typeof textRef !== "function") {
+          textRef.current?.select();
+        }
       }
     }
   };
@@ -73,6 +77,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         )}
         <input
           ref={textRef}
+          disabled={props.disabled}
           onChange={handleValueChange}
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}

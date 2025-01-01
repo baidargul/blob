@@ -330,6 +330,7 @@ const SaleOrder = (props: Props) => {
                       label="Order #"
                       readonly
                       value={saleOrder ? `INV-${saleOrder.orderNo}` : ""}
+                      disabled={saleOrder.closed === true}
                     />
                     <InputBox
                       label="Date"
@@ -339,6 +340,7 @@ const SaleOrder = (props: Props) => {
                           ? new Date(saleOrder.createdAt).toDateString()
                           : ""
                       }
+                      disabled={saleOrder.closed === true}
                     />
                   </div>
                   <div>
@@ -351,6 +353,7 @@ const SaleOrder = (props: Props) => {
                       setItem={handleCustomerSelect}
                       filterRow={customerSearchFilterRow}
                       filterFunction={isTargetCustomer}
+                      disabled={saleOrder.closed === true}
                     />
                   </div>
                   <div>
@@ -362,6 +365,7 @@ const SaleOrder = (props: Props) => {
                       setItem={handleAddProductToCart}
                       filterRow={productSearchFilterRow}
                       filterFunction={isTargetProduct}
+                      disabled={saleOrder.closed === true}
                     />
                   </div>
                 </div>
