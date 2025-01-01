@@ -59,7 +59,10 @@ const InventoryManage = (props: Props) => {
       {filteredInventory && filteredInventory.length > 0 && (
         <div>
           {filteredInventory.map((item: any, index: number) => (
-            <div key={item.id} className=" even:bg-white/80">
+            <div
+              key={`${item.id}-${index}-${item.barcodeRegister[0].color}-${filteredInventory.length}`}
+              className=" even:bg-white/80"
+            >
               <DialogProvider
                 title={String(item.brand.name).toLocaleUpperCase()}
                 content={<ProductViewer product={item} index={index} />}
