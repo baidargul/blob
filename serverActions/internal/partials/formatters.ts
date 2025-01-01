@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
 export const getProduct = async (id: string, barcode: string) => {
-  let finalProduct = null;
+  let finalProduct: any = null;
   if (barcode.length > 0) {
     finalProduct = await prisma.product.findUnique({
       where: {
@@ -44,6 +44,10 @@ export const getProduct = async (id: string, barcode: string) => {
       },
     });
   }
+  finalProduct = {
+    ...finalProduct,
+    amount: finalProduct.barcodeRegister[0]?.soldAt || 0,
+  };
   return finalProduct;
 };
 
