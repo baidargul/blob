@@ -143,6 +143,16 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    await prisma.sale.update({
+      where: {
+        id: data.saleId,
+      },
+      data: {
+        updatedAt: new Date(),
+        closed: true,
+      },
+    });
+
     response.status = 200;
     response.message = "Sale saved successfully";
     response.data = null;
