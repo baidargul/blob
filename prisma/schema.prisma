@@ -195,6 +195,13 @@ model transactionCategory {
   createdAt    DateTime?      @default(now())
   updatedAt    DateTime?      @default(now())
   transactions transactions[]
+  // sales          // Revenue from sales
+  //purchase       // Expense on purchasing
+  //salary         // Employee salaries
+  //rent           // Office/warehouse rent
+  //utilities      // Bills (electricity, internet, etc.)
+  //maintenance    // Repair/maintenance
+  //miscellaneous  // Other unclassified transactions
 }
 
 enum accountType {
@@ -209,6 +216,6 @@ enum accountType {
 }
 
 enum transactionType {
-  debit
-  credit
+  debit // Money going out
+  credit // Money coming in
 }

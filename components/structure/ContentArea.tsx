@@ -11,7 +11,7 @@ const ContentArea = (props: Props) => {
   const currentPage = pageHook.page;
 
   useEffect(() => {
-    pageHook.setPage("SaleOrder");
+    pageHook.setPage("CustomerCreate");
   }, []);
 
   return (

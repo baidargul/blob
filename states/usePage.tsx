@@ -1,5 +1,6 @@
 import BrandList from "@/components/structure/pages/Brand/BrandList";
 import CategoryList from "@/components/structure/pages/Category/CategoryList";
+import CustomerCreateForm from "@/components/structure/pages/Customers/CreateForm";
 import BarcodeSearch from "@/components/structure/pages/IMEISearch/BarcodeSearch";
 import InventoryManage from "@/components/structure/pages/Inventory/InventoryManage";
 import ProductList from "@/components/structure/pages/Product/List";
@@ -29,7 +30,8 @@ export type PageName =
   | "BarcodeSearch"
   | "VendorList"
   | "VendorCreate"
-  | "SaleOrder";
+  | "SaleOrder"
+  | "CustomerCreate";
 
 type PageType = {
   page: PageState;
@@ -86,6 +88,11 @@ const pages: PageState[] = [
     name: "SaleOrder",
     description: "Create sale order",
     page: <SaleOrder />,
+  },
+  {
+    name: "CustomerCreate",
+    description: "List of customers",
+    page: <CustomerCreateForm />,
   },
 ];
 
