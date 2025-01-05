@@ -61,7 +61,7 @@ const CustomerCreateForm = (props: Props) => {
 
   const handleSave = async () => {
     if (!customer) return;
-    const response = await serverActions.Vendor.create(customer);
+    const response = await serverActions.Customer.create(customer);
     if (response?.status === 200) {
       toast.message(response.message);
       clearForm();
@@ -84,12 +84,12 @@ const CustomerCreateForm = (props: Props) => {
         <div></div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
           <InputBox
-            label="Vendor name"
+            label="Customer name"
             value={customer ? customer.name : ""}
             setValue={actions.setName}
           />
           <InputBox
-            label="Vendor code"
+            label="Customer code"
             value={customer ? (customer.code ? customer.code : "") : ""}
             setValue={actions.setCode}
           />
@@ -102,7 +102,7 @@ const CustomerCreateForm = (props: Props) => {
             <TabsTrigger value="general">General</TabsTrigger>
             <TabsTrigger value="address">Address</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
-            <TabsTrigger value="purchase">Purchase Info</TabsTrigger>
+            <TabsTrigger value="purchase">Sale Info</TabsTrigger>
           </TabsList>
           <TabsContent value="general">
             <GeneralTab actions={actions} customer={customer} />
