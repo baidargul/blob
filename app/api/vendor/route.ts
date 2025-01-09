@@ -31,7 +31,10 @@ export async function POST(req: NextRequest) {
 
     isExists = await prisma.account.findFirst({
       where: {
-        title: vendor.name,
+        title: {
+          equals: vendor.name,
+          mode: "insensitive",
+        },
       },
     });
 
@@ -44,7 +47,10 @@ export async function POST(req: NextRequest) {
     if (vendor.code?.length > 0) {
       isExists = await prisma.vendor.findMany({
         where: {
-          code: vendor.code,
+          code: {
+            equals: vendor.code,
+            mode: "insensitive",
+          },
         },
       });
 

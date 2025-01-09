@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { customer } from "@prisma/client";
+import { randomUUID } from "crypto";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -25,13 +26,16 @@ export async function POST(req: NextRequest) {
 
     if (isExists) {
       response.status = 400;
-      response.message = `customer with name ${customer.name}`;
+      response.message = `Customer with name ${customer.name}`;
       return new Response(JSON.stringify(response));
     }
 
     isExists = await prisma.account.findFirst({
       where: {
-        title: customer.name,
+        title: {
+          equals: customer.name,
+          mode: "insensitive",
+        },
       },
     });
 
@@ -44,16 +48,25 @@ export async function POST(req: NextRequest) {
     if (customer.code?.length > 0) {
       isExists = await prisma.customer.findMany({
         where: {
-          code: customer.code,
+          code: {
+            equals: customer.code,
+            mode: "insensitive",
+          },
         },
       });
 
       if (isExists.length > 0) {
         response.status = 400;
-        response.message = `customer with this '${customer.code}' already exists and Named as: ${isExists.name}`;
+        response.message = `Customer with this '${customer.code}' already exists and Named as: ${isExists.name}`;
         return new Response(JSON.stringify(response));
       }
     }
+
+    const xnewcustomer = await prisma.customer.create({
+      data: {
+        ...customer,
+      },
+    });
 
     const account = await prisma.account.create({
       data: {
@@ -62,10 +75,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const newcustomer = await prisma.customer.create({
+    const newcustomer = await prisma.customer.update({
       data: {
-        ...customer,
         accountId: account.id,
+      },
+      where: {
+        id: xnewcustomer.id,
       },
     });
 

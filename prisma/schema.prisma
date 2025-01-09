@@ -94,14 +94,14 @@ model barcodeRegister {
 
 model purchase {
   id              String            @id @default(uuid())
-  vendorId        String?
   createdAt       DateTime?         @default(now()) @db.Timestamptz(3)
   updatedAt       DateTime?         @default(now()) @db.Timestamptz(3)
   orderNo         Int               @default(autoincrement())
   closed          Boolean?          @default(false)
   purchaseDate    DateTime?         @default(now())
+  accountId       String?
   barcodeRegister barcodeRegister[]
-  vendor          vendor?           @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  account         account?          @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model inventory {
@@ -113,42 +113,39 @@ model inventory {
 }
 
 model vendor {
-  id                         String     @id @default(uuid())
-  name                       String     @unique
-  code                       String?
-  accountId                  String?    @unique
-  createdAt                  DateTime?  @default(now()) @db.Date
-  primaryContact             String?
-  primaryPosition            String?
-  primaryPhone               String?
-  secondContact              String?
-  secondPosition             String?
-  secondPhone                String?
-  email1                     String?
-  email2                     String?
-  website                    String?
-  account_account_idTovendor account?   @relation("account_idTovendor")
-  purchase                   purchase[]
-  account                    account?   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id              String    @id @default(uuid())
+  name            String    @unique
+  code            String?
+  accountId       String?   @unique
+  createdAt       DateTime? @default(now()) @db.Date
+  primaryContact  String?
+  primaryPosition String?
+  primaryPhone    String?
+  secondContact   String?
+  secondPosition  String?
+  secondPhone     String?
+  email1          String?
+  email2          String?
+  website         String?
+  account         account?  @relation(fields: [accountId], references: [id], onDelete: NoAction, map: "vendor_account_relation")
 }
 
 model customer {
-  id                           String    @id @default(uuid())
-  name                         String    @unique
-  code                         String?
-  accountId                    String?   @unique
-  createdAt                    DateTime? @default(now()) @db.Date
-  primaryContact               String?
-  primaryPosition              String?
-  primaryPhone                 String?
-  secondContact                String?
-  secondPosition               String?
-  secondPhone                  String?
-  email1                       String?
-  email2                       String?
-  website                      String?
-  account_account_idTocustomer account?  @relation("account_idTocustomer")
-  account                      account?  @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id              String    @id @default(uuid())
+  name            String    @unique
+  code            String?
+  accountId       String?   @unique
+  createdAt       DateTime? @default(now()) @db.Date
+  primaryContact  String?
+  primaryPosition String?
+  primaryPhone    String?
+  secondContact   String?
+  secondPosition  String?
+  secondPhone     String?
+  email1          String?
+  email2          String?
+  website         String?
+  account         account?  @relation(fields: [accountId], references: [id], onDelete: NoAction, map: "customer_account_relation")
 }
 
 model sale {
@@ -164,18 +161,17 @@ model sale {
 }
 
 model account {
-  id                          String       @id @default(uuid())
-  title                       String
-  balance                     Decimal?     @default(0) @db.Decimal
-  createdAt                   DateTime?    @default(now()) @db.Date
-  updatedAt                   DateTime?    @default(now()) @db.Date
-  type                        accountType?
-  description                 String?
-  vendor_account_idTocustomer customer     @relation("account_idTocustomer", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "customerRelation")
-  vendor_account_idTovendor   vendor       @relation("account_idTovendor", fields: [id], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "vendorRelation")
-  customer                    customer?
-  sale                        sale[]
-  vendor                      vendor?
+  id          String       @id @default(uuid())
+  title       String
+  balance     Decimal?     @default(0) @db.Decimal
+  createdAt   DateTime?    @default(now()) @db.Date
+  updatedAt   DateTime?    @default(now()) @db.Date
+  type        accountType?
+  description String?
+  customer    customer?
+  purchase    purchase[]
+  sale        sale[]
+  vendor      vendor?
 }
 
 model transactions {
@@ -195,13 +191,6 @@ model transactionCategory {
   createdAt    DateTime?      @default(now())
   updatedAt    DateTime?      @default(now())
   transactions transactions[]
-  // sales          // Revenue from sales
-  //purchase       // Expense on purchasing
-  //salary         // Employee salaries
-  //rent           // Office/warehouse rent
-  //utilities      // Bills (electricity, internet, etc.)
-  //maintenance    // Repair/maintenance
-  //miscellaneous  // Other unclassified transactions
 }
 
 enum accountType {
@@ -216,6 +205,6 @@ enum accountType {
 }
 
 enum transactionType {
-  debit // Money going out
-  credit // Money coming in
+  debit
+  credit
 }
