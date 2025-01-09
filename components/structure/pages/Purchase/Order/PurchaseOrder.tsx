@@ -294,8 +294,11 @@ const PurchaseOrder = (props: Props) => {
   };
 
   const handleCloseInvoice = async () => {
+    if (!purchaseOrder) {
+      setIsWorking(false);
+      return null;
+    }
     setIsWorking(true);
-    if (!purchaseOrder) return null;
     const order = await serverActions.Purchase.toggleClose(purchaseOrder.id);
 
     setIsWorking(false);

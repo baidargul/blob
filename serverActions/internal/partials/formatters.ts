@@ -57,7 +57,11 @@ export const getPurchase = async (id: string) => {
       id: id,
     },
     include: {
-      vendor: true,
+      account: {
+        include: {
+          vendor: true,
+        },
+      },
       barcodeRegister: {
         include: {
           product: true,
