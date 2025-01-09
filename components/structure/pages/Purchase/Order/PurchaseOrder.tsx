@@ -52,7 +52,7 @@ const PurchaseOrder = (props: Props) => {
 
   useEffect(() => {
     if (purchaseOrder) {
-      setSelectedVendor(purchaseOrder?.vendor);
+      setSelectedVendor(purchaseOrder?.account?.vendor);
     }
   }, [purchaseOrder]);
 
