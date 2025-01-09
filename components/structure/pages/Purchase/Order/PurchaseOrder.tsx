@@ -231,16 +231,20 @@ const PurchaseOrder = (props: Props) => {
   };
 
   const handleNextOrder = async () => {
+    if (!purchaseOrder) {
+      setIsWorking(false);
+      return null;
+    }
     setIsWorking(true);
-    if (!purchaseOrder) return null;
     const order = await serverActions.Purchase.get.next(purchaseOrder.id);
-
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedVendor((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedVendor((prev: any) => order.data.account.vendor);
       }
+    } else {
+      toast.warning(order.message);
     }
     setIsWorking(false);
   };
@@ -252,9 +256,11 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedVendor((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedVendor((prev: any) => order.data.account.vendor);
       }
+    } else {
+      toast.warning(order.message);
     }
     setIsWorking(false);
   };
@@ -264,22 +270,25 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedVendor((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedVendor((prev: any) => order.data.account.vendor);
       }
+    } else {
+      toast.warning(order.message);
     }
     setIsWorking(false);
   };
   const handleLastOrder = async () => {
     setIsWorking(true);
     const order = await serverActions.Purchase.get.last();
-
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      if (order.data.vendorId !== null) {
-        setSelectedVendor((prev: any) => order.data.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedVendor((prev: any) => order.data.account.vendor);
       }
+    } else {
+      toast.warning(order.message);
     }
     setIsWorking(false);
   };
@@ -293,9 +302,9 @@ const PurchaseOrder = (props: Props) => {
     if (order.status === 200) {
       setPurchaseOrder(order.data);
       setProductList(order.data.products);
-      setSelectedVendor(order.data.vendor);
-      if (order.data.vendorId !== null) {
-        setSelectedVendor((prev: any) => order.data.vendor);
+      setSelectedVendor(order.data.account.vendor);
+      if (order.data.accountId !== null) {
+        setSelectedVendor((prev: any) => order.data.account.vendor);
       }
     } else if (order.status === 201) {
       toast.message(order.message);
@@ -354,7 +363,7 @@ const PurchaseOrder = (props: Props) => {
                 <Button onClick={handlePreviousOrder}>
                   <ChevronLeft className="w-3 h-3" />
                 </Button>
-                <Button onClick={handleNextOrder}>
+                <Button onClick={handleNextOrder} disabled={!purchaseOrder}>
                   <ChevronRight className="w-3 h-3" />
                 </Button>
                 <Button onClick={handleLastOrder}>

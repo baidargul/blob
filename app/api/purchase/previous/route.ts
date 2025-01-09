@@ -45,6 +45,11 @@ export async function GET(req: NextRequest) {
       purchase = await prisma.purchase.findUnique({
         where: { id },
         include: {
+          account: {
+            include: {
+              vendor: true,
+            },
+          },
           barcodeRegister: {
             include: {
               product: {
@@ -65,6 +70,11 @@ export async function GET(req: NextRequest) {
           where: { createdAt: { lt: purchase.createdAt } },
           orderBy: { createdAt: "desc" }, // To ensure fetching the immediate previous record
           include: {
+            account: {
+              include: {
+                vendor: true,
+              },
+            },
             barcodeRegister: {
               include: {
                 product: {
@@ -92,6 +102,13 @@ export async function GET(req: NextRequest) {
           console.error("Error formatting product:", error.message);
         }
       }
+    }
+
+    if (!previousPurchase) {
+      response.status = 201;
+      response.message = "No previous purchase found";
+      response.data = null;
+      return new Response(JSON.stringify(response));
     }
 
     response.status = 200;

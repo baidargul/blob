@@ -32,10 +32,12 @@ const Button = (props: Props) => {
   return (
     <div
       onClick={props.onClick ? props.onClick : null}
-      className={`py-2 px-4 tracking-wide rounded cursor-pointer transition-all duration-500 ${style} ${
+      className={`py-2 px-4 tracking-wide rounded transition-all duration-500 ${style} ${
         props.className
       } ${props.isBusy && "cursor-not-allowed animate-pulse"} ${
-        props.disabled && props.disabled === true ? "opacity-40" : "opacity-100"
+        props.disabled && props.disabled === true
+          ? "opacity-40 cursor-not-allowed"
+          : "opacity-100 cursor-pointer"
       }`}
     >
       {props.children ? props.children : "Button"}

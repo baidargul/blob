@@ -33,8 +33,15 @@ export async function GET(req: NextRequest) {
         },
       },
     });
+    if (!purchase) {
+      response.status = 201;
+      response.message = "No previous purchase found";
+      response.data = null;
+      return new Response(JSON.stringify(response));
+    }
 
     let products = [];
+
     if (purchase) {
       for (const item of purchase?.barcodeRegister) {
         const temp = await Formatter.getProduct(

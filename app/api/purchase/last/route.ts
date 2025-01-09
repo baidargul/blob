@@ -45,6 +45,13 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    if (!purchase) {
+      response.status = 201;
+      response.message = "No next purchase found";
+      response.data = null;
+      return new Response(JSON.stringify(response));
+    }
+
     response.status = 200;
     response.message = "Purchase found successfully";
     response.data = { ...purchase, products: products };
