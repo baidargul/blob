@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
         id: data.purchaseId,
       },
       data: {
-        vendorId: data.vendor.id,
+        accountId: data.vendor.accountId,
       },
     });
 
