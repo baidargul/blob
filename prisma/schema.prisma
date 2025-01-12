@@ -181,6 +181,7 @@ model transactions {
   amount                Decimal             @db.Decimal
   createdAt             DateTime            @default(now())
   transactionCategoryId String
+  description           String?
   category              transactionCategory @relation(fields: [transactionCategoryId], references: [id])
 }
 
@@ -192,14 +193,6 @@ model transactionCategory {
   updatedAt    DateTime?      @default(now())
   transactions transactions[]
 }
-
-// TRANSACTION CATEGORY EXAMPLES
-// Expense on purchasing
-// Employee salaries
-// Office/warehouse rent
-// Bills (electricity, internet, etc.)
-// Repair/maintenance
-// Other unclassified transactions
 
 enum accountType {
   vendor

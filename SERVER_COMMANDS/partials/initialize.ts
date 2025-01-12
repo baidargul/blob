@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { accountType } from "@prisma/client";
 
 const transactionCategories = [
   "purchase",
@@ -29,6 +30,37 @@ async function initializeTransactionCategories() {
   }
 }
 
+const standardAccounts: {
+  title: string;
+  type: accountType;
+  balance: number;
+}[] = [
+  { title: "expenses", type: accountType.expenses, balance: 0 },
+  { title: "cash", type: accountType.cash, balance: 0 },
+  { title: "bank", type: accountType.bank, balance: 0 },
+  { title: "income", type: accountType.income, balance: 0 },
+];
+
+async function initializeAccounts() {
+  for (const account of standardAccounts) {
+    const isExists = await prisma.account.findFirst({
+      where: {
+        title: account.title,
+      },
+    });
+    if (!isExists) {
+      await prisma.account.create({
+        data: {
+          title: account.title,
+          type: account.type,
+          description: null,
+          balance: account.balance,
+        },
+      });
+    }
+  }
+}
+
 export async function initialize() {
   const response = {
     status: 500,
@@ -38,6 +70,7 @@ export async function initialize() {
 
   try {
     await initializeTransactionCategories();
+    await initializeAccounts();
     response.status = 200;
     response.message = "Server initialized successfully";
     response.data = null;
