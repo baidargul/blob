@@ -193,6 +193,7 @@ model transactionCategory {
   transactions transactions[]
 }
 
+// TRANSACTION CATEGORY EXAMPLES
 // Expense on purchasing
 // Employee salaries
 // Office/warehouse rent
