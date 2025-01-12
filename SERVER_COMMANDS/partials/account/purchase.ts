@@ -75,11 +75,13 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
 
   let summary = "";
   for (const product of products) {
-    summary += `${product.name} ${product.color} x ${
-      product.quantity
-    } @ Rs ${product.cost.toFixed(2)} = Rs ${product.total.toFixed(2)}\n\n`;
+    summary =
+      summary +
+      `${product.name} ${product.color} x ${
+        product.quantity
+      } @ Rs ${product.cost.toFixed(2)} = Rs ${product.total.toFixed(2)}\n\n`;
   }
-  summary += `Total: Rs ${totalCost.toFixed(2)}`;
+  summary = summary + `Total: Rs ${totalCost.toFixed(2)}`;
 
   const transactionCategory = await prisma.transactionCategory.findFirst({
     where: {
@@ -93,13 +95,30 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
     return response;
   }
 
-  await prisma.transactions.create({
+  const trans = await prisma.transactions.create({
     data: {
       accountId: purchase.account.id,
       type: transactionType.debit,
       amount: totalCost,
       transactionCategoryId: transactionCategory.id,
       description: summary,
+    },
+  });
+
+  if (!trans) {
+    response.status = 400;
+    response.message = "Transaction not created";
+    return response;
+  }
+
+  await prisma.account.update({
+    where: {
+      id: purchase.account.id,
+    },
+    data: {
+      balance: {
+        decrement: totalCost,
+      },
     },
   });
 
