@@ -1,5 +1,6 @@
 import { accountType } from "@prisma/client";
 import axios from "axios";
+import { transactions } from "./transactions";
 
 const APIPATH = `/api/account`;
 
@@ -33,4 +34,5 @@ export const Account = {
   createAccount,
   listAll,
   list,
+  transactions,
 };
