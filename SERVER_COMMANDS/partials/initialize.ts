@@ -3,6 +3,7 @@ import { accountType } from "@prisma/client";
 
 const transactionCategories = [
   "purchase",
+  "purchase return",
   "sale",
   "salary",
   "rent",
