@@ -193,6 +193,13 @@ model transactionCategory {
   transactions transactions[]
 }
 
+// Expense on purchasing
+// Employee salaries
+// Office/warehouse rent
+// Bills (electricity, internet, etc.)
+// Repair/maintenance
+// Other unclassified transactions
+
 enum accountType {
   vendor
   customer
