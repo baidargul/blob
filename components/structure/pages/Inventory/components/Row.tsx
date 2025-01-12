@@ -1,5 +1,5 @@
 import Tag from "@/components/myui/Tag";
-import { formatCurrency } from "@/lib/utils";
+import { formalizeText, formatCurrency } from "@/lib/utils";
 import { Formatter } from "@/serverActions/internal/partials/formatters";
 import React from "react";
 
@@ -143,7 +143,7 @@ const Row = (props: Props) => {
         </div>
       </div>
       <div className="hidden md:block">
-        {props.product.barcodeRegister[0].color}
+        {formalizeText(props.product.barcodeRegister[0].color)}
       </div>
       <div className="tracking-widest">
         {props.product.barcodeRegister[0].barcode}
