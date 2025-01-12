@@ -161,17 +161,18 @@ model sale {
 }
 
 model account {
-  id          String       @id @default(uuid())
-  title       String
-  balance     Decimal?     @default(0) @db.Decimal
-  createdAt   DateTime?    @default(now()) @db.Date
-  updatedAt   DateTime?    @default(now()) @db.Date
-  type        accountType?
-  description String?
-  customer    customer?
-  purchase    purchase[]
-  sale        sale[]
-  vendor      vendor?
+  id           String         @id @default(uuid())
+  title        String
+  balance      Decimal?       @default(0) @db.Decimal
+  createdAt    DateTime?      @default(now()) @db.Date
+  updatedAt    DateTime?      @default(now()) @db.Date
+  type         accountType?
+  description  String?
+  customer     customer?
+  purchase     purchase[]
+  sale         sale[]
+  transactions transactions[]
+  vendor       vendor?
 }
 
 model transactions {
@@ -182,6 +183,7 @@ model transactions {
   createdAt             DateTime            @default(now())
   transactionCategoryId String
   description           String?
+  account               account             @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   category              transactionCategory @relation(fields: [transactionCategoryId], references: [id])
 }
 

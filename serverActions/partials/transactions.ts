@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const apiPath = "/api/transactions";
+
 const category = {
   apiPathCategory: "/api/account/transactions/categories",
   create: async (name: string, description: string) => {
@@ -30,9 +32,18 @@ const category = {
   },
 };
 
-async function list() {}
+async function list(transactionId: string) {
+  const response = await axios.get(`${apiPath}?id=${transactionId}`);
+  return response.data;
+}
+
+async function listAll() {
+  const response = await axios.get(apiPath);
+  return response.data;
+}
 
 export const transactions = {
   category,
   list,
+  listAll,
 };
