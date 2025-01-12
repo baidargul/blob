@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
 import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
+import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 import { transactionType } from "@prisma/client";
 
-async function closePurchase(purchaseId: string) {
+async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
   await serverCommands.initialize();
 
   const response = {
@@ -32,13 +33,13 @@ async function closePurchase(purchaseId: string) {
   if (!purchase) {
     response.status = 400;
     response.message = "Purchase not found";
-    return new Response(JSON.stringify(response));
+    return response;
   }
 
   if (!purchase.account) {
     response.status = 400;
     response.message = "Vendor has no account";
-    return new Response(JSON.stringify(response));
+    return response;
   }
 
   let totalCost = 0;
@@ -89,7 +90,7 @@ async function closePurchase(purchaseId: string) {
   if (!transactionCategory) {
     response.status = 400;
     response.message = "Transaction category not found";
-    return new Response(JSON.stringify(response));
+    return response;
   }
 
   await prisma.transactions.create({
@@ -105,7 +106,7 @@ async function closePurchase(purchaseId: string) {
   response.status = 200;
   response.message = "Purchase Transaction Complete";
   response.data = null;
-  return new Response(JSON.stringify(response));
+  return response;
 }
 
 export const purchase = {

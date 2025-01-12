@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
 import { Formatter } from "@/serverActions/internal/partials/formatters";
 import { NextRequest } from "next/server";
 
@@ -78,6 +79,16 @@ export async function PATCH(req: NextRequest) {
         closed: temp,
       },
     });
+
+    const accountTransaction =
+      await serverCommands.account.purchase.closePurchase(data.id);
+
+    if (accountTransaction.status !== 200) {
+      response.status = accountTransaction.status;
+      response.message = accountTransaction.message;
+      response.data = null;
+      return new Response(JSON.stringify(response));
+    }
 
     purchase = await Formatter.getPurchase(purchase.id);
 
