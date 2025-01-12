@@ -127,7 +127,6 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
   response.data = null;
   return response;
 }
-
 async function cancelPurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
   const response = {
     status: 500,
