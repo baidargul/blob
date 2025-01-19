@@ -129,7 +129,9 @@ const MainMenu = (props: Props) => {
       <MenubarMenu>
         <MenubarTrigger>Accounts</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Account list</MenubarItem>
+          <MenubarItem onClick={() => handleChangePage("AccountList")}>
+            Account list
+          </MenubarItem>
           <MenubarItem>Create an account</MenubarItem>
           <MenubarItem>Purchase list</MenubarItem>
           <MenubarItem>Find...</MenubarItem>

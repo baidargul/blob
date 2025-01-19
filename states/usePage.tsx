@@ -1,3 +1,4 @@
+import AccountList from "@/components/structure/pages/Accounts/AccountList";
 import BrandList from "@/components/structure/pages/Brand/BrandList";
 import CategoryList from "@/components/structure/pages/Category/CategoryList";
 import CustomerCreateForm from "@/components/structure/pages/Customers/CreateForm";
@@ -31,7 +32,8 @@ export type PageName =
   | "VendorList"
   | "VendorCreate"
   | "SaleOrder"
-  | "CustomerCreate";
+  | "CustomerCreate"
+  | "AccountList";
 
 type PageType = {
   page: PageState;
@@ -93,6 +95,11 @@ const pages: PageState[] = [
     name: "CustomerCreate",
     description: "List of customers",
     page: <CustomerCreateForm />,
+  },
+  {
+    name: "AccountList",
+    description: "List of Accounts",
+    page: <AccountList />,
   },
 ];
 
