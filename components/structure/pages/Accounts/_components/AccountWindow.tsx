@@ -49,8 +49,10 @@ const AccountWindow = (props: Props) => {
     if (props.selectedAccount) {
       if (props.selectedAccount?.type) {
         setEditMode(false);
-        setSelectedAccountType({ name: props.selectedAccount.type });
-        setAccountTitle(props.selectedAccount.title);
+        setSelectedAccountType({
+          name: formalizeText(props.selectedAccount.type),
+        });
+        setAccountTitle(formalizeText(props.selectedAccount.title));
       }
     } else {
       reset();
