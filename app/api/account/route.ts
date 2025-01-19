@@ -46,9 +46,19 @@ export async function POST(req: NextRequest) {
       data: account,
     });
 
+    const accounts = await prisma.account.findMany({
+      orderBy: [{ title: "asc" }, { balance: "desc" }],
+      include: {
+        customer: true,
+        purchase: true,
+        transactions: true,
+        vendor: true,
+      },
+    });
+
     response.status = 200;
     response.message = "Account created successfully";
-    response.data = newAccount;
+    response.data = accounts;
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);
@@ -115,6 +125,121 @@ export async function GET(req: NextRequest) {
 
     response.status = 200;
     response.message = `${accounts.length} accounts retrieved successfully.`;
+    response.data = accounts;
+    return new Response(JSON.stringify(response));
+  } catch (error: any) {
+    console.log("[SERVER ERROR]: " + error.message);
+    response.status = 500;
+    response.message = error.message;
+    response.data = null;
+    return new Response(JSON.stringify(response));
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const response = {
+    status: 500,
+    message: "Internal Server Error",
+    data: null as any,
+  };
+
+  try {
+    const id = new URL(req.url).searchParams.get("id");
+
+    if (!id) {
+      response.status = 400;
+      response.message = "ID is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    const account = await prisma.account.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    const accounts = await prisma.account.findMany({
+      orderBy: [{ title: "asc" }, { balance: "desc" }],
+      include: {
+        customer: true,
+        purchase: true,
+        transactions: true,
+        vendor: true,
+      },
+    });
+
+    response.status = 200;
+    response.message = "Account deleted successfully";
+    response.data = accounts;
+    return new Response(JSON.stringify(response));
+  } catch (error: any) {
+    console.log("[SERVER ERROR]: " + error.message);
+    response.status = 500;
+    response.message = error.message;
+    response.data = null;
+    return new Response(JSON.stringify(response));
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  const response = {
+    status: 500,
+    message: "Internal Server Error",
+    data: null as any,
+  };
+
+  try {
+    const data = await req.json();
+
+    if (!data.id) {
+      response.status = 400;
+      response.message = "ID is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    let isExists: any;
+    const uData: any = {};
+    if (data.title) {
+      isExists = await prisma.account.findFirst({
+        where: {
+          title: data.title,
+          NOT: {
+            id: data.id,
+          },
+        },
+      });
+
+      if (isExists) {
+        response.status = 400;
+        response.message = "Title already exists";
+        return new Response(JSON.stringify(response));
+      }
+      uData.title = data.title;
+    }
+
+    if (data.type) {
+      uData.type = data.type;
+    }
+
+    const account = await prisma.account.update({
+      where: {
+        id: data.id,
+      },
+      data: uData,
+    });
+
+    const accounts = await prisma.account.findMany({
+      orderBy: [{ title: "asc" }, { balance: "desc" }],
+      include: {
+        customer: true,
+        purchase: true,
+        transactions: true,
+        vendor: true,
+      },
+    });
+
+    response.status = 200;
+    response.message = "Account updated successfully";
     response.data = accounts;
     return new Response(JSON.stringify(response));
   } catch (error: any) {

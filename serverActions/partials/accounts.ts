@@ -16,6 +16,8 @@ async function createAccount(
     description,
     balance,
   };
+
+  console.log(data);
   const response = await axios.post(`${APIPATH}`, data);
   return response.data;
 }
@@ -30,9 +32,21 @@ async function list(value: string, type: "title" | "id") {
   return response.data;
 }
 
+async function remove(id: string) {
+  const response = await axios.delete(`${APIPATH}?id=${id}`);
+  return response.data;
+}
+
+async function update(id: string, title: string, type: accountType) {
+  const response = await axios.patch(`${APIPATH}`, { id, title, type });
+  return response.data;
+}
+
 export const Account = {
   createAccount,
   listAll,
   list,
+  remove,
+  update,
   transactions,
 };

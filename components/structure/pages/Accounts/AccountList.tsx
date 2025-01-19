@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import List from "./_components/List";
 import { serverActions } from "@/serverActions/serverActions";
 import { account } from "@prisma/client";
+import AccountWindow from "./_components/AccountWindow";
 
 type Props = {};
 
@@ -60,7 +61,13 @@ const AccountList = (props: Props) => {
         </ResizablePanel>
         <ResizableHandle className="mx-1" />
         <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
-          <div>BG</div>
+          <div className="p-2">
+            <AccountWindow
+              selectedAccount={selectedAccount}
+              setAccounts={setAccountList}
+              setSelectedAccount={setSelectedAccount}
+            />
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

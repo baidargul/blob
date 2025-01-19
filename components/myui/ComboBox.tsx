@@ -56,6 +56,7 @@ type Props = {
   placeholder?: string;
   label?: string;
   value?: string | null;
+  disabled?: boolean;
 };
 
 export const ComboBox_ADD_VALUE_TO_EACH_OPTION = (
@@ -96,7 +97,10 @@ export function Combobox(props: Props) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         asChild
-        className="w-full focus:border-transparent outline-transparent ring-transparent"
+        className={`w-full focus:border-transparent outline-transparent ring-transparent ${
+          props.disabled && "pointer-events-none opacity-50"
+        }`}
+        disabled={props.disabled ? props.disabled : false}
       >
         <div>
           {props.label && props.label.length > 0 && (
