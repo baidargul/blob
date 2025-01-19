@@ -8,7 +8,7 @@ import Tag from "@/components/myui/Tag";
 import { formalizeText, formatCurrency } from "@/lib/utils";
 import { serverActions } from "@/serverActions/serverActions";
 import { account, accountType } from "@prisma/client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@/components/myui/Button";
 import { toast } from "sonner";
 
@@ -19,6 +19,7 @@ type Props = {
 };
 
 const AccountWindow = (props: Props) => {
+  const titleRef: any = useRef(null);
   const [accountTypes, setAccountTypes] = useState<any | []>([]);
   const [selectedAccountType, setSelectedAccountType] = useState<any | null>(
     null
@@ -44,10 +45,11 @@ const AccountWindow = (props: Props) => {
 
   useEffect(() => {
     fetchAccountTypes();
+    console.log(props.selectedAccount);
     if (props.selectedAccount) {
       if (props.selectedAccount?.type) {
         setEditMode(false);
-        setSelectedAccountType(props.selectedAccount?.type);
+        setSelectedAccountType({ name: props.selectedAccount.type });
         setAccountTitle(props.selectedAccount.title);
       }
     } else {
@@ -110,6 +112,9 @@ const AccountWindow = (props: Props) => {
 
   const handleEditMode = () => {
     setEditMode(true);
+    if (titleRef) {
+      titleRef.current.select();
+    }
   };
 
   const handleDelete = async () => {
@@ -190,6 +195,7 @@ const AccountWindow = (props: Props) => {
             value={accountTitle}
             setValue={handleAccountTitleChange}
             disabled={!editMode}
+            ref={titleRef}
           />
           <Combobox
             options={accountTypes}
