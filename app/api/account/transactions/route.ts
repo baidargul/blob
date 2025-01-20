@@ -11,43 +11,40 @@ export async function GET(req: NextRequest) {
   try {
     const id = new URL(req.url).searchParams.get("id");
 
-    if (id) {
-      const transaction = await prisma.transactions.findUnique({
-        where: {
-          id: id,
-        },
-        include: {
-          category: true,
-          account: {
-            include: {
-              customer: true,
-              vendor: true,
-            },
-          },
-        },
-      });
-
-      response.status = 200;
-      response.message = "Success";
-      response.data = transaction;
+    if (!id) {
+      response.status = 400;
+      response.message = "ID is required";
       return new Response(JSON.stringify(response));
     }
 
-    const transactions = await prisma.transactions.findMany({
+    const account = await prisma.account.findUnique({
+      where: {
+        id: id,
+      },
       include: {
-        category: true,
-        account: {
+        transactions: {
+          take: 5,
+          orderBy: {
+            createdAt: "desc",
+          },
           include: {
-            customer: true,
-            vendor: true,
+            category: true,
           },
         },
+        customer: true,
+        vendor: true,
       },
     });
 
+    if (!account) {
+      response.status = 400;
+      response.message = "Account not found";
+      return new Response(JSON.stringify(response));
+    }
+
     response.status = 200;
     response.message = "Success";
-    response.data = transactions;
+    response.data = account;
     return new Response(JSON.stringify(response));
   } catch (error: any) {
     console.log("[SERVER ERROR]: " + error.message);

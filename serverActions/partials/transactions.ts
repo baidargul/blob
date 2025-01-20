@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiPath = "/api/transactions";
+const apiPath = "/api/account/transactions";
 
 const category = {
   apiPathCategory: "/api/account/transactions/categories",
@@ -32,8 +32,8 @@ const category = {
   },
 };
 
-async function list(transactionId: string) {
-  const response = await axios.get(`${apiPath}?id=${transactionId}`);
+async function list(accountId: string) {
+  const response = await axios.get(`${apiPath}?id=${accountId}`);
   return response.data;
 }
 

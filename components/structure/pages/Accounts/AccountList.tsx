@@ -10,6 +10,7 @@ import List from "./_components/List";
 import { serverActions } from "@/serverActions/serverActions";
 import { account } from "@prisma/client";
 import AccountWindow from "./_components/AccountWindow";
+import LedgerWindow from "./_components/LedgerWindow";
 
 type Props = {};
 
@@ -67,6 +68,9 @@ const AccountList = (props: Props) => {
               setAccounts={setAccountList}
               setSelectedAccount={setSelectedAccount}
             />
+          </div>
+          <div className="p-2">
+            <LedgerWindow selectedAccount={selectedAccount} />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
