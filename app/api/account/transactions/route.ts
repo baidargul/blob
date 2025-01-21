@@ -23,12 +23,15 @@ export async function GET(req: NextRequest) {
       },
       include: {
         transactions: {
-          take: 5,
+          take: 10,
           orderBy: {
             createdAt: "desc",
           },
           include: {
             category: true,
+            purchase: {
+              take: 1,
+            },
           },
         },
         customer: true,
