@@ -1,5 +1,5 @@
 import Tag from "@/components/myui/Tag";
-import { formalizeText, formatCurrency } from "@/lib/utils";
+import { formalizeText, formatCurrency, formatDate } from "@/lib/utils";
 import { transactions } from "@prisma/client";
 import { ArrowDownRight } from "lucide-react";
 import React from "react";
@@ -18,13 +18,13 @@ const LedgerRow = (props: Props) => {
 
   return (
     <div
-      className={`w-full p-1 flex flex-col ${
+      className={`w-full p-1 flex flex-col hover:bg-gradient-to-l from-interface-primary/10 to-transparent ${
         props.index === props.transactions.length - 1 ? "" : "border-b"
       }`}
     >
       <div className="grid grid-cols-5 place-items-start">
         <div className="text-xs mr-auto">
-          {new Date(props.transaction.createdAt).toLocaleDateString() +
+          {formatDate(new Date(props.transaction.createdAt)) +
             " " +
             new Date(props.transaction.createdAt).toLocaleTimeString()}
         </div>
@@ -47,10 +47,7 @@ const LedgerRow = (props: Props) => {
             className={`${transactionIconClass} transition-all duration-500`}
           />
         </div>
-        <div
-          title={String(props.transaction.type).toLocaleUpperCase()}
-          className="flex items-center gap-1 ml-auto"
-        >
+        <div title={`Balance`} className="flex items-center gap-1 ml-auto pr-1">
           {formatCurrency(Number(props.transaction.balance), "Rs")}
         </div>
       </div>

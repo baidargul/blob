@@ -20,3 +20,15 @@ export function formatCurrency(value: number, currency: "Rs" | "$"): string {
 export function formalizeText(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
+
+export function formatDate(date: Date): string {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long", // Full name of the weekday
+    day: "2-digit", // Two-digit day
+    month: "long", // Full name of the month
+    year: "2-digit", // Two-digit year
+  };
+
+  const formattedDate = new Date(date).toLocaleDateString("en-US", options);
+  return formattedDate;
+}
