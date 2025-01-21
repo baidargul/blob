@@ -52,34 +52,41 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
   }[] = [];
   for (const item of purchase.barcodeRegister) {
     totalCost = Number(totalCost) + Number(item.cost);
-    //compare name, cost, color if found update quantity and total else add new product FOR SUMMARY STATEMENT
+
+    // Flag to check if the product exists
+    let found = false;
+
     for (const product of products) {
       if (
         product.name === item.product.name &&
         Number(product.cost) === Number(item.cost) &&
         product.color === item.color
       ) {
+        // Update quantity and total for existing product
         product.quantity = product.quantity + 1;
         product.total = Number(product.total) + Number(item.cost);
-      } else {
-        products.push({
-          name: item.product.name,
-          cost: Number(item.cost),
-          color: item.color || "",
-          quantity: 1,
-          total: Number(item.cost),
-        });
+        found = true; // Mark as found
+        break; // Exit loop as product is already updated
       }
+    }
+
+    // If product was not found, add it as new
+    if (!found) {
+      products.push({
+        name: item.product.name,
+        cost: Number(item.cost),
+        color: item.color || "",
+        quantity: 1,
+        total: Number(item.cost),
+      });
     }
   }
 
   let summary = "";
   for (const product of products) {
-    summary =
-      summary +
-      `${product.name} ${product.color} x ${
-        product.quantity
-      } @ Rs ${product.cost.toFixed(2)} = Rs ${product.total.toFixed(2)}\n\n`;
+    summary += `[${product.name} ${product.color} x ${
+      product.quantity
+    } @ Rs ${product.cost.toFixed(2)} = Rs ${product.total.toFixed(2)}]\n\n`;
   }
   summary = summary + `Total: Rs ${totalCost.toFixed(2)}`;
 
@@ -95,13 +102,26 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
     return response;
   }
 
-  const trans = await prisma.transactions.create({
+  const account = await prisma.account.findUnique({
+    where: {
+      id: purchase.account.id,
+    },
+  });
+
+  if (!account) {
+    response.status = 400;
+    response.message = "Account not found";
+    return response;
+  }
+
+  let trans = await prisma.transactions.create({
     data: {
       accountId: purchase.account.id,
       type: transactionType.debit,
       amount: totalCost,
       transactionCategoryId: transactionCategory.id,
       description: summary,
+      balance: Number(account.balance) - Number(totalCost),
     },
   });
 

@@ -183,6 +183,7 @@ model transactions {
   createdAt             DateTime            @default(now())
   transactionCategoryId String
   description           String?
+  balance               Decimal?            @default(0) @db.Decimal
   account               account             @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   category              transactionCategory @relation(fields: [transactionCategoryId], references: [id])
 }

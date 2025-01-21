@@ -22,7 +22,7 @@ const LedgerRow = (props: Props) => {
         props.index === props.transactions.length - 1 ? "" : "border-b"
       }`}
     >
-      <div className="grid grid-cols-4 place-items-center">
+      <div className="grid grid-cols-5 place-items-start">
         <div className="text-xs mr-auto">
           {new Date(props.transaction.createdAt).toLocaleDateString() +
             " " +
@@ -33,10 +33,12 @@ const LedgerRow = (props: Props) => {
             value={String(props.transaction.category.name).toLocaleUpperCase()}
           />
         </div>
-        <div>{formalizeText(props.transaction.description)}</div>
+        <div className="font-mono text-sm">
+          {formalizeText(props.transaction.description)}
+        </div>
         <div
           title={String(props.transaction.type).toLocaleUpperCase()}
-          className="flex items-center gap-1 ml-auto"
+          className="flex items-center gap-1 ml-auto text-sm"
         >
           {" "}
           {formatCurrency(Number(props.transaction.amount), "Rs")}
@@ -44,6 +46,12 @@ const LedgerRow = (props: Props) => {
             size={20}
             className={`${transactionIconClass} transition-all duration-500`}
           />
+        </div>
+        <div
+          title={String(props.transaction.type).toLocaleUpperCase()}
+          className="flex items-center gap-1 ml-auto"
+        >
+          {formatCurrency(Number(props.transaction.balance), "Rs")}
         </div>
       </div>
     </div>

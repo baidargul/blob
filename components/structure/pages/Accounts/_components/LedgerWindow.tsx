@@ -23,8 +23,8 @@ const LedgerWindow = (props: Props) => {
   }, [props.selectedAccount]);
 
   return (
-    <div className="bg-white min-h-[400px] overflow-y-auto w-full rounded drop-shadow-sm">
-      {transactions.map((transaction, index) => {
+    <div className="bg-white h-[400px] max-h-[400px] pr-2 overflow-y-auto w-full rounded drop-shadow-sm">
+      {transactions.map((transaction: any, index: number) => {
         return (
           <LedgerRow
             key={index}
