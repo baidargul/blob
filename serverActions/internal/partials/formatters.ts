@@ -67,6 +67,7 @@ export const getPurchase = async (id: string) => {
           product: true,
         },
       },
+      transactions: true,
     },
   });
 

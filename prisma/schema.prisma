@@ -100,8 +100,10 @@ model purchase {
   closed          Boolean?          @default(false)
   purchaseDate    DateTime?         @default(now())
   accountId       String?
+  transactionId   String?
   barcodeRegister barcodeRegister[]
   account         account?          @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions    transactions?     @relation(fields: [transactionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model inventory {
@@ -184,6 +186,7 @@ model transactions {
   transactionCategoryId String
   description           String?
   balance               Decimal?            @default(0) @db.Decimal
+  purchase              purchase[]
   account               account             @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   category              transactionCategory @relation(fields: [transactionCategoryId], references: [id])
 }

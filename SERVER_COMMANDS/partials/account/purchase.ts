@@ -142,6 +142,15 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
     },
   });
 
+  await prisma.purchase.update({
+    where: {
+      id: purchaseId,
+    },
+    data: {
+      transactionId: trans.id,
+    },
+  });
+
   response.status = 200;
   response.message = "Purchase Transaction Complete";
   response.data = null;
