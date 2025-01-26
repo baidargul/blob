@@ -196,6 +196,44 @@ async function closeSale(saleId: string) {
     });
   }
 
+  const cashAccount = await prisma.account.findFirst({
+    where: {
+      title: {
+        equals: "Cash",
+        mode: "insensitive",
+      },
+    },
+  });
+
+  if (cashAccount) {
+    await prisma.transactions.create({
+      data: {
+        accountId: cashAccount.id,
+        type: transactionType.credit,
+        amount: totalCost,
+        transactionCategoryId: transactionCategory.id,
+        description: `Sale order #${sale.orderNo} ${
+          sale.saleDate &&
+          `@${formatDate(new Date(sale.saleDate))}\n\n ${
+            sale?.account &&
+            sale?.account?.customer?.name &&
+            `Customer: ${sale.account.customer.name}`
+          }`
+        }`,
+        balance: Number(cashAccount.balance) - Number(totalCost),
+      },
+    });
+
+    await prisma.account.update({
+      where: {
+        id: cashAccount.id,
+      },
+      data: {
+        balance: Number(cashAccount.balance) + Number(totalCost),
+      },
+    });
+  }
+
   response.status = 200;
   response.message = "Sale closed successfully";
   response.data = null;
