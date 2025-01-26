@@ -40,6 +40,12 @@ const SaleOrder = (props: Props) => {
   const [cartSearchText, setCartSearchText] = useState<string>("");
   const [customers, setCustomers] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any | null>(null);
+  const [customerAccount, setCustomerAccount] = useState<any | null>(null);
+  const [paidAmount, setPaidAmount] = useState<number>(0);
+
+  const handlePaidAmount = (value: number) => {
+    setPaidAmount(value);
+  };
 
   const handleNextOrder = async () => {
     setIsWorking(true);
@@ -51,6 +57,7 @@ const SaleOrder = (props: Props) => {
       setCartItems((prev: any) => order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
+        setCustomerAccount((prev: any) => order.data?.account);
       } else {
         setSelectedCustomer((prev: any) => null);
       }
@@ -67,6 +74,7 @@ const SaleOrder = (props: Props) => {
       setCartItems((prev: any) => order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
+        setCustomerAccount((prev: any) => order.data?.account);
       } else {
         setSelectedCustomer((prev: any) => null);
       }
@@ -81,6 +89,7 @@ const SaleOrder = (props: Props) => {
       setCartItems(order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
+        setCustomerAccount((prev: any) => order.data?.account);
       } else {
         setSelectedCustomer((prev: any) => null);
       }
@@ -96,6 +105,7 @@ const SaleOrder = (props: Props) => {
       setCartItems((prev: any) => order.data.products);
       if (order.data.accountId !== null) {
         setSelectedCustomer((prev: any) => order.data?.account?.customer);
+        setCustomerAccount((prev: any) => order.data?.account);
       } else {
         setSelectedCustomer((prev: any) => null);
       }
@@ -115,7 +125,8 @@ const SaleOrder = (props: Props) => {
       const response = await serverActions.Sale.save(
         saleOrder.id,
         cartItems,
-        selectedCustomer?.id
+        selectedCustomer?.id,
+        paidAmount
       );
       if (response.status === 200) {
         setSaleOrder(null);
@@ -141,6 +152,13 @@ const SaleOrder = (props: Props) => {
 
   const isTargetProduct = (targetText: string, product: any) => {
     const normalizedTarget = targetText.toLowerCase();
+
+    const barcode = product.barcodeRegister[0].barcode;
+    for (let item of cartItems) {
+      if (item.barcodeRegister[0].barcode === barcode) {
+        return false;
+      }
+    }
 
     return (
       product.name.toLowerCase().includes(normalizedTarget) ||
@@ -393,7 +411,7 @@ const SaleOrder = (props: Props) => {
             className="pointer-events-auto opacity-100"
           />
         </div>
-        <ScrollArea className="h-[88dvh] pl-2">
+        <ScrollArea className="h-[38dvh] pl-2">
           <div>
             <div className="flex flex-col gap-2">
               {cartItems &&
@@ -501,6 +519,52 @@ const SaleOrder = (props: Props) => {
             </div>
           </div>
         </ScrollArea>
+        <div className="border-t-2 mt-4 py-2 ml-auto w-fit flex flex-col gap-2">
+          <Label label="Total amount" size="text-sm" />
+          <div className=" w-full font-semibold p-1 bg-zinc-200 border border-zinc-300 rounded">
+            {formatCurrency(sumTotal(), "Rs")} | {cartItems.length} Items.
+          </div>
+          <div className="flex flex-col gap-2">
+            <InputBox
+              label="Amount paid"
+              placeholder={formatCurrency(sumTotal(), "Rs")}
+              setValue={handlePaidAmount}
+              value={paidAmount}
+              className="pointer-events-auto opacity-100 "
+              type="number"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <InputBox
+              label="Net amount"
+              placeholder={formatCurrency(0, "Rs")}
+              value={sumTotal() - paidAmount}
+              className="pointer-events-auto opacity-100 "
+              type="number"
+              readonly
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <InputBox
+              label="Prev balance"
+              value={customerAccount?.balance}
+              className="pointer-events-auto opacity-100 "
+              type="number"
+              readonly
+            />
+            <InputBox
+              label="New balance"
+              value={
+                Number(customerAccount?.balance) -
+                Number(sumTotal()) +
+                Number(paidAmount)
+              }
+              className="pointer-events-auto opacity-100 "
+              type="number"
+              readonly
+            />
+          </div>
+        </div>
       </ResizablePanel>
       {isWorking && <Loader />}
     </ResizablePanelGroup>

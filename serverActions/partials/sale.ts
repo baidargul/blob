@@ -8,11 +8,17 @@ async function create() {
   return response.data;
 }
 
-async function save(saleId: string, products: any[], customerId: string) {
+async function save(
+  saleId: string,
+  products: any[],
+  customerId: string,
+  paidAmount: number
+) {
   const data = {
     saleId,
     products,
     customerId,
+    paidAmount,
   };
   const response: SERVER_RESPONSE = await axios.put(`${API_PATH}`, data);
   return response.data;

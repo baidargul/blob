@@ -10,6 +10,7 @@ const transactionCategories = [
   "bill",
   "repair",
   "maintainance",
+  "cash",
   "other",
 ];
 

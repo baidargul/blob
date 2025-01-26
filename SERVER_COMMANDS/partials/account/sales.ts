@@ -3,7 +3,7 @@ import { formatDate } from "@/lib/utils";
 import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
 import { transactionType } from "@prisma/client";
 
-async function closeSale(saleId: string) {
+async function closeSale(saleId: string, paidAmount?: number) {
   await serverCommands.initialize();
 
   const response = {
@@ -140,6 +140,12 @@ async function closeSale(saleId: string) {
     return response;
   }
 
+  if (!trans) {
+    response.status = 400;
+    response.message = "Transaction not created";
+    return response;
+  }
+
   await prisma.sale.update({
     where: {
       id: sale.id,
@@ -230,6 +236,51 @@ async function closeSale(saleId: string) {
       },
       data: {
         balance: Number(cashAccount.balance) + Number(totalCost),
+      },
+    });
+  }
+
+  //ONLY IF HE PAYS CASH FOR NOW ALLOWED
+  let targetAccount = await prisma.account.findUnique({
+    where: {
+      id: sale.account.id,
+    },
+  });
+
+  if (!targetAccount) {
+    response.status = 400;
+    response.message = "Account not found";
+    return response;
+  }
+  if (paidAmount && paidAmount > 0) {
+    const cashCategoryId = await prisma.transactionCategory.findFirst({
+      where: {
+        name: {
+          equals: "cash",
+          mode: "insensitive",
+        },
+      },
+    });
+
+    await prisma.transactions.create({
+      data: {
+        accountId: sale.account.id,
+        type: transactionType.debit,
+        amount: paidAmount,
+        transactionCategoryId: cashCategoryId
+          ? cashCategoryId.id
+          : transactionCategory.id,
+        description: summary,
+        balance: Number(targetAccount.balance) + Number(paidAmount),
+      },
+    });
+
+    await prisma.account.update({
+      where: {
+        id: sale.account.id,
+      },
+      data: {
+        balance: Number(targetAccount.balance) + Number(paidAmount),
       },
     });
   }

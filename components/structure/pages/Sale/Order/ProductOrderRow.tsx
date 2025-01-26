@@ -24,18 +24,19 @@ const ProductOrderRow = (props: Props) => {
       <div
         title="Remove product"
         onClick={() => props.removeRow(props.item.barcodeRegister[0].barcode)}
-        className="p-1 group w-6 h-6 text-center flex justify-center items-center bg-interface-primary/10 hover:bg-red-50 border border-transparent hover:border-red-100 rounded absolute top-2 right-2"
+        className="p-1 group w-6 h-6 text-center flex justify-center items-center bg-interface-primary/10 hover:bg-red-50 border border-transparent hover:border-red-100 rounded absolute top-2 right-4"
       >
         <Trash size={20} className="group-hover:text-red-500 cursor-pointer" />
       </div>
-      <div className="p-2 grid grid-cols-[auto_1fr_1fr] w-full">
-        <div>
+      <div className="p-2 grid grid-cols-[auto_1fr_1fr] place-content-center w-full pr-4">
+        <div className="flex justify-center items-center">
+          <div className="opacity-40">{props.index}</div>
           <Image
             src={props.item.productImages[0].images.url}
             alt={props.item.name}
             width={100}
             height={100}
-            className="w-24 h-24 object-contain rounded"
+            className="w-16 h-16 object-contain rounded"
           />
         </div>
         <div className="">

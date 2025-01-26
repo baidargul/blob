@@ -41,6 +41,10 @@ export async function PUT(req: NextRequest) {
   try {
     const data = await req.json();
 
+    if (!data.paidAmount) {
+      data.paidAmount = 0;
+    }
+
     if (!data.saleId) {
       response.status = 400;
       response.message = "Sale ID is required";
@@ -162,7 +166,10 @@ export async function PUT(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
-    const close = await serverCommands.account.sale.closeSale(newSale.id);
+    const close = await serverCommands.account.sale.closeSale(
+      newSale.id,
+      data.paidAmount
+    );
     if (close.status !== 200) {
       response.status = close.status;
       response.message = close.message;
