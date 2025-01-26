@@ -1,4 +1,6 @@
 import prisma from "@/lib/prisma";
+import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
+import { sale } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -143,7 +145,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    await prisma.sale.update({
+    const newSale: sale = await prisma.sale.update({
       where: {
         id: data.saleId,
       },
@@ -152,6 +154,21 @@ export async function PUT(req: NextRequest) {
         closed: true,
       },
     });
+
+    if (!newSale) {
+      response.status = 500;
+      response.message = "Sale could not be closed";
+      response.data = null;
+      return new Response(JSON.stringify(response));
+    }
+
+    const close = await serverCommands.account.sale.closeSale(newSale.id);
+    if (close.status !== 200) {
+      response.status = close.status;
+      response.message = close.message;
+      response.data = close.data;
+      return new Response(JSON.stringify(response));
+    }
 
     response.status = 200;
     response.message = "Sale saved successfully";
