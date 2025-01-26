@@ -42,7 +42,7 @@ const LedgerRow = (props: Props) => {
         </div>
         <div className="font-mono text-sm">
           <div className="font-bold">
-            <div>PO# {props.transaction?.[key][0]?.orderNo}</div>
+            <div>OR# {props.transaction?.[key][0]?.orderNo}</div>
           </div>
           {formalizeText(props.transaction.description)}
         </div>

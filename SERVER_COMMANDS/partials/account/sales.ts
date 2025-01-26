@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { formatDate } from "@/lib/utils";
 import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
 import { transactionType } from "@prisma/client";
 
@@ -139,6 +140,15 @@ async function closeSale(saleId: string) {
     return response;
   }
 
+  await prisma.sale.update({
+    where: {
+      id: sale.id,
+    },
+    data: {
+      transactionId: trans.id,
+    },
+  });
+
   await prisma.account.update({
     where: {
       id: sale.account.id,
@@ -147,6 +157,44 @@ async function closeSale(saleId: string) {
       balance: Number(account.balance) - Number(totalCost),
     },
   });
+
+  const incomeAccount = await prisma.account.findFirst({
+    where: {
+      title: {
+        equals: "Income",
+        mode: "insensitive",
+      },
+    },
+  });
+
+  if (incomeAccount) {
+    await prisma.transactions.create({
+      data: {
+        accountId: incomeAccount.id,
+        type: transactionType.credit,
+        amount: totalCost,
+        transactionCategoryId: transactionCategory.id,
+        description: `Sale order #${sale.orderNo} ${
+          sale.saleDate &&
+          `@${formatDate(new Date(sale.saleDate))}\n\n ${
+            sale?.account &&
+            sale?.account?.customer?.name &&
+            `Customer: ${sale.account.customer.name}`
+          }`
+        }`,
+        balance: Number(incomeAccount.balance) + Number(totalCost),
+      },
+    });
+
+    await prisma.account.update({
+      where: {
+        id: incomeAccount.id,
+      },
+      data: {
+        balance: Number(incomeAccount.balance) + Number(totalCost),
+      },
+    });
+  }
 
   response.status = 200;
   response.message = "Sale closed successfully";
