@@ -47,7 +47,7 @@ const AccountList = (props: Props) => {
           <div className="p-2 flex flex-col gap-2">
             <InputBox
               label="Search"
-              placeholder="Search Product"
+              placeholder="Search Account"
               setValue={handleSearchAccount}
               value={searchText}
               className="pointer-events-auto opacity-100"
