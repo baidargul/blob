@@ -53,13 +53,13 @@ async function closeSale(saleId: string) {
   let totalCost = 0;
   let products: {
     name: string;
-    cost: number;
+    soldAt: number;
     color: string;
     quantity: number;
     total: number;
   }[] = [];
   for (const item of sale.barcodeRegister) {
-    totalCost = Number(totalCost) + Number(item.cost);
+    totalCost = Number(totalCost) + Number(item.soldAt);
 
     // Flag to check if the product exists
     let found = false;
@@ -67,12 +67,12 @@ async function closeSale(saleId: string) {
     for (const product of products) {
       if (
         product.name === item.product.name &&
-        Number(product.cost) === Number(item.cost) &&
+        Number(product.soldAt) === Number(item.soldAt) &&
         product.color === item.color
       ) {
         // Update quantity and total for existing product
         product.quantity = product.quantity + 1;
-        product.total = Number(product.total) + Number(item.cost);
+        product.total = Number(product.total) + Number(item.soldAt);
         found = true; // Mark as found
         break; // Exit loop as product is already updated
       }
@@ -82,10 +82,10 @@ async function closeSale(saleId: string) {
     if (!found) {
       products.push({
         name: item.product.name,
-        cost: Number(item.cost),
+        soldAt: Number(item.soldAt),
         color: item.color || "",
         quantity: 1,
-        total: Number(item.cost),
+        total: Number(item.soldAt),
       });
     }
   }
@@ -94,7 +94,7 @@ async function closeSale(saleId: string) {
   for (const product of products) {
     summary += `[${product.name} ${product.color} x ${
       product.quantity
-    } @ Rs ${product.cost.toFixed(2)} = Rs ${product.total.toFixed(2)}]\n\n`;
+    } @ Rs ${product.soldAt.toFixed(2)} = Rs ${product.total.toFixed(2)}]\n\n`;
   }
   summary = summary + `Total: Rs ${totalCost.toFixed(2)}`;
 
@@ -138,6 +138,15 @@ async function closeSale(saleId: string) {
     response.message = "Transaction not created";
     return response;
   }
+
+  await prisma.account.update({
+    where: {
+      id: sale.account.id,
+    },
+    data: {
+      balance: Number(account.balance) - Number(totalCost),
+    },
+  });
 
   response.status = 200;
   response.message = "Sale closed successfully";
