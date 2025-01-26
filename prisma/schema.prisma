@@ -103,7 +103,7 @@ model purchase {
   transactionId   String?
   barcodeRegister barcodeRegister[]
   account         account?          @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  transactions    transactions?     @relation(fields: [transactionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  transactions    transactions?     @relation(fields: [transactionId], references: [id], onDelete: Cascade)
 }
 
 model inventory {
@@ -158,8 +158,10 @@ model sale {
   updatedAt       DateTime?         @default(now()) @db.Timestamptz(6)
   accountId       String?
   orderNo         Int               @default(autoincrement())
+  transactionId   String?
   barcodeRegister barcodeRegister[]
   account         account?          @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions    transactions?     @relation(fields: [transactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model account {
@@ -187,6 +189,7 @@ model transactions {
   description           String?
   balance               Decimal?            @default(0) @db.Decimal
   purchase              purchase[]
+  sale                  sale[]
   account               account             @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   category              transactionCategory @relation(fields: [transactionCategoryId], references: [id])
 }

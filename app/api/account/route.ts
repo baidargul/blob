@@ -235,6 +235,7 @@ export async function PATCH(req: NextRequest) {
         purchase: true,
         transactions: true,
         vendor: true,
+        sale: true,
       },
     });
 

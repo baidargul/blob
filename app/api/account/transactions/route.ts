@@ -32,6 +32,9 @@ export async function GET(req: NextRequest) {
             purchase: {
               take: 1,
             },
+            sale: {
+              take: 1,
+            },
           },
         },
         customer: true,

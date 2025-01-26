@@ -45,7 +45,6 @@ const AccountWindow = (props: Props) => {
 
   useEffect(() => {
     fetchAccountTypes();
-    console.log(props.selectedAccount);
     if (props.selectedAccount) {
       if (props.selectedAccount?.type) {
         setEditMode(false);
@@ -120,7 +119,6 @@ const AccountWindow = (props: Props) => {
   };
 
   const handleDelete = async () => {
-    console.log(props.selectedAccount);
     if (!props.selectedAccount?.id) {
       toast.warning("Please select account to delete");
       return;

@@ -16,6 +16,13 @@ const LedgerRow = (props: Props) => {
       ? "text-red-500 rotate-180"
       : "text-green-500 ";
 
+  let key = "purchase";
+  if (props.transaction.category.name === "sale") {
+    key = "sale";
+  } else if (props.transaction.category.name === "purchase") {
+    key = "purchase";
+  }
+
   return (
     <div
       className={`w-full p-1 flex flex-col hover:bg-gradient-to-l from-interface-primary/10 to-transparent ${
@@ -35,7 +42,7 @@ const LedgerRow = (props: Props) => {
         </div>
         <div className="font-mono text-sm">
           <div className="font-bold">
-            <div>PO# {props.transaction?.purchase[0]?.orderNo}</div>
+            <div>PO# {props.transaction?.[key][0]?.orderNo}</div>
           </div>
           {formalizeText(props.transaction.description)}
         </div>
