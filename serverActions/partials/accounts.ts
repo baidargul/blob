@@ -38,7 +38,11 @@ async function remove(id: string) {
 }
 
 async function update(id: string, title: string, type: accountType) {
-  const response = await axios.patch(`${APIPATH}`, { id, title, type });
+  const response = await axios.patch(`${APIPATH}`, {
+    id,
+    title,
+    type: String(type).toLocaleLowerCase(),
+  });
   return response.data;
 }
 

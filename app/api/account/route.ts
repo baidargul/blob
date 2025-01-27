@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { accountType } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -221,11 +222,67 @@ export async function PATCH(req: NextRequest) {
       uData.type = data.type;
     }
 
+    if (data.type === accountType.customer) {
+      isExists = await prisma.customer.findFirst({
+        where: {
+          name: data.title,
+          NOT: {
+            accountId: data.id,
+          },
+        },
+      });
+
+      if (isExists) {
+        response.status = 400;
+        response.message = "Customer with this name already exists";
+        return new Response(JSON.stringify(response));
+      }
+
+      await prisma.customer.update({
+        where: {
+          accountId: data.id,
+        },
+        data: {
+          name: data.title,
+        },
+      });
+    }
+
+    if (data.type === accountType.vendor) {
+      isExists = await prisma.vendor.findFirst({
+        where: {
+          name: data.title,
+          NOT: {
+            accountId: data.id,
+          },
+        },
+      });
+
+      if (isExists) {
+        response.status = 400;
+        response.message = "Vendor with this name already exists";
+        return new Response(JSON.stringify(response));
+      }
+
+      await prisma.vendor.update({
+        where: {
+          accountId: data.id,
+        },
+        data: {
+          name: data.title,
+        },
+      });
+    }
+
     const account = await prisma.account.update({
       where: {
         id: data.id,
       },
       data: uData,
+      include: {
+        customer: true,
+        vendor: true,
+      },
     });
 
     const accounts = await prisma.account.findMany({
