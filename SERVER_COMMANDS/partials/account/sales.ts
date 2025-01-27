@@ -111,7 +111,7 @@ async function closeSale(saleId: string, paidAmount?: number) {
     return response;
   }
 
-  const account = await prisma.account.findUnique({
+  let account = await prisma.account.findUnique({
     where: {
       id: sale.account.id,
     },
@@ -241,13 +241,13 @@ async function closeSale(saleId: string, paidAmount?: number) {
   }
 
   //ONLY IF HE PAYS CASH FOR NOW ALLOWED
-  let targetAccount = await prisma.account.findUnique({
+  account = await prisma.account.findUnique({
     where: {
       id: sale.account.id,
     },
   });
 
-  if (!targetAccount) {
+  if (!account) {
     response.status = 400;
     response.message = "Account not found";
     return response;
@@ -271,7 +271,7 @@ async function closeSale(saleId: string, paidAmount?: number) {
           ? cashCategoryId.id
           : transactionCategory.id,
         description: summary,
-        balance: Number(targetAccount.balance) + Number(paidAmount),
+        balance: Number(account.balance) + Number(paidAmount),
       },
     });
 
@@ -280,7 +280,7 @@ async function closeSale(saleId: string, paidAmount?: number) {
         id: sale.account.id,
       },
       data: {
-        balance: Number(targetAccount.balance) + Number(paidAmount),
+        balance: Number(account.balance) + Number(paidAmount),
       },
     });
   }
