@@ -11,7 +11,7 @@ const ContentArea = (props: Props) => {
   const currentPage = pageHook.page;
 
   useEffect(() => {
-    pageHook.setPage("AccountList");
+    pageHook.setPage("ListAllVendors");
   }, []);
 
   return (

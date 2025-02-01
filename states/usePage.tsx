@@ -10,6 +10,7 @@ import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/P
 import SaleOrder from "@/components/structure/pages/Sale/Order/SaleOrder";
 import TypeList from "@/components/structure/pages/Type/TypeList";
 import VendorCreateForm from "@/components/structure/pages/Vendors/CreateForm";
+import ListAll from "@/components/structure/pages/Vendors/List/ListAll";
 import { create } from "zustand";
 
 type PageState = {
@@ -33,7 +34,8 @@ export type PageName =
   | "VendorCreate"
   | "SaleOrder"
   | "CustomerCreate"
-  | "AccountList";
+  | "AccountList"
+  | "ListAllVendors";
 
 type PageType = {
   page: PageState;
@@ -80,6 +82,11 @@ const pages: PageState[] = [
     name: "BarcodeSearch",
     description: "Search by barcode",
     page: <BarcodeSearch />,
+  },
+  {
+    name: "ListAllVendors",
+    description: "List of vendors",
+    page: <ListAll />,
   },
   {
     name: "VendorCreate",
