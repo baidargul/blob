@@ -17,37 +17,53 @@ const List = (props: Props) => {
       (entity.primaryContact &&
         entity.primaryContact
           .toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.secondContact &&
         entity.secondContact
           .toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.primaryPhone &&
         entity.primaryPhone
           .toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.secondPhone &&
         entity.secondPhone
           .toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.email &&
-        entity.email.toString().includes(props.searchText.toLowerCase())) ||
+        entity.email
+          .toString()
+          .toLowerCase()
+          .includes(props.searchText.toLowerCase())) ||
       (entity.account &&
         entity.account?.title
           ?.toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.account &&
         entity.account?.type
           ?.toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.account &&
         entity.account?.description
           ?.toString()
+          .toLowerCase()
           .includes(props.searchText.toLowerCase())) ||
       (entity.email2 &&
-        entity.email2.toString().includes(props.searchText.toLowerCase())) ||
+        entity.email2
+          .toString()
+          .toLowerCase()
+          .includes(props.searchText.toLowerCase())) ||
       (entity.website &&
-        entity.website.toString().includes(props.searchText.toLowerCase()))
+        entity.website
+          .toString()
+          .toLowerCase()
+          .includes(props.searchText.toLowerCase()))
     );
   });
 
