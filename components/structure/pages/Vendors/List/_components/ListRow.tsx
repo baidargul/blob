@@ -11,7 +11,7 @@ type Props = {
 const ListRow = (props: Props) => {
   return (
     <div
-      className={`p-1 ${
+      className={`p-2 ${
         props.index === props.entityList.length - 1 ? "" : "border-b"
       } ${
         props.selectedEntity?.id === props.entity.id

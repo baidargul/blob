@@ -56,7 +56,7 @@ const List = (props: Props) => {
       {filteredEntities.map((entity, index) => (
         <div
           key={index}
-          className="bg-white rounded w-full h-full p-2 cursor-pointer"
+          className="bg-white rounded w-full h-full cursor-pointer"
           onClick={() => props.onSelect(entity)}
         >
           <ListRow

@@ -8,6 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { serverActions } from "@/serverActions/serverActions";
 import List from "./_components/List";
+import VendorCreateForm from "../CreateForm";
 
 type Props = {};
 
@@ -19,12 +20,16 @@ const ListAll = (props: Props) => {
     setSearchText(value);
   };
   const handleVendorSelect = (account: any) => {
+    if (account.id === selectedVendor?.id) {
+      setSelectedVendor(null);
+      return;
+    }
     setSelectedVendor(account);
   };
 
   const fetchVendors = async () => {
     const response = await serverActions.Vendor.listAll();
-    let res = setVendorList((prev: any) => response.data);
+    setVendorList((prev: any) => response.data);
   };
 
   useEffect(() => {
@@ -51,11 +56,13 @@ const ListAll = (props: Props) => {
             />
           </div>
         </ResizablePanel>
-        <ResizableHandle className="mx-1" />
-        <ResizablePanel
-          defaultSize={40}
-          className="w-full min-w-[260px]"
-        ></ResizablePanel>
+        <ResizableHandle className="mx-1 mr-3" />
+        <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
+          <VendorCreateForm
+            refreshList={fetchVendors}
+            selectedVendoor={selectedVendor}
+          />
+        </ResizablePanel>
       </ResizablePanelGroup>
     </div>
   );

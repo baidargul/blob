@@ -9,7 +9,10 @@ import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
 import { toast } from "sonner";
 
-type Props = {};
+type Props = {
+  refreshList?: () => void;
+  selectedVendoor?: vendor;
+};
 
 const VendorCreateForm = (props: Props) => {
   const [vendor, setVendor] = useState<vendor | null>(null);
@@ -64,6 +67,9 @@ const VendorCreateForm = (props: Props) => {
     const response = await serverActions.Vendor.create(vendor);
     if (response?.status === 200) {
       toast.message(response.message);
+      if (props.refreshList) {
+        props.refreshList();
+      }
       clearForm();
     } else {
       if (response.status === 400) {
@@ -77,6 +83,10 @@ const VendorCreateForm = (props: Props) => {
   const clearForm = () => {
     setVendor(null);
   };
+
+  useEffect(() => {
+    setVendor(props.selectedVendoor ? props.selectedVendoor : null);
+  }, [props.selectedVendoor]);
 
   return (
     <div>
