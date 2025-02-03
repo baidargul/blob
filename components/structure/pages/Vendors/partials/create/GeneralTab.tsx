@@ -6,6 +6,7 @@ import React from "react";
 type Props = {
   actions: any;
   vendor: vendor | null;
+  selectedVendor?: vendor;
 };
 
 const GeneralTab = (props: Props) => {
@@ -22,6 +23,7 @@ const GeneralTab = (props: Props) => {
                 : ""
               : ""
           }
+          disabled={props.selectedVendor ? true : false}
           setValue={props.actions.setPrimaryContact}
         />
         <InputBox
@@ -29,6 +31,7 @@ const GeneralTab = (props: Props) => {
           placeholder="Manager or owner"
           value={props.vendor?.primaryPosition || ""}
           setValue={props.actions.setPrimaryPosition}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Phone"
@@ -36,18 +39,21 @@ const GeneralTab = (props: Props) => {
           type="number"
           value={props.vendor?.primaryPhone || ""}
           setValue={props.actions.setPrimaryPhone}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Secondry Contact"
           placeholder="Name of the manager or owner to deal with"
           value={props.vendor?.secondContact || ""}
           setValue={props.actions.setSecondContact}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Position"
           placeholder="Owner"
           value={props.vendor?.secondPosition || ""}
           setValue={props.actions.setSecondPosition}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Phone"
@@ -55,24 +61,28 @@ const GeneralTab = (props: Props) => {
           type="number"
           value={props.vendor?.secondPhone || ""}
           setValue={props.actions.setSecondPhone}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Email"
           placeholder="salesperson@email.com"
           value={props.vendor?.email1 || ""}
           setValue={props.actions.setEmail1}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Email"
           placeholder="admin@email.com"
           value={props.vendor?.email2 || ""}
           setValue={props.actions.setEmail2}
+          disabled={props.selectedVendor ? true : false}
         />
         <InputBox
           label="Wesbite"
           placeholder="vendorb2b.com"
           value={props.vendor?.website || ""}
           setValue={props.actions.setWebsite}
+          disabled={props.selectedVendor ? true : false}
         />
       </div>
     </div>

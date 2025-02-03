@@ -37,8 +37,17 @@ async function listAll() {
   return response.data;
 }
 
+async function update(vendor: any) {
+  const data = {
+    vendor,
+  };
+  const response: SERVER_RESPONSE = await axios.patch(`${APIPATH}`, data);
+  return response.data;
+}
+
 export const Vendor = {
   create,
+  update,
   list,
   listAll,
   assignToPurchase,

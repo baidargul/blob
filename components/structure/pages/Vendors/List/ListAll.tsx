@@ -60,7 +60,8 @@ const ListAll = (props: Props) => {
         <ResizablePanel defaultSize={40} className="w-full min-w-[260px]">
           <VendorCreateForm
             refreshList={fetchVendors}
-            selectedVendoor={selectedVendor}
+            selectedVendor={selectedVendor}
+            setSelectedVendor={setSelectedVendor}
           />
         </ResizablePanel>
       </ResizablePanelGroup>

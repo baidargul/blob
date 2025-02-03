@@ -11,11 +11,14 @@ import { toast } from "sonner";
 
 type Props = {
   refreshList?: () => void;
-  selectedVendoor?: vendor;
+  selectedVendor?: vendor;
+  setSelectedVendor?: any;
 };
 
 const VendorCreateForm = (props: Props) => {
   const [vendor, setVendor] = useState<vendor | null>(null);
+
+  const [editVendor, setEditVendor] = useState<vendor | null>(null);
 
   const actions = {
     setName: (value: string) => {
@@ -63,16 +66,32 @@ const VendorCreateForm = (props: Props) => {
   };
 
   const handleSave = async () => {
-    if (!vendor) return;
-    const response = await serverActions.Vendor.create(vendor);
-    if (response?.status === 200) {
-      toast.message(response.message);
-      if (props.refreshList) {
-        props.refreshList();
+    if (!editVendor) {
+      if (!vendor) return;
+      const response = await serverActions.Vendor.create(vendor);
+      if (response?.status === 200) {
+        toast.message(response.message);
+        if (props.refreshList) {
+          props.refreshList();
+        }
+        clearForm();
+      } else {
+        if (response.status === 400) {
+          toast.warning(response.message);
+        } else {
+          toast.error(response.message);
+        }
       }
-      clearForm();
     } else {
-      if (response.status === 400) {
+      const response = await serverActions.Vendor.update(vendor);
+      if (response?.status === 200) {
+        toast.message(response.message);
+        setEditVendor(null);
+        props.setSelectedVendor(response.data);
+        if (props.refreshList) {
+          props.refreshList();
+        }
+      } else if (response?.status === 400) {
         toast.warning(response.message);
       } else {
         toast.error(response.message);
@@ -84,9 +103,26 @@ const VendorCreateForm = (props: Props) => {
     setVendor(null);
   };
 
+  const handleCancel = () => {
+    props.setSelectedVendor(null);
+    clearForm();
+    setEditVendor(null);
+  };
+
+  const handleEdit = () => {
+    if (props.selectedVendor) {
+      const temp = props.selectedVendor;
+      setEditVendor(temp);
+      props.setSelectedVendor(null);
+      setTimeout(() => {
+        setVendor(temp);
+      }, 500);
+    }
+  };
+
   useEffect(() => {
-    setVendor(props.selectedVendoor ? props.selectedVendoor : null);
-  }, [props.selectedVendoor]);
+    setVendor(props.selectedVendor ? props.selectedVendor : null);
+  }, [props.selectedVendor]);
 
   return (
     <div>
@@ -97,13 +133,19 @@ const VendorCreateForm = (props: Props) => {
             label="Vendor name"
             value={vendor ? vendor.name : ""}
             setValue={actions.setName}
+            disabled={props.selectedVendor ? true : false}
           />
           <InputBox
             label="Vendor code"
             value={vendor ? (vendor.code ? vendor.code : "") : ""}
             setValue={actions.setCode}
+            disabled={props.selectedVendor ? true : false}
           />
-          <Combobox label="Account" placeholder="Expense account" />
+          <Combobox
+            label="Account"
+            placeholder="Expense account"
+            disabled={props.selectedVendor ? true : false}
+          />
         </div>
       </div>
       <div className="mt-4">
@@ -115,14 +157,27 @@ const VendorCreateForm = (props: Props) => {
             <TabsTrigger value="purchase">Purchase Info</TabsTrigger>
           </TabsList>
           <TabsContent value="general">
-            <GeneralTab actions={actions} vendor={vendor} />
+            <GeneralTab
+              actions={actions}
+              vendor={vendor}
+              selectedVendor={props.selectedVendor}
+            />
           </TabsContent>
           <TabsContent value="address">Address</TabsContent>
         </Tabs>
       </div>
       <div className="mt-4 flex justify-end items-end">
-        <div className="">
-          <Button onClick={handleSave}>Save</Button>
+        <div className="flex gap-2 items-center">
+          {props.selectedVendor && <Button onClick={handleEdit}>Edit</Button>}
+          <Button
+            onClick={handleSave}
+            disabled={props.selectedVendor && editVendor ? true : false}
+          >
+            Save
+          </Button>
+          {(props.selectedVendor || editVendor) && (
+            <Button onClick={handleCancel}>Cancel</Button>
+          )}
         </div>
       </div>
     </div>
