@@ -35,8 +35,17 @@ async function assignToSale(customer: customer, saleId: string) {
   return response.data;
 }
 
+async function update(customer: any) {
+  const data = {
+    customer,
+  };
+  const response: SERVER_RESPONSE = await axios.patch(`${APIPATH}`, data);
+  return response.data;
+}
+
 export const Customer = {
   create,
+  update,
   listAll,
   list,
   assignToSale,

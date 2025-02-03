@@ -194,3 +194,104 @@ export async function GET(req: NextRequest) {
     return new Response(JSON.stringify(response));
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  const response = {
+    status: 500,
+    message: "Internal Server Error",
+    data: null as any,
+  };
+
+  try {
+    const data = await req.json();
+
+    if (!data.customer) {
+      response.status = 400;
+      response.message = "Customer is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    let isExists: any = await prisma.customer.findUnique({
+      where: {
+        id: data.customer.id,
+      },
+    });
+
+    if (!isExists) {
+      response.status = 400;
+      response.message = "Customer not found";
+      return new Response(JSON.stringify(response));
+    }
+
+    isExists = await prisma.customer.findFirst({
+      where: {
+        name: {
+          equals: data.customer.name,
+          mode: "insensitive",
+        },
+        NOT: {
+          id: data.customer.id,
+        },
+      },
+    });
+
+    if (isExists) {
+      response.status = 400;
+      response.message = `Customer with name ${data.customer.name} already exists`;
+      return new Response(JSON.stringify(response));
+    }
+
+    isExists = await prisma.account.findFirst({
+      where: {
+        NOT: {
+          id: data.customer.accountId,
+        },
+        title: {
+          equals: data.customer.name,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    if (isExists) {
+      response.status = 400;
+      response.message = `Account with name ${data.customer.name} already exists`;
+      return new Response(JSON.stringify(response));
+    }
+
+    const account = await prisma.account.update({
+      where: {
+        id: data.customer.accountId,
+      },
+      data: {
+        title: data.customer.name,
+      },
+    });
+
+    //update everything except accountId
+    const id = data.customer.id;
+    delete data.customer.accountId;
+    delete data.customer.id;
+    delete data.customer.account;
+
+    const customer = await prisma.customer.update({
+      where: {
+        id: id,
+      },
+      data: {
+        ...data.customer,
+      },
+    });
+
+    response.status = 200;
+    response.message = "Customer updated";
+    response.data = customer;
+    return new Response(JSON.stringify(response));
+  } catch (error: any) {
+    console.log("[SERVER ERROR]: " + error.message);
+    response.status = 500;
+    response.message = error.message;
+    response.data = null;
+    return new Response(JSON.stringify(response));
+  }
+}

@@ -78,7 +78,7 @@ const MainMenu = (props: Props) => {
       <MenubarMenu>
         <MenubarTrigger>Customers</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem onClick={() => handleChangePage("CustomerCreate")}>
+          <MenubarItem onClick={() => handleChangePage("ListAllCustomers")}>
             Customers list
           </MenubarItem>
           <MenubarItem>Find...</MenubarItem>

@@ -9,10 +9,19 @@ import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
 import { toast } from "sonner";
 
-type Props = {};
+type Props = {
+  refreshList?: () => void;
+  selectedCustomer?: customer;
+  setSelectedCustomer?: any;
+};
 
 const CustomerCreateForm = (props: Props) => {
   const [customer, setCustomer] = useState<customer | null>(null);
+  const [editCustomer, setEditCustomer] = useState<customer | null>(null);
+
+  useEffect(() => {
+    setCustomer(props.selectedCustomer ? props.selectedCustomer : null);
+  }, [props.selectedCustomer]);
 
   const actions = {
     setName: (value: string) => {
@@ -60,18 +69,54 @@ const CustomerCreateForm = (props: Props) => {
   };
 
   const handleSave = async () => {
-    if (!customer) return;
-    const response = await serverActions.Customer.create(customer);
-    if (response?.status === 200) {
-      toast.message(response.message);
-      clearForm();
+    if (!editCustomer) {
+      if (!customer) return;
+      const response = await serverActions.Customer.create(customer);
+      if (response?.status === 200) {
+        toast.message(response.message);
+        if (props.refreshList) {
+          props.refreshList();
+        }
+        clearForm();
+      } else {
+        if (response.status === 400) {
+          toast.warning(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      }
     } else {
-      if (response.status === 400) {
+      const response = await serverActions.Customer.update(customer);
+      if (response?.status === 200) {
+        toast.message(response.message);
+        setEditCustomer(null);
+        props.setSelectedCustomer(response.data);
+        if (props.refreshList) {
+          props.refreshList();
+        }
+      } else if (response?.status === 400) {
         toast.warning(response.message);
       } else {
         toast.error(response.message);
       }
     }
+  };
+
+  const handleEdit = () => {
+    if (props.selectedCustomer) {
+      const temp = props.selectedCustomer;
+      setEditCustomer(temp);
+      props.setSelectedCustomer(null);
+      setTimeout(() => {
+        setCustomer(temp);
+      }, 500);
+    }
+  };
+
+  const handleCancel = () => {
+    props.setSelectedCustomer(null);
+    clearForm();
+    setEditCustomer(null);
   };
 
   const clearForm = () => {
@@ -87,13 +132,19 @@ const CustomerCreateForm = (props: Props) => {
             label="Customer name"
             value={customer ? customer.name : ""}
             setValue={actions.setName}
+            disabled={props.selectedCustomer ? true : false}
           />
           <InputBox
             label="Customer code"
             value={customer ? (customer.code ? customer.code : "") : ""}
             setValue={actions.setCode}
+            disabled={props.selectedCustomer ? true : false}
           />
-          <Combobox label="Account" placeholder="Expense account" />
+          <Combobox
+            label="Account"
+            placeholder="Expense account"
+            disabled={props.selectedCustomer ? true : false}
+          />
         </div>
       </div>
       <div className="mt-4">
@@ -105,14 +156,27 @@ const CustomerCreateForm = (props: Props) => {
             <TabsTrigger value="purchase">Sale Info</TabsTrigger>
           </TabsList>
           <TabsContent value="general">
-            <GeneralTab actions={actions} customer={customer} />
+            <GeneralTab
+              actions={actions}
+              customer={customer}
+              selectedCustomer={props.selectedCustomer}
+            />
           </TabsContent>
           <TabsContent value="address">Address</TabsContent>
         </Tabs>
       </div>
       <div className="mt-4 flex justify-end items-end">
-        <div className="">
-          <Button onClick={handleSave}>Save</Button>
+        <div className="flex gap-2 items-center">
+          {props.selectedCustomer && <Button onClick={handleEdit}>Edit</Button>}
+          <Button
+            onClick={handleSave}
+            disabled={props.selectedCustomer && editCustomer ? true : false}
+          >
+            Save
+          </Button>
+          {(props.selectedCustomer || editCustomer) && (
+            <Button onClick={handleCancel}>Cancel</Button>
+          )}
         </div>
       </div>
     </div>
