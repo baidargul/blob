@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
 import { SERVER_RESPONSE } from "@/serverActions/internal/server";
-import { transactionType } from "@prisma/client";
+import { accountType, transactionType } from "@prisma/client";
 
 async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
   await serverCommands.initialize();
@@ -112,6 +112,34 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
     response.status = 400;
     response.message = "Account not found";
     return response;
+  }
+
+  const cogp = await prisma.account.findFirst({
+    where: {
+      type: accountType.cogp,
+    },
+  });
+
+  if (cogp) {
+    await prisma.transactions.create({
+      data: {
+        accountId: cogp.id,
+        type: transactionType.debit,
+        amount: totalCost,
+        transactionCategoryId: transactionCategory.id,
+        description: summary,
+      },
+    });
+    await prisma.account.update({
+      where: {
+        id: cogp.id,
+      },
+      data: {
+        balance: {
+          decrement: totalCost,
+        },
+      },
+    });
   }
 
   let trans = await prisma.transactions.create({

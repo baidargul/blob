@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
-import { transactionType } from "@prisma/client";
+import { accountType, transactionType } from "@prisma/client";
 
 async function closeSale(saleId: string, paidAmount?: number) {
   await serverCommands.initialize();
@@ -163,6 +163,42 @@ async function closeSale(saleId: string, paidAmount?: number) {
       balance: Number(account.balance) - Number(totalCost),
     },
   });
+
+  const cogs = await prisma.account.findFirst({
+    where: {
+      type: accountType.cogs,
+    },
+  });
+
+  if (cogs) {
+    await prisma.transactions.create({
+      data: {
+        accountId: cogs.id,
+        type: transactionType.credit,
+        amount: totalCost,
+        transactionCategoryId: transactionCategory.id,
+        description: `Sale order #${sale.orderNo} ${
+          sale.saleDate &&
+          `@${formatDate(new Date(sale.saleDate))}\n\n ${
+            sale?.account &&
+            sale?.account?.customer?.name &&
+            `Customer: ${sale.account.customer.name}`
+          }`
+        }`,
+        balance: Number(cogs.balance) + Number(totalCost),
+      },
+    });
+    await prisma.account.update({
+      where: {
+        id: cogs.id,
+      },
+      data: {
+        balance: {
+          increment: Number(totalCost),
+        },
+      },
+    });
+  }
 
   const incomeAccount = await prisma.account.findFirst({
     where: {
