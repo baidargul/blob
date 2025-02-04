@@ -61,6 +61,40 @@ async function closeSale(saleId: string, paidAmount?: number) {
   }[] = [];
   for (const item of sale.barcodeRegister) {
     totalCost = Number(totalCost) + Number(item.soldAt);
+    const inventory = await prisma.account.findFirst({
+      where: {
+        type: accountType.inventory,
+      },
+    });
+
+    if (inventory) {
+      const purchaseTransactionCategory =
+        await prisma.transactionCategory.findUnique({
+          where: {
+            name: "sale",
+          },
+        });
+
+      await prisma.transactions.create({
+        data: {
+          type: transactionType.debit,
+          amount: Number(item.cost),
+          accountId: inventory.id,
+          transactionCategoryId: purchaseTransactionCategory?.id || "",
+          description: `${item.product.name} ${item.color}@ ${item.barcode}`,
+          balance: Number(inventory.balance) - Number(item.cost),
+        },
+      });
+
+      await prisma.account.update({
+        where: {
+          id: inventory.id,
+        },
+        data: {
+          balance: Number(inventory.balance) - Number(item.cost),
+        },
+      });
+    }
 
     // Flag to check if the product exists
     let found = false;

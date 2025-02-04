@@ -41,6 +41,7 @@ const standardAccounts: {
   { title: "cash", type: accountType.cash, balance: 0 },
   { title: "bank", type: accountType.bank, balance: 0 },
   { title: "income", type: accountType.income, balance: 0 },
+  { title: "inventory", type: accountType.inventory, balance: 0 },
   { title: "cost of goods purchased", type: accountType.cogp, balance: 0 },
   { title: "cost of goods sold", type: accountType.cogs, balance: 0 },
 ];

@@ -214,6 +214,7 @@ enum accountType {
   income
   cogp // Cost of Goods Purchased
   cogs // Cost of Goods Sold
+  inventory
 }
 
 enum transactionType {

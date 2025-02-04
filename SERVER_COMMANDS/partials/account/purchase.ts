@@ -53,6 +53,42 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
   for (const item of purchase.barcodeRegister) {
     totalCost = Number(totalCost) + Number(item.cost);
 
+    //ADDING TO INVENTORY ACCOUNT
+    const inventory = await prisma.account.findFirst({
+      where: {
+        type: accountType.inventory,
+      },
+    });
+
+    if (inventory) {
+      const purchaseTransactionCategory =
+        await prisma.transactionCategory.findUnique({
+          where: {
+            name: "purchase",
+          },
+        });
+
+      await prisma.transactions.create({
+        data: {
+          type: transactionType.credit,
+          amount: Number(item.cost),
+          accountId: inventory.id,
+          transactionCategoryId: purchaseTransactionCategory?.id || "",
+          description: `${item.product.name} ${item.color}@ ${item.barcode}`,
+          balance: Number(inventory.balance) + Number(item.cost),
+        },
+      });
+
+      await prisma.account.update({
+        where: {
+          id: inventory.id,
+        },
+        data: {
+          balance: Number(inventory.balance) + Number(item.cost),
+        },
+      });
+    }
+
     // Flag to check if the product exists
     let found = false;
 

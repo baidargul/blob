@@ -39,6 +39,7 @@ const AccountWindow = (props: Props) => {
       { name: "income" },
       { name: "cogp" },
       { name: "cogs" },
+      { name: "inventory" },
     ];
 
     types = ComboBox_ADD_VALUE_TO_EACH_OPTION(types);
