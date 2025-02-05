@@ -5,6 +5,7 @@ import { Customer } from "./partials/customer";
 import { Inventory } from "./partials/inventory";
 import { Product } from "./partials/product";
 import { Purchase } from "./partials/purchase";
+import { Reports } from "./partials/reports";
 import { Sale } from "./partials/sale";
 import { Type } from "./partials/type";
 import { Vendor } from "./partials/vendor";
@@ -20,4 +21,5 @@ export const serverActions = {
   Purchase,
   Sale,
   Inventory,
+  Reports,
 };

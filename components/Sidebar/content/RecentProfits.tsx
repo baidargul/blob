@@ -1,8 +1,17 @@
+"use client";
+import { serverActions } from "@/serverActions/serverActions";
 import React from "react";
 
 type Props = {};
 
 const RecentProfits = (props: Props) => {
+  const fetchReport = async () => {
+    const response = await serverActions.Reports.RecentProfits.getSales();
+    console.log(response);
+  };
+
+  fetchReport();
+
   return (
     <div className="">
       <div className="flex flex-col gap-2">

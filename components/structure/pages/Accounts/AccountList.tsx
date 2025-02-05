@@ -24,7 +24,6 @@ const AccountList = (props: Props) => {
 
   const fetchAccounts = async () => {
     const response = await serverActions.Account.listAll();
-    console.log(response);
     setAccountList((prev: any) => response.data);
   };
 
