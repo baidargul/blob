@@ -23,8 +23,10 @@ const RecentProfits = (props: Props) => {
     profit: number;
     sales: number;
   } | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const fetchReport = async () => {
+    setIsLoading(true);
     const response = await serverActions.Reports.RecentProfits.getSales();
     if (response.status === 200) {
       setToday(response.data.today);
@@ -35,6 +37,7 @@ const RecentProfits = (props: Props) => {
     } else {
       toast.error(response.message);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -43,7 +46,11 @@ const RecentProfits = (props: Props) => {
 
   return (
     <div className="select-none">
-      <div className="flex flex-col gap-2">
+      <div
+        className={`flex flex-col gap-2 ${
+          isLoading && "animate-pulse blur-sm"
+        }`}
+      >
         <PanelToday today={today} />
         <PanelYesterday yesterday={yesterday} />
         <PanelDayBeforeYesterday dayBeforeYesterday={dayBeforeYesterday} />
