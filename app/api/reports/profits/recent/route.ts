@@ -27,12 +27,16 @@ export async function GET(req: NextRequest) {
       new Date(new Date(today).setDate(today.getDate() - 1))
     );
 
+    const todaySales = format(todayData);
+    const yesterdaySales = format(yesterdayData);
+    const dayBeforeYesterdaySales = format(dayBeforeYesterdayData);
+
     response.status = 200;
     response.message = "Data fetched successfully";
     response.data = {
-      today: todayData,
-      yesterday: yesterdayData,
-      dayBeforeYesterday: dayBeforeYesterdayData,
+      today: todaySales,
+      yesterday: yesterdaySales,
+      dayBeforeYesterday: dayBeforeYesterdaySales,
     };
     return new Response(JSON.stringify(response));
   } catch (error: any) {
@@ -43,3 +47,21 @@ export async function GET(req: NextRequest) {
     return new Response(JSON.stringify(response));
   }
 }
+
+const format = (data: any) => {
+  let totalSales = 0;
+  let totalWorth = 0;
+  let totalProfit = 0;
+
+  for (const item of data) {
+    totalSales = Number(totalSales) + Number(item.soldAt);
+    totalWorth = Number(totalWorth) + Number(item.cost);
+  }
+
+  totalProfit = Number(totalSales) - Number(totalWorth);
+  return {
+    sales: totalSales,
+    cost: totalWorth,
+    profit: totalProfit,
+  };
+};
