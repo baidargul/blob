@@ -42,7 +42,7 @@ const RecentProfits = (props: Props) => {
   }, []);
 
   return (
-    <div className="">
+    <div className="select-none">
       <div className="flex flex-col gap-2">
         <PanelToday today={today} />
         <PanelYesterday yesterday={yesterday} />
@@ -60,7 +60,7 @@ const PanelToday = ({
   today: { cost: number; profit: number; sales: number } | null;
 }) => {
   return (
-    <div className="p-4 rounded bg-interface-hover/40">
+    <div className="p-4 rounded bg-interface-hover/40 cursor-pointer border border-transparent hover:drop-shadow-sm hover:border-interface-hover">
       <div className="font-semibold text-lg">Today</div>
       <div className="mt-1 grid grid-cols-2">
         <div>
@@ -95,7 +95,7 @@ const PanelYesterday = ({
   } | null;
 }) => {
   return (
-    <div className="p-4 rounded bg-interface-hover/40">
+    <div className="p-4 rounded bg-interface-hover/40 cursor-pointer border border-transparent hover:drop-shadow-sm hover:border-interface-hover">
       <div className="font-semibold text-lg">Yesterday</div>
       <div className="mt-1 grid grid-cols-2">
         <div>
@@ -130,7 +130,7 @@ const PanelDayBeforeYesterday = ({
   } | null;
 }) => {
   return (
-    <div className="p-4 rounded bg-interface-hover/40">
+    <div className="p-4 rounded bg-interface-hover/40 cursor-pointer border border-transparent hover:drop-shadow-sm hover:border-interface-hover">
       <div className="font-semibold text-lg">Day before yesterday</div>
       <div className="mt-1 grid grid-cols-2">
         <div>
