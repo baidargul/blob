@@ -119,7 +119,11 @@ export async function GET(req: NextRequest) {
           },
         },
         include: {
-          account: true,
+          account: {
+            include: {
+              addresses: true,
+            },
+          },
         },
       });
 
@@ -162,7 +166,11 @@ export async function GET(req: NextRequest) {
           id: id,
         },
         include: {
-          account: true,
+          account: {
+            include: {
+              addresses: true,
+            },
+          },
         },
       });
 
@@ -179,7 +187,11 @@ export async function GET(req: NextRequest) {
         name: "asc",
       },
       include: {
-        account: true,
+        account: {
+          include: {
+            addresses: true,
+          },
+        },
       },
     });
 
