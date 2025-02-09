@@ -75,6 +75,28 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const addresses = customer.account.addresses;
+    await prisma.addresses.deleteMany({
+      where: {
+        accountId: account.id,
+      },
+    });
+
+    for (const address of addresses) {
+      if (address.title?.length > 0) {
+        await prisma.addresses.create({
+          data: {
+            accountId: account.id,
+            title: address.title,
+            address: address.address || "",
+            city: address.city || "",
+            updatedAt: new Date(),
+            createdAt: new Date(),
+          },
+        });
+      }
+    }
+
     const newcustomer = await prisma.customer.update({
       data: {
         accountId: account.id,
@@ -283,6 +305,28 @@ export async function PATCH(req: NextRequest) {
         title: data.customer.name,
       },
     });
+
+    const addresses = data.customer.account.addresses;
+    await prisma.addresses.deleteMany({
+      where: {
+        accountId: account.id,
+      },
+    });
+
+    for (const address of addresses) {
+      if (address.title?.length > 0) {
+        await prisma.addresses.create({
+          data: {
+            accountId: account.id,
+            title: address.title,
+            address: address.address || "",
+            city: address.city || "",
+            updatedAt: new Date(),
+            createdAt: new Date(),
+          },
+        });
+      }
+    }
 
     //update everything except accountId
     const id = data.customer.id;
