@@ -54,6 +54,13 @@ export async function POST(req: NextRequest) {
       data: {
         accountId: data.customer.accountId,
       },
+      include: {
+        account: {
+          include: {
+            addresses: true,
+          },
+        },
+      },
     });
 
     response.status = 200;

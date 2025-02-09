@@ -140,7 +140,11 @@ export async function GET(req: NextRequest) {
           },
         },
         include: {
-          account: true,
+          account: {
+            include: {
+              addresses: true,
+            },
+          },
         },
       });
 
@@ -280,6 +284,13 @@ export async function PATCH(req: NextRequest) {
       },
       data: {
         ...data.customer,
+      },
+      include: {
+        account: {
+          include: {
+            addresses: true,
+          },
+        },
       },
     });
 

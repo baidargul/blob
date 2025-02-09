@@ -73,6 +73,13 @@ export async function POST(req: NextRequest) {
         ...vendor,
         accountId: account.id,
       },
+      include: {
+        account: {
+          include: {
+            addresses: true,
+          },
+        },
+      },
     });
 
     response.status = 200;
@@ -166,7 +173,11 @@ export async function GET(req: NextRequest) {
         name: "asc",
       },
       include: {
-        account: true,
+        account: {
+          include: {
+            addresses: true,
+          },
+        },
       },
     });
 
@@ -271,6 +282,13 @@ export async function PATCH(req: NextRequest) {
       },
       data: {
         ...data.vendor,
+      },
+      include: {
+        account: {
+          include: {
+            addresses: true,
+          },
+        },
       },
     });
 
