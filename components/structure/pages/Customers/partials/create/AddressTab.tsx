@@ -52,12 +52,14 @@ const AddressTab = (props: Props) => {
             </div>
           );
         })}
-      <div
-        onClick={handleNewAddress}
-        className="p-2 w-full mt-2 bg-interface-secondry/10 cursor-pointer text-center text-sm border border-interface-secondry rounded"
-      >
-        Add New
-      </div>
+      {props.selectedCustomer === null && (
+        <div
+          onClick={handleNewAddress}
+          className="p-2 w-full mt-2 bg-interface-secondry/10 cursor-pointer text-center text-sm border border-interface-secondry rounded"
+        >
+          Add New
+        </div>
+      )}
     </div>
   );
 };
