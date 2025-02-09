@@ -2,80 +2,75 @@ import { serverCommands } from "@/SERVER_COMMANDS/serverCommands";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const response = {
+  const response: any = {
     status: 500,
     message: "Internal Server Error",
-    data: null as any,
+    data: null,
   };
 
   try {
-    const today = new Date();
-
-    // Create separate Date instances for today, yesterday, and the day before yesterday
-    const startOfToday = new Date(today);
-    const startOfTomorrow = new Date(today);
-    startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
-
-    const startOfYesterday = new Date(today);
-    startOfYesterday.setDate(startOfYesterday.getDate() - 1);
-
-    const startOfDayBeforeYesterday = new Date(today);
-    startOfDayBeforeYesterday.setDate(startOfDayBeforeYesterday.getDate() - 2);
-
-    // Fetch data for each day using distinct Date objects
-    const todayData = await serverCommands.reports.sales.getSale(
-      startOfToday,
-      startOfTomorrow
-    );
-
-    const yesterdayData = await serverCommands.reports.sales.getSale(
-      startOfYesterday,
-      startOfToday
-    );
-
-    const dayBeforeYesterdayData = await serverCommands.reports.sales.getSale(
-      startOfDayBeforeYesterday,
-      startOfYesterday
-    );
-
-    // Format the data
-    const todaySales = format(todayData);
-    const yesterdaySales = format(yesterdayData);
-    const dayBeforeYesterdaySales = format(dayBeforeYesterdayData);
-
-    // Build the response
-    response.status = 200;
-    response.message = "Data fetched successfully";
-    response.data = {
-      today: todaySales,
-      yesterday: yesterdaySales,
-      dayBeforeYesterday: dayBeforeYesterdaySales,
+    // Helper function to reset time to start of the day (00:00:00.000)
+    const resetToStartOfDay = (date: Date) => {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
     };
 
-    return new Response(JSON.stringify(response));
+    // Calculate date ranges
+    const today = new Date();
+    const startOfToday = resetToStartOfDay(today);
+
+    const startOfTomorrow = new Date(startOfToday);
+    startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+
+    const startOfYesterday = new Date(startOfToday);
+    startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+
+    const startOfDayBeforeYesterday = new Date(startOfToday);
+    startOfDayBeforeYesterday.setDate(startOfDayBeforeYesterday.getDate() - 2);
+
+    // Fetch sales data for each day
+    const [todayData, yesterdayData, dayBeforeYesterdayData] =
+      await Promise.all([
+        serverCommands.reports.sales.getSale(startOfToday, startOfTomorrow),
+        serverCommands.reports.sales.getSale(startOfYesterday, startOfToday),
+        serverCommands.reports.sales.getSale(
+          startOfDayBeforeYesterday,
+          startOfYesterday
+        ),
+      ]);
+
+    // Format the data
+    const formattedData = {
+      today: formatSalesData(todayData),
+      yesterday: formatSalesData(yesterdayData),
+      dayBeforeYesterday: formatSalesData(dayBeforeYesterdayData),
+    };
+
+    // Build and return success response
+    response.status = 200;
+    response.message = "Data fetched successfully";
+    response.data = formattedData;
+    return new Response(JSON.stringify(response), { status: response.status });
   } catch (error: any) {
-    console.log("[SERVER ERROR]: " + error.message);
-    response.status = 500;
+    // Handle and log errors
+    console.error("[SERVER ERROR]:", error.message);
     response.message = error.message;
-    response.data = null;
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify(response), { status: response.status });
   }
 }
 
-const format = (data: any) => {
+// Helper function to format sales data
+const formatSalesData = (data: any) => {
   let totalSales = 0;
   let totalWorth = 0;
-  let totalProfit = 0;
 
   for (const item of data) {
-    totalSales = Number(totalSales) + Number(item.soldAt);
-    totalWorth = Number(totalWorth) + Number(item.cost);
+    totalSales += Number(item.soldAt || 0);
+    totalWorth += Number(item.cost || 0);
   }
 
-  totalProfit = Number(totalSales) - Number(totalWorth);
   return {
     sales: totalSales,
     cost: totalWorth,
-    profit: totalProfit,
+    profit: totalSales - totalWorth,
   };
 };
