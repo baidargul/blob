@@ -208,6 +208,7 @@ model addresses {
   id        String    @id @default(uuid())
   accountId String?
   title     String?
+  city      String?
   address   String?
   createdAt DateTime? @default(now()) @db.Timestamptz(6)
   updatedAt DateTime? @default(now()) @db.Timestamptz(6)
