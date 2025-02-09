@@ -18,6 +18,7 @@ async function closePurchase(purchaseId: string): Promise<SERVER_RESPONSE> {
       account: {
         include: {
           vendor: true,
+          addresses: true,
         },
       },
       barcodeRegister: {

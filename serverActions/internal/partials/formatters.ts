@@ -60,6 +60,7 @@ export const getPurchase = async (id: string) => {
       account: {
         include: {
           vendor: true,
+          addresses: true,
         },
       },
       barcodeRegister: {

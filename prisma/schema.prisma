@@ -172,6 +172,7 @@ model account {
   updatedAt    DateTime?      @default(now()) @db.Date
   type         accountType?
   description  String?
+  addresses    addresses[]
   customer     customer?
   purchase     purchase[]
   sale         sale[]
@@ -203,6 +204,16 @@ model transactionCategory {
   transactions transactions[]
 }
 
+model addresses {
+  id        String    @id @default(uuid())
+  accountId String?
+  title     String?
+  address   String?
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  account   account?  @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
 enum accountType {
   vendor
   customer
@@ -212,8 +223,8 @@ enum accountType {
   cash
   expenses
   income
-  cogp // Cost of Goods Purchased
-  cogs // Cost of Goods Sold
+  cogp
+  cogs
   inventory
 }
 

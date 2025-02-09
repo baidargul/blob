@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
         account: {
           include: {
             vendor: true,
+            addresses: true,
           },
         },
         barcodeRegister: {
