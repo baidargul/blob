@@ -8,6 +8,7 @@ import { customer } from "@prisma/client";
 import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
 import { toast } from "sonner";
+import AddressTab from "./partials/create/AddressTab";
 
 type Props = {
   refreshList?: () => void;
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const CustomerCreateForm = (props: Props) => {
-  const [customer, setCustomer] = useState<customer | null>(null);
+  const [customer, setCustomer] = useState<customer | any | null>(null);
   const [editCustomer, setEditCustomer] = useState<customer | null>(null);
 
   useEffect(() => {
@@ -65,6 +66,86 @@ const CustomerCreateForm = (props: Props) => {
 
     setWebsite: (value: string) => {
       setCustomer((prev: any) => ({ ...prev, website: value }));
+    },
+
+    addresses: {
+      add: () => {
+        if (customer) {
+          const newAddress = {
+            id: customer.account?.addresses?.length + 1 || 1,
+            title: "",
+            address: "",
+            city: "",
+          };
+
+          const updatedAddresses = [
+            ...(customer.account?.addresses || []),
+            newAddress,
+          ];
+
+          setCustomer((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
+      setTitle: (index: number, value: string) => {
+        if (customer) {
+          const obj = customer.account.addresses[index];
+          obj.title = value;
+          const updatedAddresses = [
+            ...customer.account.addresses.slice(0, index),
+            obj,
+            ...customer.account.addresses.slice(index + 1),
+          ];
+          setCustomer((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
+      setAddress: (id: number, value: string) => {
+        if (customer) {
+          const obj = customer.account.addresses[id];
+          obj.address = value;
+          const updatedAddresses = [
+            ...customer.account.addresses.slice(0, id),
+            obj,
+            ...customer.account.addresses.slice(id + 1),
+          ];
+          setCustomer((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
+      setCity: (id: number, value: string) => {
+        if (customer) {
+          const obj = customer.account.addresses[id];
+          obj.city = value;
+          const updatedAddresses = [
+            ...customer.account.addresses.slice(0, id),
+            obj,
+            ...customer.account.addresses.slice(id + 1),
+          ];
+          setCustomer((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
     },
   };
 
@@ -162,7 +243,13 @@ const CustomerCreateForm = (props: Props) => {
               selectedCustomer={props.selectedCustomer}
             />
           </TabsContent>
-          <TabsContent value="address">Address</TabsContent>
+          <TabsContent value="address">
+            <AddressTab
+              actions={actions}
+              customer={customer}
+              selectedCustomer={props.selectedCustomer}
+            />
+          </TabsContent>
         </Tabs>
       </div>
       <div className="mt-4 flex justify-end items-end">
