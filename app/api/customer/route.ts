@@ -62,6 +62,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const addresses = customer.account.addresses;
+    delete customer.account;
     const xnewcustomer = await prisma.customer.create({
       data: {
         ...customer,
@@ -75,7 +77,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const addresses = customer.account.addresses;
     await prisma.addresses.deleteMany({
       where: {
         accountId: account.id,

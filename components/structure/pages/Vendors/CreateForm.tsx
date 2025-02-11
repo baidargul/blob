@@ -8,6 +8,7 @@ import { vendor } from "@prisma/client";
 import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
 import { toast } from "sonner";
+import AddressTab from "./partials/create/AddressTab";
 
 type Props = {
   refreshList?: () => void;
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const VendorCreateForm = (props: Props) => {
-  const [vendor, setVendor] = useState<vendor | null>(null);
+  const [vendor, setVendor] = useState<vendor | any | null>(null);
 
   const [editVendor, setEditVendor] = useState<vendor | null>(null);
 
@@ -62,6 +63,86 @@ const VendorCreateForm = (props: Props) => {
 
     setWebsite: (value: string) => {
       setVendor((prev: any) => ({ ...prev, website: value }));
+    },
+
+    addresses: {
+      add: () => {
+        if (vendor) {
+          const newAddress = {
+            id: vendor.account?.addresses?.length + 1 || 1,
+            title: "",
+            address: "",
+            city: "",
+          };
+
+          const updatedAddresses = [
+            ...(vendor.account?.addresses || []),
+            newAddress,
+          ];
+
+          setVendor((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
+      setTitle: (index: number, value: string) => {
+        if (vendor) {
+          const obj = vendor.account.addresses[index];
+          obj.title = value;
+          const updatedAddresses = [
+            ...vendor.account.addresses.slice(0, index),
+            obj,
+            ...vendor.account.addresses.slice(index + 1),
+          ];
+          setVendor((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
+      setAddress: (id: number, value: string) => {
+        if (vendor) {
+          const obj = vendor.account.addresses[id];
+          obj.address = value;
+          const updatedAddresses = [
+            ...vendor.account.addresses.slice(0, id),
+            obj,
+            ...vendor.account.addresses.slice(id + 1),
+          ];
+          setVendor((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
+      setCity: (id: number, value: string) => {
+        if (vendor) {
+          const obj = vendor.account.addresses[id];
+          obj.city = value;
+          const updatedAddresses = [
+            ...vendor.account.addresses.slice(0, id),
+            obj,
+            ...vendor.account.addresses.slice(id + 1),
+          ];
+          setVendor((prev: any) => ({
+            ...prev,
+            account: {
+              ...prev.account,
+              addresses: updatedAddresses,
+            },
+          }));
+        }
+      },
     },
   };
 
@@ -163,7 +244,13 @@ const VendorCreateForm = (props: Props) => {
               selectedVendor={props.selectedVendor}
             />
           </TabsContent>
-          <TabsContent value="address">Address</TabsContent>
+          <TabsContent value="address">
+            <AddressTab
+              actions={actions}
+              vendor={vendor}
+              selectedVendor={props.selectedVendor}
+            />
+          </TabsContent>
         </Tabs>
       </div>
       <div className="mt-4 flex justify-end items-end">
