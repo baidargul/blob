@@ -445,7 +445,7 @@ const SaleOrder = (props: Props) => {
 
                   if (
                     item.brand.description
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -453,7 +453,7 @@ const SaleOrder = (props: Props) => {
 
                   if (
                     item.barcodeRegister[0].barcode
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -461,7 +461,7 @@ const SaleOrder = (props: Props) => {
 
                   if (
                     item.barcodeRegister[0].color
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -469,7 +469,7 @@ const SaleOrder = (props: Props) => {
 
                   if (
                     item.category.name
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -478,7 +478,7 @@ const SaleOrder = (props: Props) => {
                   if (
                     item.category.description &&
                     item.category.description
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -486,7 +486,7 @@ const SaleOrder = (props: Props) => {
 
                   if (
                     item.price
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -494,7 +494,7 @@ const SaleOrder = (props: Props) => {
 
                   if (
                     item.cost
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(cartSearchText.toLowerCase())
                   ) {
                     isExists = true;

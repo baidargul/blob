@@ -51,7 +51,5 @@ export const PRODUCT_FORMAT_FOR_REPORT = (data: any) => {
     images,
   };
 
-  console.log(product);
-
   return product;
 };

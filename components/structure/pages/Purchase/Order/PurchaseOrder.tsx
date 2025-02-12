@@ -463,8 +463,8 @@ const PurchaseOrder = (props: Props) => {
                   }
 
                   if (
-                    item.brand.description
-                      .toLowerCase()
+                    item.brand?.description
+                      ?.toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -472,7 +472,7 @@ const PurchaseOrder = (props: Props) => {
 
                   if (
                     item.barcodeRegister[0].barcode
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -480,7 +480,7 @@ const PurchaseOrder = (props: Props) => {
 
                   if (
                     item.barcodeRegister[0].color
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -488,7 +488,7 @@ const PurchaseOrder = (props: Props) => {
 
                   if (
                     item.category.name
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
@@ -497,20 +497,20 @@ const PurchaseOrder = (props: Props) => {
                   if (
                     item.category.description &&
                     item.category.description
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
 
                   if (
-                    item.price.toLowerCase().includes(searchText.toLowerCase())
+                    item.price?.toLowerCase().includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
 
                   if (
-                    item.cost.toLowerCase().includes(searchText.toLowerCase())
+                    item.cost?.toLowerCase().includes(searchText.toLowerCase())
                   ) {
                     isExists = true;
                   }
