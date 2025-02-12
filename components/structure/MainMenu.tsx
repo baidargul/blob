@@ -143,7 +143,7 @@ const MainMenu = (props: Props) => {
           <MenubarSub>
             <MenubarSubTrigger>Sales</MenubarSubTrigger>
             <MenubarSubContent>
-              <MenubarItem onClick={() => handleChangePage("BarcodeSearch")}>
+              <MenubarItem onClick={() => handleChangePage("ReportDailySales")}>
                 Daily Report
               </MenubarItem>
               <MenubarSeparator />

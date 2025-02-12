@@ -8,6 +8,7 @@ import InventoryManage from "@/components/structure/pages/Inventory/InventoryMan
 import ProductList from "@/components/structure/pages/Product/List";
 import PurchaseOrder from "@/components/structure/pages/Purchase/Order/PurchaseOrder";
 import PurchaseQuotation from "@/components/structure/pages/Purchase/Quotation/PurchaseQuotation";
+import DailySales from "@/components/structure/pages/Reports/Sales/Daily/DailySales";
 import SaleOrder from "@/components/structure/pages/Sale/Order/SaleOrder";
 import TypeList from "@/components/structure/pages/Type/TypeList";
 import VendorCreateForm from "@/components/structure/pages/Vendors/CreateForm";
@@ -37,6 +38,7 @@ export type PageName =
   | "CustomerCreate"
   | "AccountList"
   | "ListAllVendors"
+  | "ReportDailySales"
   | "ListAllCustomers";
 
 type PageType = {
@@ -114,6 +116,11 @@ const pages: PageState[] = [
     name: "AccountList",
     description: "List of Accounts",
     page: <AccountList />,
+  },
+  {
+    name: "ReportDailySales",
+    description: "Daily Sales Report",
+    page: <DailySales />,
   },
 ];
 
