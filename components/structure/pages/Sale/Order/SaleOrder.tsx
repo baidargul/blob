@@ -182,7 +182,7 @@ const SaleOrder = (props: Props) => {
 
     return (
       product.name.toLowerCase().includes(normalizedTarget) ||
-      product.code.toLowerCase().includes(normalizedTarget) ||
+      product?.code?.toLowerCase().includes(normalizedTarget) ||
       product?.primaryPhone?.toLowerCase().includes(normalizedTarget)
     );
   };
