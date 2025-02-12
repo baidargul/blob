@@ -139,6 +139,18 @@ const MainMenu = (props: Props) => {
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger>Reports</MenubarTrigger>
+        <MenubarContent>
+          <MenubarSub>
+            <MenubarSubTrigger>Sales</MenubarSubTrigger>
+            <MenubarSubContent>
+              <MenubarItem onClick={() => handleChangePage("BarcodeSearch")}>
+                Daily Report
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>Find...</MenubarItem>
+            </MenubarSubContent>
+          </MenubarSub>
+        </MenubarContent>
       </MenubarMenu>
     </Menubar>
   );
