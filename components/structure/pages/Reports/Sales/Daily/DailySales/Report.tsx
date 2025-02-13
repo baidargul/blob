@@ -19,6 +19,7 @@ const Group = ({ title, children, className = "" }: any) => (
 
 const Report = () => {
   const [sales, setSales] = useState([]);
+  const [totalProfit, setTotalProfit] = useState(0);
   const [groupBy, setGroupBy] = useState("customer");
 
   const fetchSales = async () => {
@@ -31,7 +32,7 @@ const Report = () => {
       todayDate,
       tommorrowDate
     );
-    console.log(response.data);
+    calculateTotalProfit(response.data);
     setSales(response.data);
   };
 
@@ -74,6 +75,17 @@ const Report = () => {
     }
   };
 
+  const calculateTotalProfit = (saleData: any) => {
+    let profit = 0;
+
+    saleData.forEach((sale: any) => {
+      const profitPerSale = Number(sale.soldAt) - Number(sale.cost);
+      profit += profitPerSale;
+    });
+
+    setTotalProfit(profit);
+  };
+
   const renderGroupedData = () => {
     const groupedData = groupData(sales, groupBy);
     return Object.entries(groupedData).map(([group, items]: any) => {
@@ -83,25 +95,24 @@ const Report = () => {
           <Group key={group} title={`${groupBy.toUpperCase()}: ${group}`}>
             <Column>
               {items.map((sale: any) => {
-                total =
-                  Number(total) + (Number(sale.soldAt) - Number(sale.cost));
+                const profitPerSale = Number(sale.soldAt) - Number(sale.cost);
+                total += profitPerSale;
+
                 return (
                   <Row
                     key={sale.id}
-                    className="justify-between p-2 border-b last:border-none"
+                    className="justify-between font-sans p-2 border-b last:border-none"
                   >
                     <span>{sale.name}</span>
                     <span className="text-gray-500">{sale.cost}</span>
                     <span className="text-gray-500">{sale.soldAt}</span>
-                    <span className="text-gray-500">
-                      {Number(sale.soldAt) - Number(sale.cost)}
-                    </span>
+                    <span className="text-gray-500">{profitPerSale}</span>
                   </Row>
                 );
               })}
             </Column>
           </Group>
-          <div className="text-right">Total {total}</div>
+          <div className="text-right font-sans">Net profit: {total}</div>
         </>
       );
     });
@@ -128,6 +139,9 @@ const Report = () => {
         </select>
       </div>
       <div className="space-y-4">{renderGroupedData()}</div>
+      <div className="text-right font-sans text-lg font-semibold">
+        Profit: {totalProfit}
+      </div>
     </div>
   );
 };
