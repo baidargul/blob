@@ -97,7 +97,6 @@ const Report = ({ from, to }: { from: Date; to: Date }) => {
             <tbody>
               {sortedItems.map((sale) => {
                 const index = alreadyRendered.indexOf(sale.barcodeRegisterId);
-                console.log(index);
                 if (index !== -1) {
                   return null;
                 }
@@ -125,7 +124,8 @@ const Report = ({ from, to }: { from: Date; to: Date }) => {
             </tbody>
           </table>
           <div className="mt-2 text-right font-medium">
-            Group Profit: {formatCurrency(groupProfit)}
+            ({alreadyRendered.length} items) Group Profit:{" "}
+            {formatCurrency(groupProfit)}
           </div>
         </div>
       );
@@ -154,6 +154,7 @@ const Report = ({ from, to }: { from: Date; to: Date }) => {
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >
+            <option value="date">Sort by Date</option>
             <option value="name">Sort by Name</option>
             <option value="cost">Sort by Cost</option>
             <option value="soldAt">Sort by Sold At</option>
@@ -171,7 +172,7 @@ const Report = ({ from, to }: { from: Date; to: Date }) => {
       </div>
       <div className="space-y-6">{renderGroupedSales()}</div>
       <div className="mt-6 text-right text-lg font-bold">
-        Total Profit: {formatCurrency(totalProfit)}
+        ({sales.length} items) x Total Profit: {formatCurrency(totalProfit)}
       </div>
     </div>
   );
