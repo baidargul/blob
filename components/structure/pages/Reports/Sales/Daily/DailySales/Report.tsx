@@ -17,7 +17,12 @@ const Group = ({ title, children, className = "" }: any) => (
   </div>
 );
 
-const Report = () => {
+type Props = {
+  from?: Date;
+  to?: Date;
+};
+
+const Report = (props: Props) => {
   const [sales, setSales] = useState([]);
   const [totalProfit, setTotalProfit] = useState(0);
   const [groupBy, setGroupBy] = useState("customer");
@@ -29,8 +34,8 @@ const Report = () => {
     tommorrowDate.setDate(tommorrowDate.getDate() + 1);
 
     const response = await serverActions.Reports.Sales.getSales(
-      todayDate,
-      tommorrowDate
+      props.from ? props.from : todayDate,
+      props.to ? props.to : tommorrowDate
     );
     calculateTotalProfit(response.data);
     setSales(response.data);
@@ -120,7 +125,7 @@ const Report = () => {
 
   useEffect(() => {
     fetchSales();
-  }, []);
+  }, [props.from, props.to]);
 
   return (
     <div className="w-full h-full bg-gray-100 p-4">
