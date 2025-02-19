@@ -44,16 +44,10 @@ const DailySales = (props: Props) => {
             <div className="flex items-center gap-2 w-full">
               <DateTimePicker
                 label="From"
-                subLabel="Select starting date"
                 value={fromDate}
                 setValue={setFromDate}
               />
-              <DateTimePicker
-                label="To"
-                subLabel="Select ending date"
-                value={toDate}
-                setValue={setToDate}
-              />
+              <DateTimePicker label="To" value={toDate} setValue={setToDate} />
             </div>
           </div>
         </ResizablePanel>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { serverActions } from "@/serverActions/serverActions";
+import { formatCurrency } from "@/lib/utils";
 
 // Reusable components
 const Row = ({ children, className = "" }: any) => (
@@ -117,7 +118,9 @@ const Report = (props: Props) => {
               })}
             </Column>
           </Group>
-          <div className="text-right font-sans">Net profit: {total}</div>
+          <div className="text-right font-sans">
+            Net profit: {formatCurrency(total)}
+          </div>
         </>
       );
     });
@@ -145,7 +148,7 @@ const Report = (props: Props) => {
       </div>
       <div className="space-y-4">{renderGroupedData()}</div>
       <div className="text-right font-sans text-lg font-semibold">
-        Profit: {totalProfit}
+        Profit: {formatCurrency(totalProfit)}
       </div>
     </div>
   );
