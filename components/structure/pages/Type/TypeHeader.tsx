@@ -2,12 +2,14 @@ import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
 import { category, type } from "@prisma/client";
 import React from "react";
+import { toast } from "sonner";
 
 type Props = {
   type: type | null | any;
   saveType: (name: string, category: string, description: string) => void;
   createType: () => void;
   fetchTypes: () => void;
+  fetchCategories: () => void;
   isReadOnly: boolean;
 };
 
@@ -17,7 +19,7 @@ const TypeHeader = (props: Props) => {
       if (props.type) {
         props.saveType(
           props.type.name,
-          props.type.category,
+          props.type.categoryId,
           props.type.description
         );
       }
@@ -33,6 +35,11 @@ const TypeHeader = (props: Props) => {
     if (response.status === 200) {
       props.createType();
       props.fetchTypes();
+      props.fetchCategories();
+    } else if (response.status === 400) {
+      toast.warning(response.message);
+    } else {
+      toast.error(response.message);
     }
   };
 

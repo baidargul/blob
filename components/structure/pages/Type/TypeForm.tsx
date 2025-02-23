@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 type Props = {
   selectedType?: type | null | any;
   setType: (type: type | any) => void;
+  categoryList: category[];
   isReadOnly: boolean;
 };
 
@@ -22,11 +23,9 @@ const TypeForm = (props: Props) => {
   const [description, setDescription] = useState<string>("");
 
   const fetchCategories = async () => {
-    const res = await serverActions.Category.listAll();
-    let data = ComboBox_ADD_VALUE_TO_EACH_OPTION(res.data);
-    if (res.status === 200) {
-      setCategories(data);
-    }
+    const res = props.categoryList;
+    let data = ComboBox_ADD_VALUE_TO_EACH_OPTION(res);
+    setCategories(data);
   };
 
   useEffect(() => {

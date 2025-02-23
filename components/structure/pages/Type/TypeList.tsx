@@ -13,12 +13,14 @@ import React, { useEffect, useState } from "react";
 import ListRow from "../Product/ListRow";
 import TypeHeader from "./TypeHeader";
 import TypeForm from "./TypeForm";
+import { toast } from "sonner";
 
 type Props = {};
 
 const TypeList = (props: Props) => {
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [typeList, setTypeList] = useState<type[] | any>([]);
+  const [categoryList, setCategoryList] = useState<category[] | any>([]);
   const [selectedType, setSelectedType] = useState<type | null | any>(null);
   const [filterFound, setFilterFound] = useState(0);
   const [filterText, setFilterText] = useState("");
@@ -54,6 +56,11 @@ const TypeList = (props: Props) => {
     setTypeList((prev: any) => response.data);
     setIsReadOnly(false);
   };
+  const fetchCategories = async () => {
+    const response = await serverActions.Category.listAll();
+    setCategoryList((prev: any) => response.data);
+    setIsReadOnly(false);
+  };
 
   const handleSetType = (item: any) => {
     setSelectedType(item);
@@ -85,7 +92,12 @@ const TypeList = (props: Props) => {
 
     if (response.status === 200) {
       await fetchTypes();
+      await fetchCategories();
       createNewType();
+    } else if (response.status === 400) {
+      toast.warning(response.message);
+    } else {
+      toast.error(response.message);
     }
   };
 
@@ -151,6 +163,7 @@ const TypeList = (props: Props) => {
           <TypeHeader
             type={selectedType}
             fetchTypes={fetchTypes}
+            fetchCategories={fetchCategories}
             createType={createNewType}
             saveType={saveType}
             isReadOnly={isReadOnly}
@@ -159,6 +172,7 @@ const TypeList = (props: Props) => {
             selectedType={selectedType}
             setType={handleSetType}
             isReadOnly={isReadOnly}
+            categoryList={categoryList}
           />
         </ScrollArea>
       </ResizablePanel>
