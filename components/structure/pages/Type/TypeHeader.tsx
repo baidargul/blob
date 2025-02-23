@@ -1,11 +1,11 @@
 import Button from "@/components/myui/Button";
 import { serverActions } from "@/serverActions/serverActions";
-import { type } from "@prisma/client";
+import { category, type } from "@prisma/client";
 import React from "react";
 
 type Props = {
   type: type | null | any;
-  saveType: (name: string, description: string) => void;
+  saveType: (name: string, category: string, description: string) => void;
   createType: () => void;
   fetchTypes: () => void;
   isReadOnly: boolean;
@@ -15,7 +15,11 @@ const TypeHeader = (props: Props) => {
   const handleSave = async () => {
     if (props.type) {
       if (props.type) {
-        props.saveType(props.type.name, props.type.description);
+        props.saveType(
+          props.type.name,
+          props.type.category,
+          props.type.description
+        );
       }
     }
   };

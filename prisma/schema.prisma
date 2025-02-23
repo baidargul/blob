@@ -63,6 +63,7 @@ model category {
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @default(now())
   product     product[]
+  type        type[]
 }
 
 model type {
@@ -71,7 +72,9 @@ model type {
   description String?
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @default(now())
+  categoryId  String?
   product     product[]
+  category    category? @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model barcodeRegister {
@@ -208,11 +211,11 @@ model addresses {
   id        String    @id @default(uuid())
   accountId String?
   title     String?
-  city      String?
   address   String?
   createdAt DateTime? @default(now()) @db.Timestamptz(6)
   updatedAt DateTime? @default(now()) @db.Timestamptz(6)
-  account   account?  @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  city      String?
+  account   account?  @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
 enum accountType {

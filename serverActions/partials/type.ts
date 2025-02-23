@@ -1,9 +1,9 @@
-import { type } from "@prisma/client";
 import axios from "axios";
 
-async function create(name: string, description: string) {
+async function create(name: string, categoryId: string, description: string) {
   const data: any = {
     name,
+    categoryId: categoryId,
     description,
   };
   const response = await axios.post("/api/type", data);

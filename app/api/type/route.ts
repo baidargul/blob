@@ -45,6 +45,39 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify(response));
     }
 
+    if (!data.categoryId) {
+      response.status = 400;
+      response.message = "Category is required";
+      return new Response(JSON.stringify(response));
+    }
+
+    let isExists: any;
+
+    isExists = await prisma.category.findUnique({
+      where: {
+        id: data.categoryId,
+      },
+    });
+
+    if (!isExists) {
+      response.status = 400;
+      response.message = "Category does not exist";
+      return new Response(JSON.stringify(response));
+    }
+
+    isExists = await prisma.type.findFirst({
+      where: {
+        name: data.name,
+        categoryId: data.categoryId,
+      },
+    });
+
+    if (isExists) {
+      response.status = 400;
+      response.message = "Type already exists in this category";
+      return new Response(JSON.stringify(response));
+    }
+
     const type = await prisma.type.create({
       data: {
         name: data.name,

@@ -8,7 +8,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SERVER_RESPONSE } from "@/serverActions/internal/server";
 import { serverActions } from "@/serverActions/serverActions";
-import { type } from "@prisma/client";
+import { category, type } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import ListRow from "../Product/ListRow";
 import TypeHeader from "./TypeHeader";
@@ -60,7 +60,7 @@ const TypeList = (props: Props) => {
   };
 
   const createNewType = () => {
-    const temp: type = {
+    const temp: type | any = {
       id: "",
       name: "",
       description: "",
@@ -72,9 +72,14 @@ const TypeList = (props: Props) => {
     setSelectedType(temp);
   };
 
-  const saveType = async (name: string, description: string) => {
+  const saveType = async (
+    name: string,
+    category: string,
+    description: string
+  ) => {
     const response: SERVER_RESPONSE = await serverActions.Type.create(
       name,
+      category,
       description
     );
 

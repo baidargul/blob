@@ -58,6 +58,9 @@ export async function GET(req: NextRequest) {
       where: {
         id: id,
       },
+      include: {
+        category: true,
+      },
     });
 
     response.status = 200;
