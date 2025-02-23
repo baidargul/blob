@@ -48,16 +48,16 @@ const ProductList = (props: Props) => {
     setCategoryList((prev: any) => response.data);
   };
 
-  const fetchTypes = async () => {
-    const response = await serverActions.Type.listAll();
-    setTypeList((prev: any) => response.data);
-  };
+  // const fetchTypes = async () => {
+  //   const response = await serverActions.Type.listAll();
+  //   setTypeList((prev: any) => response.data);
+  // };
 
   useEffect(() => {
     fetchProducts();
     fetchBrands();
     fetchCategories();
-    fetchTypes();
+    // fetchTypes();
   }, []);
 
   const handleSelectProduct = (product: any) => {
@@ -72,8 +72,9 @@ const ProductList = (props: Props) => {
     setSelectedBrand(brand);
   };
 
-  const handleSelectCategory = (category: category) => {
+  const handleSelectCategory = (category: { category: category; type: [] }) => {
     setSelectedCategory(category);
+    setTypeList(category.type);
   };
 
   const handleSelectType = (type: type) => {

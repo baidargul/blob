@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
       data: {
         name: data.name,
         description: data.description,
+        categoryId: data.categoryId,
       },
     });
 

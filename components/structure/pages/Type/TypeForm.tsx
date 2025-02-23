@@ -24,13 +24,14 @@ const TypeForm = (props: Props) => {
 
   const fetchCategories = async () => {
     const res = props.categoryList;
+    setSelectedCategory(null);
     let data = ComboBox_ADD_VALUE_TO_EACH_OPTION(res);
     setCategories(data);
   };
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [props.categoryList]);
 
   useEffect(() => {
     if (props.selectedType) {
@@ -95,6 +96,7 @@ const TypeForm = (props: Props) => {
           options={categories}
           label="Category"
           setValue={handleCategoryChange}
+          disabled={props.isReadOnly}
         />
         <InputBox
           label="Description"

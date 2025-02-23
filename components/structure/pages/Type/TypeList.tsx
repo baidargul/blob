@@ -27,6 +27,7 @@ const TypeList = (props: Props) => {
 
   useEffect(() => {
     fetchTypes();
+    fetchCategories();
   }, []);
 
   const handleSelectType = (item: any) => {
@@ -57,8 +58,9 @@ const TypeList = (props: Props) => {
     setIsReadOnly(false);
   };
   const fetchCategories = async () => {
+    setCategoryList([]);
     const response = await serverActions.Category.listAll();
-    setCategoryList((prev: any) => response.data);
+    setCategoryList(() => response.data);
     setIsReadOnly(false);
   };
 
@@ -74,7 +76,7 @@ const TypeList = (props: Props) => {
       createdAt: null,
       updatedAt: null,
     };
-
+    fetchCategories();
     setIsReadOnly(false);
     setSelectedType(temp);
   };

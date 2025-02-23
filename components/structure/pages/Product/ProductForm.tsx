@@ -16,7 +16,7 @@ type Props = {
   typeList: type[] | any;
   setProduct: any;
   setBrand: (brand: brand) => void;
-  setCategory: (category: category) => void;
+  setCategory: (category: { category: category; type: [] }) => void;
   setType: (type: type) => void;
   selectedBrand: brand | null | any;
   selectedCategory: category | null | any;
