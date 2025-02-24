@@ -3,6 +3,7 @@ import { Product } from "@/serverActions/partials/product";
 import { serverActions } from "@/serverActions/serverActions";
 import { brand, category, type } from "@prisma/client";
 import React from "react";
+import { toast } from "sonner";
 
 type Props = {
   category: category | null | any;
@@ -26,10 +27,14 @@ const CategoryHeader = (props: Props) => {
   };
 
   const handleRemove = async () => {
-    const response = await serverActions.Brand.remove(props.category.id);
+    const response = await serverActions.Category.remove(props.category.id);
     if (response.status === 200) {
       props.createCategory();
       props.fetchCategories();
+    } else if (response.status === 400) {
+      toast.warning(response.message);
+    } else {
+      toast.error(response.message);
     }
   };
 
