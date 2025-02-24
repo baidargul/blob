@@ -3,8 +3,7 @@ import {
   ComboBox_ADD_VALUE_TO_EACH_OPTION,
 } from "@/components/myui/ComboBox";
 import InputBox from "@/components/myui/InputBox";
-import { serverActions } from "@/serverActions/serverActions";
-import { brand, category, type } from "@prisma/client";
+import { category, type } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -16,22 +15,10 @@ type Props = {
 
 const TypeForm = (props: Props) => {
   const [name, setName] = useState<string>("");
-  const [categories, setCategories] = useState<category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<category | null>(
     null
   );
   const [description, setDescription] = useState<string>("");
-
-  const fetchCategories = async () => {
-    const res = props.categoryList;
-    setSelectedCategory(null);
-    let data = ComboBox_ADD_VALUE_TO_EACH_OPTION(res);
-    setCategories(data);
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, [props.categoryList]);
 
   useEffect(() => {
     if (props.selectedType) {
@@ -93,10 +80,11 @@ const TypeForm = (props: Props) => {
           readonly={props.isReadOnly}
         />
         <Combobox
-          options={categories}
+          options={props.categoryList}
           label="Category"
           setValue={handleCategoryChange}
           disabled={props.isReadOnly}
+          value={selectedCategory?.name}
         />
         <InputBox
           label="Description"

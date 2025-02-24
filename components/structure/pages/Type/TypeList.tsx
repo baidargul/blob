@@ -14,6 +14,7 @@ import ListRow from "../Product/ListRow";
 import TypeHeader from "./TypeHeader";
 import TypeForm from "./TypeForm";
 import { toast } from "sonner";
+import { ComboBox_ADD_VALUE_TO_EACH_OPTION } from "@/components/myui/ComboBox";
 
 type Props = {};
 
@@ -60,7 +61,8 @@ const TypeList = (props: Props) => {
   const fetchCategories = async () => {
     setCategoryList([]);
     const response = await serverActions.Category.listAll();
-    setCategoryList(() => response.data);
+    let data = ComboBox_ADD_VALUE_TO_EACH_OPTION(response.data);
+    setCategoryList(data);
     setIsReadOnly(false);
   };
 
@@ -132,16 +134,23 @@ const TypeList = (props: Props) => {
                   />
                 </div>
                 <div className="">
+                  <div className="grid grid-cols-2 gap-2 w-full bg-zinc-300 p-2">
+                    <div>Type</div>
+                    <div>Category</div>
+                  </div>
                   <ScrollArea className="h-[40dvh] border rounded">
                     {typeList.map((item: any, index: number) => {
-                      if (
-                        filterText &&
-                        !item.name
+                      const lowerFilterText = filterText.toLowerCase();
+                      const isExists =
+                        item.name.toLowerCase().includes(lowerFilterText) ||
+                        item.category.name
                           .toLowerCase()
-                          .includes(filterText.toLowerCase())
-                      ) {
+                          .includes(lowerFilterText);
+
+                      if (!isExists && filterText) {
                         return null;
                       }
+
                       return (
                         <ListRow
                           key={index}

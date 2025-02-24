@@ -13,6 +13,9 @@ export async function GET(req: NextRequest) {
       orderBy: {
         name: "asc",
       },
+      include: {
+        category: true,
+      },
     });
 
     response.status = 200;
